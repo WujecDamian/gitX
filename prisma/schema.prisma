@@ -12,10 +12,17 @@ datasource db {
   provider = "postgresql"
 }
 
+//possible invitation statuses
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
 //When I use {onDelete: Cascade}? On child elements, it's saying 'If parent gets deleted, delete its children also (sad :c)'
 
 model User {
-  id                  Int        @id @default(autoincrement())
+  id                  String     @id @default(uuid())
   username            String     @unique
   display_name        String
   password            String
@@ -36,17 +43,17 @@ model User {
 }
 
 model Follows {
-  id           Int  @id @default(autoincrement())
+  id           String @id @default(uuid())
   follower_id  Int
   following_id Int
-  follower     User @relation("UserFollowers", fields: [follower_id], references: [id], onDelete: Cascade)
-  following    User @relation("UserFollowing", fields: [following_id], references: [id], onDelete: Cascade)
+  follower     User   @relation("UserFollowers", fields: [follower_id], references: [id], onDelete: Cascade)
+  following    User   @relation("UserFollowing", fields: [following_id], references: [id], onDelete: Cascade)
 
   @@unique([follower_id, following_id]) //prevention from following one user multiple times
 }
 
 model Post {
-  id        Int        @id @default(autoincrement())
+  id        String     @id @default(uuid())
   content   String
   media_url String?
   author    User       @relation(fields: [author_id], references: [id], onDelete: Cascade)
@@ -60,7 +67,7 @@ model Post {
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   content   String
   media_url String?
   post      Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
@@ -70,7 +77,7 @@ model Comment {
 }
 
 model Like {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    Int
   post       Post?    @relation(fields: [post_id], references: [id], onDelete: Cascade)
@@ -83,37 +90,40 @@ model Like {
 }
 
 model Bookmark {
-  id Int @id @default(autoincrement())
-
-  post    Post @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  id      String @id @default(uuid())
+  post    Post   @relation(fields: [post_id], references: [id], onDelete: Cascade)
   post_id Int
-  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int
 
   @@unique([post_id, user_id])
 }
 
 model Group {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   group_name String
   creator_id Int
   createdAt  DateTime @default(now())
+  members    User[]
+  posts      Post[]
+  chat       Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId     Int      @unique
+}
 
-  members User[]
-  posts   Post[]
-  chat    Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
-  chatId  Int    @unique
+model GroupInvite {
+  id      String @id @default(uuid())
+  groupId
 }
 
 model Chat {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(uuid())
   messages Message[]
   users    User[] // <- chat can have multiple users (for group chats)
   groups   Group? // <- one chat can have one group (but not always so "?" optional )
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   content   String
   media_url String?
   createdAt DateTime @default(now())

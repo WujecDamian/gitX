@@ -4,14 +4,22 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+     "// --- DEVELOPMENT ---": "",
+    "dev:server": "tsx watch Backend/src/app.ts",
+    
+    "dev:client": "vite", 
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+
+    "// --- PRODUCTION BUILDS ---": "",
+    "build:server": "tsc --project Backend/tsconfig.json",
+    
+    "build:client": "vite build", 
+    "build": "npm run build:server && npm run build:client"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.0",
     "@prisma/client": "^7.9.0",
+    "concurrently": "^10.0.4",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "pg": "^8.22.0",

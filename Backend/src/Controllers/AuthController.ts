@@ -8,7 +8,15 @@ import passport from "passport";
 import "../Authentication/passport-config";
 
 const greetUser = (req: Request, res: Response) => {
-  res.json({ message: `Hello world ` });
+  if (!req.user) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+
+  // req.user contains whatever you passed to done() in your strategy (the GitHub profile)
+  res.json({
+    message: `Hello, user!`,
+    user: req.user,
+  });
 };
 
 const loginError = (req: Request, res: Response) => {
@@ -20,7 +28,7 @@ const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const handleSuccess = (req: Request, res: Response) => {
-  res.json({ message: "Success" });
+  res.json({ message: "Success", user: req.user });
 };
 
 const callbackAuthenticate = (

@@ -30,7 +30,7 @@ const startServer = async () => {
   );
 
   app.use(passport.initialize()); //adds authentication hooks to req
-  app.use(passport.session()); // related do serialize/deSerialize functions, makes req.user available
+  app.use(passport.session()); // related to serialize/deSerialize functions, makes req.user available
 
   app.use("/api/user", userRouter);
   app.use("/api/auth", authRouter);

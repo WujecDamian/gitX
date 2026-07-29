@@ -6,14 +6,6 @@ import express, {
 import * as UserController from "../Controllers/UserController";
 
 const router = express.Router();
-
-// middleware that is specific to this router
-
-// define the home page route
-router.get("/", (req: Request, res: Response) => {
-  console.log(req.user);
-  res.json({ user: req.user });
-});
 //user delete
 router.delete("/delete", UserController.deleteUser);
 

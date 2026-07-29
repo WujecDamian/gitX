@@ -12,6 +12,7 @@ router.get(
   authController.callbackAuthenticate,
   authController.handleSuccess,
 );
+//important! post here because site crawlers might hit logout route and logout user randomly
 router.post("/logout", isAuthenticated, authController.logOutUser);
 
 export default router;

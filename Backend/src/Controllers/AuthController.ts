@@ -52,7 +52,6 @@ const logOutUser = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export {
-  greetUser,
   loginError,
   authenticateUser,
   handleSuccess,

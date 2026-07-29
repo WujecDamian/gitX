@@ -7,30 +7,39 @@ import session from "express-session";
 import passport from "passport";
 const app: Express = express();
 
-// 1. Initialize Redis and Session
-let redisClient = createClient();
-redisClient.connect().catch(console.error);
+//as async function to wait for connection to Redis server
+const startServer = async () => {
+  const redisClient = createClient();
+  await redisClient.connect().catch(console.error);
 
-let redisStore = new RedisStore({
-  client: redisClient,
-  prefix: "myapp:",
+  let redisStore = new RedisStore({
+    client: redisClient,
+    prefix: "myapp:",
+  });
+
+  //body parser to handle JSON from req
+  app.use(express.json());
+
+  app.use(
+    session({
+      store: redisStore,
+      resave: false,
+      saveUninitialized: false,
+      secret: process.env.REDIS_SECRET as string,
+    }),
+  );
+
+  // 2. Initialize Passport
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.use("/api/user", userRouter);
+  app.use("/api/auth", authRouter);
+
+  app.listen(3000);
+  console.log("Server is listening on port http://localhost:3000");
+};
+
+startServer().catch((error) => {
+  console.error("Failed to start the server:", error);
 });
-
-app.use(
-  session({
-    store: redisStore,
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.REDIS_SECRET as string,
-  }),
-);
-
-// 2. Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use("/api/user", userRouter);
-app.use("/api/auth", authRouter);
-
-app.listen(3000);
-console.log("Server is listening on port http://localhost:3000");

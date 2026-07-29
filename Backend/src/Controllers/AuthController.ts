@@ -42,10 +42,32 @@ const callbackAuthenticate = (
     next,
   );
 };
+
+const logOutUser = (req: Request, res: Response, next: NextFunction) => {
+  req.logout((error) => {
+    if (error) {
+      return next(error);
+    }
+  });
+
+  req.session.destroy((destroyError) => {
+    if (destroyError) {
+      return res.status(500).json({ error: "Failed to destroy session cache" });
+    }
+  });
+
+  res.clearCookie("connect.sid", {
+    path: "/",
+  });
+
+  return res.status(200).json({ message: "Successfully logged out!" });
+};
+
 export {
   greetUser,
   loginError,
   authenticateUser,
   handleSuccess,
   callbackAuthenticate,
+  logOutUser,
 };

@@ -22,6 +22,11 @@ passport.deserializeUser(async function (id: string, done) {
         id: id,
       },
     });
+
+    if (!user) {
+      return done(null, false);
+    }
+
     done(null, user);
   } catch (error) {
     done(error);

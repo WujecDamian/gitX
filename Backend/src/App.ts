@@ -29,9 +29,8 @@ const startServer = async () => {
     }),
   );
 
-  // 2. Initialize Passport
-  app.use(passport.initialize());
-  app.use(passport.session());
+  app.use(passport.initialize()); //adds authentication hooks to req
+  app.use(passport.session()); // related do serialize/deSerialize functions, makes req.user available
 
   app.use("/api/user", userRouter);
   app.use("/api/auth", authRouter);

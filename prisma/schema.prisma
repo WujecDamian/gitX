@@ -25,7 +25,9 @@ model User {
   id                  String        @id @default(uuid())
   github_id           String        @unique
   email               String?       @unique
+  username            String        @unique
   display_name        String
+  github_profile_url  String?
   profile_picture_url String?
   banner_picture_url  String?
   tags                String[]

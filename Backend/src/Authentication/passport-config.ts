@@ -9,7 +9,11 @@ dotenv.config();
 passport.serializeUser(function (user, done) {
   //for performance & security
   //store only userId
+  console.log("SERIALIZE USER !!!! ", user);
+
   const localUser = user as prismaUser;
+  console.log("SERIALIZE USER LOCALUSER !!!! ", localUser);
+
   done(null, localUser.id);
 });
 
@@ -17,9 +21,10 @@ passport.serializeUser(function (user, done) {
 //deserializeUser take the id and fetches full user here
 passport.deserializeUser(async function (id: string, done) {
   try {
+    console.log("DESERIALIZE USER !!!! ", id);
     const user = await prisma.user.findUnique({
       where: {
-        id: id,
+        id: id.toString(),
       },
     });
 
@@ -47,14 +52,27 @@ passport.use(
       profile: Profile,
       done: (error: any, user?: any) => void,
     ) {
+      console.log(
+        "THIS IS PROFILE THIS IS PROFILE CONSOLE LOG !!!!: ",
+        profile,
+      );
       //save user in database!!! (on login) (upsert = update or create)
       const user = await prisma.user.upsert({
         where: { github_id: profile.id },
-        update: { display_name: profile.displayName },
-        create: {
-          github_id: profile.id,
+        update: {
+          username: profile.username ?? `user_${profile.id}`,
+          github_profile_url: profile.profileUrl,
           display_name: profile.displayName,
           email: profile.emails?.[0]?.value ?? null,
+          profile_picture_url: profile.photos?.[0]?.value ?? null,
+        },
+        create: {
+          github_id: profile.id,
+          username: profile.username ?? `user_${profile.id}`,
+          github_profile_url: profile.profileUrl,
+          display_name: profile.displayName,
+          email: profile.emails?.[0]?.value ?? null,
+          profile_picture_url: profile.photos?.[0]?.value ?? null,
         },
       });
       // Passes the profile metadata cleanly along to your callback router

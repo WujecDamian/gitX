@@ -9,6 +9,7 @@ import isAuthenticated from "./Authentication/isAuthenticated";
 import userRouter from "./Routers/UserRouter";
 import authRouter from "./Routers/AuthRouter";
 import postRouter from "./Routers/PostRouter";
+import commentRouter from "./Routers/CommentRouter";
 const app: Express = express();
 
 //as async function to wait for connection to Redis server
@@ -39,6 +40,7 @@ const startServer = async () => {
   app.use("/api/auth", authRouter);
   app.use("/api/user", isAuthenticated, userRouter);
   app.use("/api/post", isAuthenticated, postRouter);
+  app.use("/api/comment", isAuthenticated, commentRouter);
 
   app.listen(3000);
   console.log("Server is listening on port http://localhost:3000");

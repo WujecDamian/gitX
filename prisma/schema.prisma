@@ -44,6 +44,7 @@ model User {
   chats               Chat[]
   group_inviting      GroupInvite[] @relation("SentInvites")
   group_invited       GroupInvite[] @relation("ReceivedInvites")
+  comments            Comment[]
 }
 
 model Follows {
@@ -74,10 +75,16 @@ model Comment {
   id        String   @id @default(uuid())
   content   String
   media_url String?
+  author    User     @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author_id String
   post      Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
   post_id   String
   createdAt DateTime @default(now())
   likes     Like[]
+
+  parent_comment Comment?  @relation("comment_children", fields: [sub_comment_id], references: [id])
+  sub_comments   Comment[] @relation("comment_children")
+  sub_comment_id String?
 }
 
 model Like {

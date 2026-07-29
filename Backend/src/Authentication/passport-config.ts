@@ -58,7 +58,7 @@ passport.use(
         },
       });
       // Passes the profile metadata cleanly along to your callback router
-      return done(null, profile);
+      return done(null, user);
     },
   ),
 );

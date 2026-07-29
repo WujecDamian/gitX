@@ -5,6 +5,7 @@ import { createClient } from "redis";
 import { RedisStore } from "connect-redis";
 import session from "express-session";
 import passport from "passport";
+import isAuthenticated from "./Authentication/isAuthenticated";
 const app: Express = express();
 
 //as async function to wait for connection to Redis server
@@ -32,8 +33,8 @@ const startServer = async () => {
   app.use(passport.initialize()); //adds authentication hooks to req
   app.use(passport.session()); // related to serialize/deSerialize functions, makes req.user available
 
-  app.use("/api/user", userRouter);
-  app.use("/api/auth", authRouter);
+  app.use("/api/user", isAuthenticated, userRouter);
+  app.use("/api/auth", isAuthenticated, authRouter);
 
   app.listen(3000);
   console.log("Server is listening on port http://localhost:3000");

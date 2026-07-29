@@ -27,3 +27,4 @@ dist-ssr
 
 /generated/prisma
 Backend/src/generated/prisma
+dump.rdb

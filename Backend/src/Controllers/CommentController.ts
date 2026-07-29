@@ -36,7 +36,9 @@ const createComment = async (req: Request, res: Response) => {
   const authorId = req.user.id;
 
   if (typeof postId !== "string") {
-    return res.status(400).json({ error: "Invalid or missing Post ID" });
+    return res
+      .status(400)
+      .json({ error: "Invalid or missing Post/Comment ID" });
   }
 
   try {

@@ -5,14 +5,14 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../Backend/src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-//possible invitation statuses
+//possible invitation statuse
 enum InviteStatus {
   PENDING
   ACCEPTED

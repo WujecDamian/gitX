@@ -7,20 +7,8 @@ import express, {
 import passport from "passport";
 import "../Authentication/passport-config";
 
-const greetUser = (req: Request, res: Response) => {
-  if (!req.user) {
-    return res.status(401).json({ message: "Not authenticated" });
-  }
-
-  // req.user contains whatever you passed to done() in your strategy (the GitHub profile)
-  res.json({
-    message: `Hello, user!`,
-    user: req.user,
-  });
-};
-
 const loginError = (req: Request, res: Response) => {
-  res.json({ message: "Unknown Error" });
+  res.json({ erroe: "Unknown Error" });
 };
 
 const authenticateUser = (req: Request, res: Response, next: NextFunction) => {

@@ -34,7 +34,7 @@ const startServer = async () => {
   app.use(passport.session()); // related to serialize/deSerialize functions, makes req.user available
 
   app.use("/api/user", isAuthenticated, userRouter);
-  app.use("/api/auth", isAuthenticated, authRouter);
+  app.use("/api/auth", authRouter);
 
   app.listen(3000);
   console.log("Server is listening on port http://localhost:3000");

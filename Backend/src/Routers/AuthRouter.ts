@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as authController from "../Controllers/AuthController";
+import isAuthenticated from "../Authentication/isAuthenticated";
 
 const router = Router();
 
@@ -11,6 +12,6 @@ router.get(
   authController.callbackAuthenticate,
   authController.handleSuccess,
 );
-router.get("/logout", authController.logOutUser);
+router.get("/logout", isAuthenticated, authController.logOutUser);
 
 export default router;

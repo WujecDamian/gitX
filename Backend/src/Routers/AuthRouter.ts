@@ -12,6 +12,6 @@ router.get(
   authController.callbackAuthenticate,
   authController.handleSuccess,
 );
-router.get("/logout", isAuthenticated, authController.logOutUser);
+router.post("/logout", isAuthenticated, authController.logOutUser);
 
 export default router;

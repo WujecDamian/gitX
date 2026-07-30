@@ -72,32 +72,42 @@ model Post {
 }
 
 model Comment {
-  id        String   @id @default(uuid())
-  content   String
-  media_url String?
-  author    User     @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  author_id String
-  post      Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  post_id   String
-  createdAt DateTime @default(now())
-  likes     Like[]
+  id           String        @id @default(uuid())
+  content      String
+  media_url    String?
+  author       User          @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author_id    String
+  post         Post          @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id      String
+  createdAt    DateTime      @default(now())
+  postLikes    PostLike[]
+  commentLikes CommentLike[]
 
   parent_comment Comment?  @relation("comment_children", fields: [sub_comment_id], references: [id])
   sub_comments   Comment[] @relation("comment_children")
   sub_comment_id String?
 }
 
-model Like {
+model PostLike {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id   String
+  post      Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id   String
+  createdAt DateTime @default(now())
+
+  @@unique([post_id, user_id]) // Czysty, bezpieczny klucz bez NULLi
+}
+
+model CommentLike {
   id         String   @id @default(uuid())
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String
-  post       Post?    @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  post_id    String?
-  comment    Comment? @relation(fields: [comment_id], references: [id], onDelete: Cascade)
-  comment_id String?
+  comment    Comment  @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+  comment_id String
+  createdAt  DateTime @default(now())
 
-  @@unique([post_id, user_id], name: "unique_post_like")
-  @@unique([comment_id, user_id], name: "unique_comment_like") //prevention from liking one post/comment multiple times
+  @@unique([comment_id, user_id]) // Czysty, bezpieczny klucz bez NULLi
 }
 
 model Bookmark {

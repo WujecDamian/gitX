@@ -11,6 +11,7 @@ const router = express.Router();
 router.get("/", GroupController.getUserGroups);
 router.post("/join/:groupId", GroupController.joinGroup);
 router.post("/leave/:groupId", GroupController.leaveGroup);
+router.post("/kick/:groupId/user/:userId", GroupController.kickFromGroup);
 
 //create | delete
 router.delete("/delete/:groupId", GroupController.deleteGroup);

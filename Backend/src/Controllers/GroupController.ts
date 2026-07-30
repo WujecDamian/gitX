@@ -77,8 +77,12 @@ const getUserGroups = async (req: Request, res: Response) => {
 };
 
 const joinGroup = async (req: Request, res: Response) => {
-  const { groupId } = req.body;
+  const { groupId } = req.params;
   const userId = req.user.id;
+
+  if (typeof groupId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing Group ID" });
+  }
 
   try {
     await prisma.group.update({
@@ -99,8 +103,12 @@ const joinGroup = async (req: Request, res: Response) => {
 };
 
 const leaveGroup = async (req: Request, res: Response) => {
-  const { groupId } = req.body;
+  const { groupId } = req.params;
   const userId = req.user.id;
+
+  if (typeof groupId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing Group ID" });
+  }
 
   try {
     await prisma.group.update({
@@ -121,4 +129,38 @@ const leaveGroup = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Failed to disconnect group" });
   }
 };
-export { getUserGroups, createGroup, deleteGroup, joinGroup, leaveGroup };
+
+const kickFromGroup = async (req: Request, res: Response) => {
+  const { groupId, userId } = req.params;
+
+  if (typeof groupId !== "string" || typeof userId !== "string") {
+    return res
+      .status(400)
+      .json({ error: "Invalid or missing Group ID or User ID" });
+  }
+
+  try {
+    await prisma.group.update({
+      where: {
+        id: groupId,
+      },
+      data: {
+        members: {
+          disconnect: { id: userId },
+        },
+      },
+    });
+
+    return res.status(201).json({ message: "Successfully kicked from group!" });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to kick from group" });
+  }
+};
+export {
+  getUserGroups,
+  createGroup,
+  deleteGroup,
+  joinGroup,
+  leaveGroup,
+  kickFromGroup,
+};

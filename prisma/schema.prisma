@@ -130,8 +130,8 @@ model GroupInvite {
   invitedById String
   invitedBy   User   @relation("SentInvites", fields: [invitedById], references: [id])
 
-  invitingId String
-  inviting   User   @relation("ReceivedInvites", fields: [invitingId], references: [id])
+  inviteeId String
+  invitee   User   @relation("ReceivedInvites", fields: [inviteeId], references: [id])
 }
 
 model Chat {

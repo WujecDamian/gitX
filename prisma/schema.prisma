@@ -37,7 +37,8 @@ model User {
   posts               Post[]
   followers           Follows[]     @relation("UserFollowers")
   following           Follows[]     @relation("UserFollowing")
-  likes               Like[]
+  post_likes          PostLike[]
+  comment_likes       CommentLike[]
   bookmarks           Bookmark[]
   groups              Group[]
   messages            Message[]
@@ -65,7 +66,8 @@ model Post {
   author_id String
   createdAt DateTime   @default(now())
   comments  Comment[]
-  likes     Like[]
+  postLikes PostLike[]
+
   group     Group?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId   String?
   bookmarks Bookmark[]
@@ -80,7 +82,6 @@ model Comment {
   post         Post          @relation(fields: [post_id], references: [id], onDelete: Cascade)
   post_id      String
   createdAt    DateTime      @default(now())
-  postLikes    PostLike[]
   commentLikes CommentLike[]
 
   parent_comment Comment?  @relation("comment_children", fields: [sub_comment_id], references: [id])

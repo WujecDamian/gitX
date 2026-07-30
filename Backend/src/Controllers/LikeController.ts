@@ -20,7 +20,7 @@ const likePost = async (req: Request, res: Response) => {
   }
 
   try {
-    await prisma.like.create({
+    await prisma.postLike.create({
       data: {
         user_id: userId,
         post_id: postId,
@@ -42,7 +42,7 @@ const unlikePost = async (req: Request, res: Response) => {
   }
 
   try {
-    await prisma.like.deleteMany({
+    await prisma.postLike.deleteMany({
       where: {
         post_id: postId,
         user_id: userId,
@@ -63,7 +63,7 @@ const likeComment = async (req: Request, res: Response) => {
   }
 
   try {
-    await prisma.like.create({
+    await prisma.commentLike.create({
       data: {
         user_id: userId,
         comment_id: commentId,
@@ -84,7 +84,7 @@ const unlikeComment = async (req: Request, res: Response) => {
   }
 
   try {
-    await prisma.like.deleteMany({
+    await prisma.commentLike.deleteMany({
       where: {
         comment_id: commentId,
         user_id: userId,
@@ -104,7 +104,7 @@ const getLikedPosts = async (req: Request, res: Response) => {
   try {
     const posts = await prisma.post.findMany({
       where: {
-        likes: {
+        postLikes: {
           some: {
             user_id: userId,
           },

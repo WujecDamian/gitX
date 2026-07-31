@@ -14,6 +14,7 @@ import likeRouter from "./Routers/LikeRouter";
 import bookmarkRouter from "./Routers/BookmarkRouter";
 import groupRouter from "./Routers/GroupRouter";
 import inviteRouter from "./Routers/InviteRouter";
+import followRouter from "./Routers/FollowRouter";
 const app: Express = express();
 
 //as async function to wait for connection to Redis server
@@ -49,6 +50,7 @@ const startServer = async () => {
   app.use("/api/bookmark", isAuthenticated, bookmarkRouter);
   app.use("/api/group", isAuthenticated, groupRouter);
   app.use("/api/invite", isAuthenticated, inviteRouter);
+  app.use("/api/follow", isAuthenticated, followRouter);
 
   app.listen(3000);
   console.log("Server is listening on port http://localhost:3000");

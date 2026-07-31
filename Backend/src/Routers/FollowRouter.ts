@@ -12,7 +12,7 @@ router.get("user/:userId/followed/", FollowController.getFollowedByList);
 router.get("user/:userId/following/", FollowController.getFollowingList);
 
 //like | unlike
-router.post("/user/:userId", FollowController.followUser);
-router.delete("/user/:userId", FollowController.unfollowUser);
+router.post("/user/:followedId", FollowController.followUser);
+router.delete("/user/:followedId", FollowController.unfollowUser);
 
 export default router;

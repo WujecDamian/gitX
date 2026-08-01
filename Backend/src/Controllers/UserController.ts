@@ -1,13 +1,6 @@
-import express, {
-  type Express,
-  type NextFunction,
-  type Request,
-  type Response,
-} from "express";
-import passport from "passport";
+import { type NextFunction, type Request, type Response } from "express";
 import "../Authentication/passport-config";
 import { prisma } from "../lib/prisma";
-import { type User } from "../generated/prisma/client";
 
 const editUserBio = async (req: Request, res: Response) => {
   try {

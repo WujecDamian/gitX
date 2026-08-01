@@ -1,9 +1,4 @@
-import express, {
-  type Express,
-  type NextFunction,
-  type Request,
-  type Response,
-} from "express";
+import { type NextFunction, type Request, type Response } from "express";
 import passport from "passport";
 import "../Authentication/passport-config";
 

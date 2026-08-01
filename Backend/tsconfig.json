@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+      "rootDir": "./src",
+    "outDir": "./dist",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ES2023",
+    "strict": true,
+    "esModuleInterop": true,
+    "ignoreDeprecations": "6.0",
+
+    //
+
+    "types": ["node"],
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    "sourceMap": true,
+    
+    "declaration": false,
+    "declarationMap": false,
+
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    
+    "jsx": "preserve", 
+    
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true
+  
+  },
+   "include": ["src/**/*"] ,
+   "files": ["./src/@types/express/index.d.ts"] 
+}

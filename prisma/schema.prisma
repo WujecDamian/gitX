@@ -4,121 +4,169 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  provider = "prisma-client"
+  output   = "../Backend/src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
+//possible invitation statuse
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
 //When I use {onDelete: Cascade}? On child elements, it's saying 'If parent gets deleted, delete its children also (sad :c)'
 
 model User {
-  id                  Int        @id @default(autoincrement())
-  username            String     @unique
+  id                  String        @id @default(uuid())
+  github_id           String        @unique
+  email               String?       @unique
+  username            String        @unique
   display_name        String
-  password            String
-  profile_picture_url String     @default("https://i.pinimg.com/474x/13/74/20/137420f5b9c39bc911e472f5d20f053e.jpg")
-  banner_picture_url  String     @default("https://www.mub.eps.manchester.ac.uk/science-engineering/wp-content/themes/uom-theme/assets/images/default-banner.jpg")
+  github_profile_url  String?
+  profile_picture_url String?
+  banner_picture_url  String?
   tags                String[]
   socials             String[]
   bio                 String?
-  createdAt           DateTime   @default(now())
+  createdAt           DateTime      @default(now())
   posts               Post[]
-  followers           Follows[]  @relation("UserFollowers")
-  following           Follows[]  @relation("UserFollowing")
-  likes               Like[]
+  followers           Follows[]     @relation("UserFollowers")
+  following           Follows[]     @relation("UserFollowing")
+  post_likes          PostLike[]
+  comment_likes       CommentLike[]
   bookmarks           Bookmark[]
   groups              Group[]
-  messages            Message[]
-  chats               Chat[]
+  group_inviting      GroupInvite[] @relation("SentInvites")
+  group_invited       GroupInvite[] @relation("ReceivedInvites")
+  comments            Comment[]
 }
 
 model Follows {
-  id           Int  @id @default(autoincrement())
-  follower_id  Int
-  following_id Int
-  follower     User @relation("UserFollowers", fields: [follower_id], references: [id], onDelete: Cascade)
-  following    User @relation("UserFollowing", fields: [following_id], references: [id], onDelete: Cascade)
+  id           String @id @default(uuid())
+  follower_id  String
+  following_id String
+  follower     User   @relation("UserFollowers", fields: [follower_id], references: [id], onDelete: Cascade)
+  following    User   @relation("UserFollowing", fields: [following_id], references: [id], onDelete: Cascade)
 
   @@unique([follower_id, following_id]) //prevention from following one user multiple times
 }
 
 model Post {
-  id        Int        @id @default(autoincrement())
+  id        String     @id @default(uuid())
   content   String
   media_url String?
   author    User       @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  author_id Int
+  author_id String
   createdAt DateTime   @default(now())
   comments  Comment[]
-  likes     Like[]
+  postLikes PostLike[]
+
   group     Group?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  groupId   Int?
+  groupId   String?
   bookmarks Bookmark[]
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
-  content   String
-  media_url String?
-  post      Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  post_id   Int
-  createdAt DateTime @default(now())
-  likes     Like[]
+  id           String        @id @default(uuid())
+  content      String
+  media_url    String?
+  author       User          @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author_id    String
+  post         Post          @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id      String
+  createdAt    DateTime      @default(now())
+  commentLikes CommentLike[]
+
+  parent_comment Comment?  @relation("comment_children", fields: [sub_comment_id], references: [id])
+  sub_comments   Comment[] @relation("comment_children")
+  sub_comment_id String?
 }
 
-model Like {
-  id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id    Int
-  post       Post?    @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  post_id    Int?
-  comment    Comment? @relation(fields: [comment_id], references: [id], onDelete: Cascade)
-  comment_id Int?
+model PostLike {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id   String
+  post      Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id   String
+  createdAt DateTime @default(now())
 
-  @@unique([post_id, user_id], name: "unique_post_like")
-  @@unique([comment_id, user_id], name: "unique_comment_like") //prevention from liking one post/comment multiple times
+  @@unique([post_id, user_id])
+}
+
+model CommentLike {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String
+  comment    Comment  @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+  comment_id String
+  createdAt  DateTime @default(now())
+
+  @@unique([comment_id, user_id])
 }
 
 model Bookmark {
-  id Int @id @default(autoincrement())
-
-  post    Post @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  post_id Int
-  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id Int
+  id      String @id @default(uuid())
+  post    Post   @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id String
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String
 
   @@unique([post_id, user_id])
 }
 
 model Group {
-  id         Int      @id @default(autoincrement())
-  group_name String
-  creator_id Int
-  createdAt  DateTime @default(now())
-
-  members User[]
-  posts   Post[]
-  chat    Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
-  chatId  Int    @unique
+  id           String        @id @default(uuid())
+  group_name   String
+  creator_id   String
+  createdAt    DateTime      @default(now())
+  members      User[]
+  posts        Post[]
+  groupInvites GroupInvite[]
+  groupChats   GroupChat[]
 }
 
+model GroupInvite {
+  id      String @id @default(uuid())
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id])
+
+  invitedById String
+  invitedBy   User   @relation("SentInvites", fields: [invitedById], references: [id])
+
+  inviteeId String
+  invitee   User   @relation("ReceivedInvites", fields: [inviteeId], references: [id])
+}
+
+//* CHAT AND MESSAGES
 model Chat {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(uuid())
   messages Message[]
-  users    User[] // <- chat can have multiple users (for group chats)
-  groups   Group? // <- one chat can have one group (but not always so "?" optional )
+  user1_id String
+  user2_id String
+
+  @@unique([user1_id, user2_id])
+}
+
+model GroupChat {
+  id       String    @id @default(uuid())
+  messages Message[]
+  groupId  String
+  group    Group     @relation(fields: [groupId], references: [id])
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
-  content   String
-  media_url String?
-  createdAt DateTime @default(now())
-  chat      Chat     @relation(fields: [chat_id], references: [id], onDelete: Cascade) // <- where message was sent?
-  chat_id   Int
-  user      User?    @relation(fields: [user_id], references: [id], onDelete: Cascade) // <- we have to know who sent message
-  user_id   Int?
+  id            String     @id @default(uuid())
+  content       String
+  media_url     String?
+  createdAt     DateTime   @default(now())
+  senderId      String
+  chat          Chat?      @relation(fields: [chat_id], references: [id], onDelete: Cascade) // <- where message was sent?
+  chat_id       String?
+  group_chat    GroupChat? @relation(fields: [group_chat_id], references: [id], onDelete: Cascade)
+  group_chat_id String?
 }

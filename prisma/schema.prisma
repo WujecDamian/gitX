@@ -41,8 +41,6 @@ model User {
   comment_likes       CommentLike[]
   bookmarks           Bookmark[]
   groups              Group[]
-  messages            Message[]
-  chats               Chat[]
   group_inviting      GroupInvite[] @relation("SentInvites")
   group_invited       GroupInvite[] @relation("ReceivedInvites")
   comments            Comment[]
@@ -97,7 +95,7 @@ model PostLike {
   post_id   String
   createdAt DateTime @default(now())
 
-  @@unique([post_id, user_id]) // Czysty, bezpieczny klucz bez NULLi
+  @@unique([post_id, user_id])
 }
 
 model CommentLike {
@@ -108,7 +106,7 @@ model CommentLike {
   comment_id String
   createdAt  DateTime @default(now())
 
-  @@unique([comment_id, user_id]) // Czysty, bezpieczny klucz bez NULLi
+  @@unique([comment_id, user_id])
 }
 
 model Bookmark {
@@ -128,9 +126,8 @@ model Group {
   createdAt    DateTime      @default(now())
   members      User[]
   posts        Post[]
-  chat         Chat          @relation(fields: [chatId], references: [id], onDelete: Cascade)
-  chatId       String        @unique
   groupInvites GroupInvite[]
+  groupChats   GroupChat[]
 }
 
 model GroupInvite {
@@ -145,20 +142,31 @@ model GroupInvite {
   invitee   User   @relation("ReceivedInvites", fields: [inviteeId], references: [id])
 }
 
+//* CHAT AND MESSAGES
 model Chat {
   id       String    @id @default(uuid())
   messages Message[]
-  users    User[] // <- chat can have multiple users (for group chats)
-  groups   Group? // <- one chat can have one group (but not always so "?" optional )
+  user1_id String
+  user2_id String
+
+  @@unique([user1_id, user2_id])
+}
+
+model GroupChat {
+  id       String    @id @default(uuid())
+  messages Message[]
+  groupId  String
+  group    Group     @relation(fields: [groupId], references: [id])
 }
 
 model Message {
-  id        String   @id @default(uuid())
-  content   String
-  media_url String?
-  createdAt DateTime @default(now())
-  chat      Chat     @relation(fields: [chat_id], references: [id], onDelete: Cascade) // <- where message was sent?
-  chat_id   String
-  user      User?    @relation(fields: [user_id], references: [id], onDelete: Cascade) // <- we have to know who sent message
-  user_id   String?
+  id            String     @id @default(uuid())
+  content       String
+  media_url     String?
+  createdAt     DateTime   @default(now())
+  senderId      String
+  chat          Chat?      @relation(fields: [chat_id], references: [id], onDelete: Cascade) // <- where message was sent?
+  chat_id       String?
+  group_chat    GroupChat? @relation(fields: [group_chat_id], references: [id], onDelete: Cascade)
+  group_chat_id String?
 }

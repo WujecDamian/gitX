@@ -44,7 +44,7 @@ const createGroup = async (req: Request, res: Response) => {
       data: {
         group_name: groupName,
         creator_id: userId,
-        chat: {
+        groupChats: {
           create: {},
         },
       },

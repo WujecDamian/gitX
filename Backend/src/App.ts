@@ -16,6 +16,8 @@ import groupRouter from "./Routers/GroupRouter";
 import inviteRouter from "./Routers/InviteRouter";
 import followRouter from "./Routers/FollowRouter";
 import chatRouter from "./Routers/ChatRouter";
+import messageRouter from "./Routers/MessageRouter";
+
 const app: Express = express();
 
 //as async function to wait for connection to Redis server
@@ -53,6 +55,7 @@ const startServer = async () => {
   app.use("/api/invite", isAuthenticated, inviteRouter);
   app.use("/api/follow", isAuthenticated, followRouter);
   app.use("/api/chat", isAuthenticated, chatRouter);
+  app.use("/api/message", isAuthenticated, messageRouter);
 
   app.listen(3000);
   console.log("Server is listening on port http://localhost:3000");

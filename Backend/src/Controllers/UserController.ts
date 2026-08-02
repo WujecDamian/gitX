@@ -151,6 +151,47 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getUserProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { userId } = req.params;
+
+  if (typeof userId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing User ID" });
+  }
+
+  try {
+    const userProfile = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+        banner_picture_url: true,
+        bio: true,
+        createdAt: true,
+        username: true,
+        display_name: true,
+        github_profile_url: true,
+        profile_picture_url: true,
+        socials: true,
+        tags: true,
+        _count: {
+          select: { followers: true, following: true },
+        },
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Successfully fetched user Profile!", userProfile });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
 export {
   editUserBio,
   editUserTags,
@@ -159,4 +200,5 @@ export {
   editUserPfp,
   editUserBanner,
   deleteUser,
+  getUserProfile,
 };

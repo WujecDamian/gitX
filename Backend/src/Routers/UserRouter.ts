@@ -6,6 +6,9 @@ import express, {
 import * as UserController from "../Controllers/UserController";
 
 const router = express.Router();
+//get user profile
+router.get("/profile/:userId", UserController.getUserProfile);
+
 //user delete
 router.delete("/delete", UserController.deleteUser);
 

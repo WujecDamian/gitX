@@ -4,6 +4,7 @@ import { createClient } from "redis";
 import { RedisStore } from "connect-redis";
 import session from "express-session";
 import passport from "passport";
+import cors from "cors";
 import isAuthenticated from "./Authentication/isAuthenticated";
 //routers
 import userRouter from "./Routers/UserRouter";
@@ -32,6 +33,8 @@ const startServer = async () => {
 
   //body parser to handle JSON from req
   app.use(express.json());
+  //enable CORS
+  app.use(cors());
 
   app.use(
     session({

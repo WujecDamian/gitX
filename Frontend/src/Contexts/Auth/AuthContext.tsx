@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 type AuthContextType = {
-  user: any | null;
+  user: User | null;
   loading: boolean;
   logout: () => Promise<void>;
 };

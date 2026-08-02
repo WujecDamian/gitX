@@ -11,8 +11,8 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -50,13 +50,18 @@
   }
 }
 
+* {
+  box-sizing: border-box;
+  padding: 0.25rem;
+  margin: 0.1rem;
+}
+
 body {
   margin: 0;
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
+  max-width: 90%;
   margin: 0 auto;
   text-align: center;
   border-inline: 1px solid var(--border);
@@ -108,4 +113,131 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+body {
+  font-family: var(--sans);
+  line-height: 1.5;
+  background: var(--bg);
+  color: var(--text);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--heading);
+  color: var(--text-h);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+h4,
+h5,
+h6 {
+  font-size: 1.05rem;
+}
+
+p {
+  margin: 0 0 1rem;
+  color: var(--text);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+strong,
+b {
+  color: var(--text-h);
+  font-weight: 700;
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+blockquote {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  background: var(--accent-bg);
+  color: var(--text);
+}
+
+ul,
+ol {
+  margin: 0 0 1rem 1.25rem;
+  padding: 0;
+  color: var(--text);
+}
+
+li {
+  margin: 0.35rem 0;
+}
+
+code,
+pre {
+  font-family: var(--mono);
+}
+
+pre {
+  margin: 1rem 0;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 1.25rem 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+th,
+td {
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+th {
+  color: var(--text-h);
+  font-weight: 700;
 }

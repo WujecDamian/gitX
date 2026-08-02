@@ -6,6 +6,7 @@ import Home from "./Pages/Home/Home";
 
 //components
 import Login from "./Pages/Authentication/Login/Login";
+import Profile from "./Pages/Profile/Profile";
 
 //https://reactrouter.com/start/modes#data
 const router = createBrowserRouter([
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
       { path: "/login", element: <Login></Login> },
       {
         element: <ProtectedRoute></ProtectedRoute>,
-        children: [{ path: "/profile/:userId", element: Profile }],
+        children: [{ path: "/profile/:userId", element: <Profile></Profile> }],
       },
     ],
   },

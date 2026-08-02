@@ -1,0 +1,8 @@
+.groups {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid;
+  gap: 5rem;
+  justify-content: center;
+  align-items: center;
+}

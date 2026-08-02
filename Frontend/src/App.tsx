@@ -1,12 +1,17 @@
-import { useState } from 'react'
-
+import "./App.css";
+import router from "./Routes";
+import { RouterProvider } from "react-router-dom";
+import { CookiesProvider } from "react-cookie";
+import { AuthProvider } from "./Contexts/Auth/AuthContext";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <></>
-  )
+    <AuthProvider>
+      <CookiesProvider>
+        <RouterProvider router={router}></RouterProvider>
+      </CookiesProvider>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

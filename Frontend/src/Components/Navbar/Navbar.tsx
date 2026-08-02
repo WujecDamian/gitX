@@ -1,36 +1,26 @@
-import { Link } from "react-router-dom";
-import styles from "./Navbar.module.css";
-import { useCookies } from "react-cookie";
+import { useAuth } from "../../Contexts/Auth/AuthContext";
 
-function Navbar() {
-  const [cookies, removeCookie] = useCookies(["user", "token"]);
-
-  const token = cookies.token;
-  const user = cookies.user;
-  if (user !== "undefined") {
-    console.log("User is logged in! ", user);
-  }
-
-  const handleLogout = async () => {
-    removeCookie("token", { path: "/" });
-    removeCookie("user");
-    window.location.href = "/login";
-  };
-
+export default function Navbar() {
+  const { user, loading, logout } = useAuth();
+  if (loading) return <div>Loading your dashboard...</div>;
+  if (!user) return <div>Please log in to view this page.</div>;
   return (
-    <>
-      <nav className={styles.navbar}>
-        <Link to="/">Home</Link>
-        {user !== "undefined" ? (
-          <Link onClick={handleLogout}>Log out</Link>
-        ) : (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </>
-        )}
-      </nav>
-    </>
+    <nav>
+      <span>My Project</span>
+      {user ? (
+        <div>
+          <span>Hi, {user.displayName}</span>
+          <button onClick={logout}>Log Out</button>
+        </div>
+      ) : (
+        <button
+          onClick={() =>
+            (window.location.href = "http://localhost:3000/api/auth/login")
+          }
+        >
+          Login with GitHub
+        </button>
+      )}
+    </nav>
   );
 }
-export default Navbar;

@@ -34,7 +34,12 @@ const startServer = async () => {
   //body parser to handle JSON from req
   app.use(express.json());
   //enable CORS
-  app.use(cors());
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+      credentials: true, // Crucial since your endpoint is /auth/
+    }),
+  );
 
   app.use(
     session({

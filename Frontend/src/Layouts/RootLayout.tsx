@@ -8,11 +8,7 @@ function RootLayout() {
 
   return (
     <>
-      {user && <Navbar></Navbar>}
-
-      <main>
-        <Outlet></Outlet>
-      </main>
+      <Outlet></Outlet>
     </>
   );
 }

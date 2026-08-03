@@ -74,8 +74,6 @@ body {
 #root {
   width: min(1280px, 100%);
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(68px, 375px) 600px 350px;
   justify-content: center;
   align-items: start;
   text-align: left;

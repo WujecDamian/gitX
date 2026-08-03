@@ -1,0 +1,7 @@
+.root__layout {
+  display: grid;
+  grid-template-columns: minmax(68px, 375px) 600px 350px;
+  min-height: 100vh;
+  padding: 0;
+  border: 0;
+}

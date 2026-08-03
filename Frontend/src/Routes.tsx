@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "./Layouts/RootLayout";
+import GridLayout from "./Layouts/GridLayout";
 import ProtectedRoute from "./Pages/Authentication/ProtectedRoute/ProtectedRoute";
 import Home from "./Pages/Home/Home";
 
@@ -18,8 +19,13 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute></ProtectedRoute>,
         children: [
-          { index: true, element: <Home></Home> },
-          { path: "/profile/:userId", element: <Profile></Profile> },
+          {
+            element: <GridLayout></GridLayout>,
+            children: [
+              { index: true, element: <Home></Home> },
+              { path: "/profile/:userId", element: <Profile></Profile> },
+            ],
+          },
         ],
       },
     ],

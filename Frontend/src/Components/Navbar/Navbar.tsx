@@ -1,21 +1,41 @@
 import { useAuth } from "../../Contexts/Auth/AuthContext";
+import { Link } from "react-router-dom";
+import styles from "./Navbar.module.css";
+import NavProfile from "./components/NavProfile";
+import ProfileDropdown from "./components/ProfileDropdown";
 
 export default function Navbar() {
-  const { user, loading, logout } = useAuth();
-  if (loading) return <div>Loading your dashboard...</div>;
-  if (!user) return <div>Please log in to view this page.</div>;
+  const { user, logout } = useAuth();
   return (
-    <nav>
-      <span>My Project</span>
+    <nav className={styles.navbar}>
+      <div className={styles.navbar__top}>
+        <div className={styles.links}>
+          <Link to="/home">
+            {" "}
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/X_logo_2023_%28white%29.png/250px-X_logo_2023_%28white%29.png"
+              alt="GitX logo"
+              className={styles.navbar__logo}
+            />
+          </Link>
+
+          <Link to="/home">Home</Link>
+          <Link to="/explore">Explore</Link>
+          <Link to="/chat">Chat</Link>
+          <Link to="/groups">Groups</Link>
+          <Link to="/profile">Profile</Link>
+        </div>
+      </div>
       {user ? (
         <div>
-          <span>Hi, {user.displayName}</span>
-          <button onClick={logout}>Log Out</button>
+          <ProfileDropdown></ProfileDropdown>
+          <NavProfile user={user}></NavProfile>
         </div>
       ) : (
         <button
           onClick={() =>
-            (window.location.href = "http://localhost:3000/api/auth/login")
+            (window.location.href =
+              "http://localhost:3000/api/auth/login/github")
           }
         >
           Login with GitHub

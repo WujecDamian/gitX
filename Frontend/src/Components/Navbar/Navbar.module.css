@@ -69,3 +69,27 @@
 .nav__mini__profile:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+
+/* dropdown */
+.dropdown {
+  position: relative;
+  background-color: rgb(41, 41, 43);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 10rem;
+  margin-bottom: 1rem;
+}
+.dropdown::after {
+  content: " ";
+
+  position: absolute;
+  bottom: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+
+  border-width: 0.75rem 0.75rem 0 0.75rem;
+  border-style: solid;
+  border-color: rgb(41, 41, 43) transparent transparent transparent;
+}

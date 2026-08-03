@@ -1,4 +1,5 @@
 import { useAuth } from "../../Contexts/Auth/AuthContext";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import NavProfile from "./components/NavProfile";
@@ -6,11 +7,12 @@ import ProfileDropdown from "./components/ProfileDropdown";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbar__top}>
         <div className={styles.links}>
-          <Link to="/home">
+          <Link to="/">
             {" "}
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/X_logo_2023_%28white%29.png/250px-X_logo_2023_%28white%29.png"
@@ -19,7 +21,7 @@ export default function Navbar() {
             />
           </Link>
 
-          <Link to="/home">Home</Link>
+          <Link to="/">Home</Link>
           <Link to="/explore">Explore</Link>
           <Link to="/chat">Chat</Link>
           <Link to="/groups">Groups</Link>
@@ -28,8 +30,7 @@ export default function Navbar() {
       </div>
       {user ? (
         <div>
-          <ProfileDropdown></ProfileDropdown>
-          <NavProfile user={user}></NavProfile>
+          <NavProfile user={user} logout={logout}></NavProfile>
         </div>
       ) : (
         <button

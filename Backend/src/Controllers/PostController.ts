@@ -54,7 +54,6 @@ const getAllPosts = async (req: Request, res: Response) => {
           select: {
             postLikes: true,
             comments: true,
-            bookmarks: true,
           },
         },
       },

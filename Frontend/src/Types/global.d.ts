@@ -30,7 +30,7 @@ declare global {
     media_url?: string | null;
     author: User;
     createdAt: string;
-    _count: { postLikes: number; comments: number; bookmarks: number };
+    _count: { postLikes: number; comments: number };
   };
 }
 

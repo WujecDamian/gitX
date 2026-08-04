@@ -1,3 +1,5 @@
+import { User as PrismaUser, Post as PrismaPost } from "@prisma/client";
+
 declare global {
   module "*.css" {
     const classes: { [key: string]: string };
@@ -10,7 +12,7 @@ declare global {
   type User = {
     banner_picture_url?: string;
     bio?: string;
-    createdAt: Date;
+    createdAt: string;
     display_name: string;
     email?: string;
     github_id: string;
@@ -20,6 +22,15 @@ declare global {
     socials?: string[];
     tags?: string[];
     username: string;
+  };
+
+  type Post = {
+    id: string;
+    content: string;
+    media_url?: string | null;
+    author: User;
+    createdAt: string;
+    _count: { postLikes: number; comments: number; bookmarks: number };
   };
 }
 

@@ -44,9 +44,6 @@ const createPost = async (req: Request, res: Response) => {
 const getAllPosts = async (req: Request, res: Response) => {
   try {
     const posts = await prisma.post.findMany({
-      where: {
-        groupId: null,
-      },
       select: {
         author: true,
         id: true,
@@ -55,8 +52,9 @@ const getAllPosts = async (req: Request, res: Response) => {
         createdAt: true,
         _count: {
           select: {
-            likes: true,
+            postLikes: true,
             comments: true,
+            bookmarks: true,
           },
         },
       },
@@ -67,7 +65,7 @@ const getAllPosts = async (req: Request, res: Response) => {
 
     return res.status(200).json({ posts });
   } catch (error) {
-    return res.status(500).json({ error: "Failed to create post" });
+    return res.status(500).json({ error: "Failed to fetch post" });
   }
 };
 

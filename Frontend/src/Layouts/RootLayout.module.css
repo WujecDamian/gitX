@@ -2,6 +2,9 @@
   display: grid;
   grid-template-columns: minmax(68px, 375px) 600px 350px;
   min-height: 100vh;
+  width: min(1280px, 100%);
+
+  margin: 0 auto;
   padding: 0;
   border: 0;
 }

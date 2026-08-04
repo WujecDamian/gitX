@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import NavProfile from "./components/NavProfile";
-import ProfileDropdown from "./components/ProfileDropdown";
 
 type NavbarProps = {
   onPostClick: () => void;

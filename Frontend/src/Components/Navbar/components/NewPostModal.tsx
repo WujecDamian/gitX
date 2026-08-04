@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import type { RefObject } from "react";
 import styles from "./NewPostModal.module.css";
+import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
 import { Link } from "react-router-dom";
 
 type NewPostModalProps = {
@@ -79,7 +80,7 @@ export default function NewPostModal({
     isOpen && (
       <div className={styles.post__modal} ref={dropdownRef}>
         <form className={styles.form} onSubmit={handleFormSubmit}>
-          <img src={user.profile_picture_url} className={styles.user__pfp} />
+          <ProfilePicture url={user.profile_picture_url}></ProfilePicture>
           <textarea
             name="content"
             id="content"

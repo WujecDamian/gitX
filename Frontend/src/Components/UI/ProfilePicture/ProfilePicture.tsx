@@ -5,5 +5,7 @@ type ProfilePictureTypes = {
 };
 
 export const ProfilePicture = ({ url }: ProfilePictureTypes) => {
-  return <img src={url} alt="" className={styles.profile__img} />;
+  return (
+    <img src={url} alt="Profile picture" className={styles.profile__img} />
+  );
 };

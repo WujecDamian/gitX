@@ -47,8 +47,3 @@
     margin-left: auto;
   }
 }
-.user__pfp {
-  width: 50px;
-  border-radius: 100%;
-  corner-shape: unset;
-}

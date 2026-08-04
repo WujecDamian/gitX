@@ -1,6 +1,7 @@
 import styles from "../Navbar.module.css";
 import ProfileDropdown from "./ProfileDropdown";
 import { useEffect, useRef, useState } from "react";
+import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
 
 type props = {
   user: User;
@@ -42,11 +43,9 @@ export default function NavProfile(props: props) {
       <div className={styles.nav__mini__profile} onClick={handleDropdownOpen}>
         <span className={styles["mini__profile--left"]}>
           <div>
-            <img
-              src={props.user.profile_picture_url}
-              alt=""
-              className={styles.nav__profile__img}
-            />
+            <ProfilePicture
+              url={props.user.profile_picture_url}
+            ></ProfilePicture>
           </div>
           <div className={styles["profile__left__names"]}>
             <span>{props.user.display_name}</span>

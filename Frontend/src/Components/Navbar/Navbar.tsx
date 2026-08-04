@@ -5,7 +5,11 @@ import styles from "./Navbar.module.css";
 import NavProfile from "./components/NavProfile";
 import ProfileDropdown from "./components/ProfileDropdown";
 
-export default function Navbar() {
+type NavbarProps = {
+  onPostClick: () => void;
+};
+
+export default function Navbar({ onPostClick }: NavbarProps) {
   const { user, logout } = useAuth();
 
   return (
@@ -26,6 +30,7 @@ export default function Navbar() {
           <Link to="/chat">Chat</Link>
           <Link to="/groups">Groups</Link>
           <Link to="/profile">Profile</Link>
+          <button onClick={onPostClick}>Post</button>
         </div>
       </div>
       {user ? (

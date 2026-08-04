@@ -2,17 +2,27 @@ import { useEffect, useState, useRef } from "react";
 import styles from "./Home.module.css";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
 import NewPostModal from "../../Components/Navbar/components/NewPostModal";
+import PostCard from "../../Components/Post/PostCard";
 
 function Home() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<String | null>(null);
   const [posts, setPosts] = useState([]);
+  type feedTypeTypes = "forYou" | "following";
+  const [feedType, setFeedType] = useState<feedTypeTypes>("forYou");
 
   useEffect(() => {
     const getPosts = async () => {
+      let url = "";
+      if (feedType === "forYou") {
+        url = "http://localhost:3000/api/post";
+      } else {
+        url = `http://localhost:3000/api/post/${user!.id}`;
+      }
+
       try {
-        const response = await fetch("http://localhost:3000/api/post", {
+        const response = await fetch(`${url}`, {
           method: "GET",
           credentials: "include",
         });
@@ -20,6 +30,7 @@ function Home() {
           throw new Error(`Failed to fetch posts: ${response.statusText}`);
         }
         const data = await response.json();
+        console.log(data);
         setPosts(data.posts);
       } catch (error) {
         if (error instanceof Error) {
@@ -29,6 +40,7 @@ function Home() {
         }
       }
     };
+    getPosts();
   }, []);
   console.log(posts);
 
@@ -39,6 +51,9 @@ function Home() {
     <>
       <section className={styles.home}>
         <h1>Check out some group!</h1>
+        {posts.map((post: any) => (
+          <PostCard author={post.author} post={post}></PostCard>
+        ))}
       </section>
     </>
   );

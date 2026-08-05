@@ -1,0 +1,65 @@
+import { useEffect, useState, useRef } from "react";
+import styles from "./Post.module.css";
+import { useAuth } from "../../Contexts/Auth/AuthContext";
+import { useParams } from "react-router-dom";
+import DetailedPostCard from "../../Components/DetailedPost/DetailedPostCard";
+
+function Post() {
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<String | null>(null);
+  const [post, setPost] = useState<Post | null>(null);
+  const { postId } = useParams<{ postId: string }>();
+  type feedTypeTypes = "forYou" | "following";
+  const [feedType, setFeedType] = useState<feedTypeTypes>("forYou");
+
+  useEffect(() => {
+    const getPost = async () => {
+      console.log("Function working and trying to fetch");
+      console.log(postId);
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/post/postWithComments/${postId}`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
+        if (!response.ok) {
+          throw new Error(`Failed to fetch posts: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setPost(data.post);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unexpected error occurred");
+        }
+      }
+    };
+    getPost();
+  }, []);
+  console.log(post);
+
+  if (loading) return <div>Loading...</div>;
+  if (!user) return <div>Please log in to view this page.</div>;
+
+  return (
+    <>
+      <section className={styles.post}>
+        {post && (
+          <DetailedPostCard author={post.author} post={post}></DetailedPostCard>
+        )}
+
+        <section className={styles.post__comments}>
+          {/*   {posts.map((post: any) => (
+            <PostCard author={post.author} post={post}></PostCard>
+          ))} */}
+        </section>
+      </section>
+    </>
+  );
+}
+
+export default Post;

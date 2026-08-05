@@ -1,4 +1,3 @@
-import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
 import styles from "../PostCard.module.css";
 import { useAuth } from "../../../Contexts/Auth/AuthContext";
 import { useState } from "react";
@@ -9,7 +8,10 @@ type PostActionsTypes = {
   counts: { postLikes: number; comments: number };
   postId: string;
 };
-export default function PostActions({ counts, postId }: PostActionsTypes) {
+export default function DetailedPostActions({
+  counts,
+  postId,
+}: PostActionsTypes) {
   const { user } = useAuth();
   const [error, setError] = useState<String | null>(null);
   const { setIsCommentModalOpen, setCommentPostId } =

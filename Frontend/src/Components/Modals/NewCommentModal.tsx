@@ -22,7 +22,7 @@ export default function NewCommentModal({
   const [error, setError] = useState<String | null>(null);
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [post, setPost] = useState([]);
+  const [post, setPost] = useState<Post | null>(null);
 
   useEffect(() => {
     const getPost = async () => {
@@ -111,20 +111,21 @@ export default function NewCommentModal({
     }
   };
 
-  console.log(post);
+  if (!post) {
+    return <div>Loading post data...</div>;
+  }
   return (
     isOpen && (
       <div className={styles.post__modal} ref={dropdownRef}>
         <form className={styles.form} onSubmit={handleFormSubmit}>
-          <ProfilePicture url={user.profile_picture_url}></ProfilePicture>
-          {/* <PostHeader author={post.author}></PostHeader>
-          <PostContent></PostContent> */}
+          <PostHeader author={post.author} post={post}></PostHeader>
+          <PostContent content={post.content}></PostContent>
           <textarea
             name="content"
             id="content"
             cols={65}
             rows={10}
-            placeholder="What's happening?"
+            placeholder="Post your reply"
           ></textarea>
           <input type="submit" value="Post" />
           {loading && <span>Loading...</span>}

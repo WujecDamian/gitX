@@ -251,9 +251,7 @@ p {
 }
 
 a {
-  color: var(--accent);
   text-decoration: none;
-  border-radius: 100rem;
 }
 
 a:hover {

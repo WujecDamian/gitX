@@ -40,7 +40,6 @@ function GridLayout() {
           postId={commentPostId}
           user={user}
         ></NewCommentModal>
-        console.log(commentPostId);
       </main>
     </section>
   );

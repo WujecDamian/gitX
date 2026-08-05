@@ -124,6 +124,7 @@ const getPostWithCommentsById = async (req: Request, res: Response) => {
         comments: {
           include: {
             author: true,
+            _count: true,
           },
         },
         _count: {

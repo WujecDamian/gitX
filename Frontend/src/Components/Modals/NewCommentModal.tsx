@@ -112,7 +112,7 @@ export default function NewCommentModal({
   };
 
   if (!post) {
-    return <div>Loading post data...</div>;
+    return;
   }
   return (
     isOpen && (

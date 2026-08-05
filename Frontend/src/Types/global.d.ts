@@ -32,6 +32,25 @@ declare global {
     createdAt: string;
     _count: { postLikes: number; comments: number };
   };
+  type DetailedPost = {
+    id: string;
+    content: string;
+    media_url?: string | null;
+    author: User;
+    createdAt: string;
+    comments: [];
+    _count: { postLikes: number; comments: number; bookmarks: number };
+  };
+  type Comment = {
+    author: User;
+    author_id: string;
+    content: string;
+    createdAt: string;
+    id: string;
+    media_url?: string;
+    post_id: string;
+    sub_comment_id?: string;
+  };
 }
 
 export {};

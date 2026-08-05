@@ -1,10 +1,40 @@
 import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
 import styles from "../PostCard.module.css";
+import { useAuth } from "../../../Contexts/Auth/AuthContext";
+import { useState } from "react";
 
 type PostActionsTypes = {
   counts: { postLikes: number; comments: number };
+  postId: string;
 };
-export default function PostActions({ counts }: PostActionsTypes) {
+export default function PostActions({ counts, postId }: PostActionsTypes) {
+  const { user } = useAuth();
+  const [error, setError] = useState<String | null>(null);
+
+  const onLikeClick = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/like/post/${postId}`,
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Something went wrong");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+    }
+  };
+
   return (
     <section className={styles.post__actions}>
       <div className={styles.comments}>
@@ -17,7 +47,7 @@ export default function PostActions({ counts }: PostActionsTypes) {
         <span className={styles.count}>{counts.comments}</span>
       </div>
       <div className={styles.likes}>
-        <button className={styles.like}>
+        <button className={styles.like} onClick={onLikeClick}>
           <img
             src="Frontend/public/icons/favorite_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
             alt="Heart icon"
@@ -33,6 +63,7 @@ export default function PostActions({ counts }: PostActionsTypes) {
           />
         </button>
       </div>
+      {error && <span>{error}</span>}
     </section>
   );
 }

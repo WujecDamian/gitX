@@ -20,7 +20,10 @@ export default function PostCard(props: props) {
       <div className={styles.post__content__wrapper}>
         <PostContent content={props.post.content}></PostContent>
         <PostMedia media_url={props.post.media_url}></PostMedia>
-        <PostActions counts={props.post._count}></PostActions>
+        <PostActions
+          counts={props.post._count}
+          postId={props.post.id}
+        ></PostActions>
       </div>
     </div>
   );

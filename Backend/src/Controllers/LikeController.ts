@@ -13,13 +13,28 @@ const likePost = async (req: Request, res: Response) => {
   }
 
   try {
-    await prisma.postLike.create({
-      data: {
-        user_id: userId,
+    const hasLiked = await prisma.postLike.findMany({
+      where: {
         post_id: postId,
+        user_id: userId,
       },
     });
-
+    console.log(hasLiked);
+    if (hasLiked.length > 0) {
+      await prisma.postLike.deleteMany({
+        where: {
+          user_id: userId,
+          post_id: postId,
+        },
+      });
+    } else {
+      await prisma.postLike.create({
+        data: {
+          user_id: userId,
+          post_id: postId,
+        },
+      });
+    }
     return res.status(201).json({ message: "Successfully liked post!" });
   } catch (error) {
     return res.status(500).json({ error: "Failed to like post" });

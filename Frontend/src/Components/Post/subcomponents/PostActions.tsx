@@ -2,6 +2,8 @@ import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
 import styles from "../PostCard.module.css";
 import { useAuth } from "../../../Contexts/Auth/AuthContext";
 import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import type { LayoutContextType } from "../../../Layouts/GridLayout";
 
 type PostActionsTypes = {
   counts: { postLikes: number; comments: number };
@@ -10,6 +12,8 @@ type PostActionsTypes = {
 export default function PostActions({ counts, postId }: PostActionsTypes) {
   const { user } = useAuth();
   const [error, setError] = useState<String | null>(null);
+  const { setIsCommentModalOpen, setCommentPostId } =
+    useOutletContext<LayoutContextType>();
 
   const onLikeClick = async () => {
     try {
@@ -37,7 +41,13 @@ export default function PostActions({ counts, postId }: PostActionsTypes) {
 
   return (
     <section className={styles.post__actions}>
-      <div className={styles.comments}>
+      <div
+        className={styles.comments}
+        onClick={() => {
+          setIsCommentModalOpen(true);
+          setCommentPostId(postId);
+        }}
+      >
         <button className={styles.comment}>
           <img
             src="Frontend/public/icons/mode_comment_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"

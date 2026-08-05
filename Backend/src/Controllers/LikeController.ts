@@ -115,4 +115,4 @@ const getLikedPosts = async (req: Request, res: Response) => {
   }
 };
 
-export { likePost, unlikePost, likeComment, unlikeComment, getLikedPosts };
+export { likePost, likeComment, getLikedPosts };

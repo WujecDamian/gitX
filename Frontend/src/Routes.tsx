@@ -8,6 +8,7 @@ import Home from "./Pages/Home/Home";
 //components
 import Login from "./Pages/Authentication/Login/Login";
 import Profile from "./Pages/Profile/Profile";
+import Post from "./Pages/Post/Post";
 
 //https://reactrouter.com/start/modes#data
 const router = createBrowserRouter([
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
             children: [
               { index: true, element: <Home></Home> },
               { path: "/profile/:userId", element: <Profile></Profile> },
+              { path: "/post/:postId", element: <Post></Post> },
             ],
           },
         ],

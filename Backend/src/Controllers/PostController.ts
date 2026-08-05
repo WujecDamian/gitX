@@ -102,6 +102,45 @@ const getPostById = async (req: Request, res: Response) => {
   }
 };
 
+//Post get functions
+const getPostWithCommentsById = async (req: Request, res: Response) => {
+  try {
+    const newPostId = req.params.postId;
+
+    if (!newPostId) {
+      return res.status(400).json({ error: "Invalid post ID format" });
+    }
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: newPostId.toString(),
+      },
+      select: {
+        author: true,
+        id: true,
+        content: true,
+        media_url: true,
+        createdAt: true,
+        comments: {
+          include: {
+            author: true,
+          },
+        },
+        _count: {
+          select: {
+            postLikes: true,
+            comments: true,
+            bookmarks: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ post });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to fetch post" });
+  }
+};
 const getFollowingPosts = async (req: Request, res: Response) => {
   const userId = req.user.id;
 
@@ -210,6 +249,7 @@ export {
   createPost,
   getAllPosts,
   getPostById,
+  getPostWithCommentsById,
   getFollowingPosts,
   getUserPosts,
   getGroupPosts,

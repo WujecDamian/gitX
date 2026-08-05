@@ -1,6 +1,6 @@
 .root__layout {
   display: grid;
-  grid-template-columns: minmax(68px, 375px) 600px 350px;
+  grid-template-columns: minmax(68px, 300px) 700px 200px;
   min-height: 100vh;
   width: min(1280px, 100%);
 

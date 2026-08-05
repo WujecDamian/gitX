@@ -1,8 +1,14 @@
-.groups {
+.home {
   display: flex;
-  flex-direction: row;
-  border: 1px solid;
-  gap: 5rem;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+.post__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
 }

@@ -50,10 +50,11 @@ function Home() {
   return (
     <>
       <section className={styles.home}>
-        <h1>Check out some group!</h1>
-        {posts.map((post: any) => (
-          <PostCard author={post.author} post={post}></PostCard>
-        ))}
+        <section className={styles.post__cards}>
+          {posts.map((post: any) => (
+            <PostCard author={post.author} post={post}></PostCard>
+          ))}
+        </section>
       </section>
     </>
   );

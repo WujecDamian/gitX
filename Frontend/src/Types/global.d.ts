@@ -41,7 +41,7 @@ declare global {
     comments: [];
     _count: { postLikes: number; comments: number; bookmarks: number };
   };
-  type Comment = {
+  type CommentType = {
     author: User;
     author_id: string;
     content: string;
@@ -50,6 +50,10 @@ declare global {
     media_url?: string;
     post_id: string;
     sub_comment_id?: string;
+    _count: {
+      commentLikes: number;
+      sub_comments: number;
+    };
   };
 }
 

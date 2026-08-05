@@ -1,5 +1,5 @@
 import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
-import styles from "../PostCard.module.css";
+import styles from "../DetailedPostCard.module.css";
 import { TimePosted } from "../../UI/Time/TimePosted";
 
 type PostHeaderTypes = {

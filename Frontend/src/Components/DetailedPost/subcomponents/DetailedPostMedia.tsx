@@ -1,5 +1,5 @@
 import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
-import styles from "../PostCard.module.css";
+import styles from "../DetailedPostCard.module.css";
 
 type PostMediaTypes = {
   media_url: string | null | undefined;

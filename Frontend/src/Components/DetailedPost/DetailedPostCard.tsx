@@ -1,4 +1,4 @@
-import styles from "./PostCard.module.css";
+import styles from "./DetailedPostCard.module.css";
 import { Link } from "react-router-dom";
 //DetailedPostCard subcomponents
 import DetailedPostHeader from "./subcomponents/DetailedPostHeader";

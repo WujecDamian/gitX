@@ -1,4 +1,4 @@
-import styles from "../PostCard.module.css";
+import styles from "../DetailedPostCard.module.css";
 
 type PostContentTypes = {
   content: string;

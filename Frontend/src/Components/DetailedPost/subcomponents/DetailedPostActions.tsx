@@ -1,4 +1,4 @@
-import styles from "../PostCard.module.css";
+import styles from "../DetailedPostCard.module.css";
 import { useAuth } from "../../../Contexts/Auth/AuthContext";
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";

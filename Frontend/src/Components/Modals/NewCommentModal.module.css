@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  border-radius: 5rem;
+  border-radius: 2rem;
   margin-bottom: 1rem;
   z-index: 10;
 }
@@ -22,7 +22,7 @@
   gap: 1rem;
   textarea {
     padding: 3rem 3rem;
-    border-radius: 5rem;
+    border-radius: 1.5rem;
     border: none;
     width: fit-content;
     font-family:

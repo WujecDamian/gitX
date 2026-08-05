@@ -13,12 +13,28 @@ const bookmarkPost = async (req: Request, res: Response) => {
   }
 
   try {
-    await prisma.bookmark.create({
-      data: {
-        user_id: userId,
+    const hasBookmarked = await prisma.bookmark.findMany({
+      where: {
         post_id: postId,
+        user_id: userId,
       },
     });
+    console.log(hasBookmarked);
+    if (hasBookmarked.length > 0) {
+      await prisma.bookmark.deleteMany({
+        where: {
+          user_id: userId,
+          post_id: postId,
+        },
+      });
+    } else {
+      await prisma.bookmark.create({
+        data: {
+          user_id: userId,
+          post_id: postId,
+        },
+      });
+    }
 
     return res.status(201).json({ message: "Successfully bookmarked post!" });
   } catch (error) {

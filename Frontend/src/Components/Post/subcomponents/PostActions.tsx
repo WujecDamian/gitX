@@ -15,10 +15,38 @@ export default function PostActions({ counts, postId }: PostActionsTypes) {
   const { setIsCommentModalOpen, setCommentPostId } =
     useOutletContext<LayoutContextType>();
 
-  const onLikeClick = async () => {
+  const onLikeClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     try {
       const response = await fetch(
         `http://localhost:3000/api/like/post/${postId}`,
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Something went wrong");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+    }
+  };
+
+  const onBookmarkClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/bookmark/post/${postId}`,
         {
           method: "POST",
           credentials: "include",
@@ -43,7 +71,9 @@ export default function PostActions({ counts, postId }: PostActionsTypes) {
     <section className={styles.post__actions}>
       <div
         className={styles.comments}
-        onClick={() => {
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+          e.preventDefault();
+          e.stopPropagation();
           setIsCommentModalOpen(true);
           setCommentPostId(postId);
         }}
@@ -56,8 +86,8 @@ export default function PostActions({ counts, postId }: PostActionsTypes) {
         </button>
         <span className={styles.count}>{counts.comments}</span>
       </div>
-      <div className={styles.likes}>
-        <button className={styles.like} onClick={onLikeClick}>
+      <div className={styles.likes} onClick={onLikeClick}>
+        <button className={styles.like}>
           <img
             src="Frontend/public/icons/favorite_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
             alt="Heart icon"
@@ -65,7 +95,7 @@ export default function PostActions({ counts, postId }: PostActionsTypes) {
         </button>
         <span className={styles.count}>{counts.postLikes}</span>
       </div>
-      <div className={styles.bookmarks}>
+      <div className={styles.bookmarks} onClick={onBookmarkClick}>
         <button className={styles.bookmark}>
           <img
             src="Frontend/public/icons/bookmark_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"

@@ -1,6 +1,10 @@
 /* * MAIN comment CARD */
 .comment__card {
-  border: 1px solid rgb(67, 67, 67);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  left: 1.45rem;
+  border-left: 1px solid rgb(67, 67, 67);
   margin: 0;
   padding: 1.25rem;
   margin-top: -1px;

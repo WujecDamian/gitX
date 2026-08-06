@@ -7,18 +7,27 @@ import { useState } from "react";
 
 import NewPostModal from "../Components/Navbar/components/NewPostModal";
 import NewCommentModal from "../Components/Modals/NewCommentModal";
+import NewCommentOnCommentModal from "../Components/Modals/NewCommentOnCommentModal";
 
 export type LayoutContextType = {
   setIsCommentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCommentOnCommentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+
   setCommentPostId: React.Dispatch<React.SetStateAction<string>>;
+  setCommentId: React.Dispatch<React.SetStateAction<string>>;
+
   commentPostId: string;
+  commentId: string;
 };
 
 function GridLayout() {
   const { user, logout } = useAuth();
   const [isPostOpen, setIsPostOpen] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+  const [isCommentOnCommentModalOpen, setIsCommentOnCommentModalOpen] =
+    useState(false);
   const [commentPostId, setCommentPostId] = useState(null);
+  const [commentId, setCommentId] = useState(null);
 
   return (
     <section className={styles.root__layout}>
@@ -26,7 +35,14 @@ function GridLayout() {
 
       <main>
         <Outlet
-          context={{ setIsCommentModalOpen, setCommentPostId, commentPostId }}
+          context={{
+            setIsCommentModalOpen,
+            setIsCommentOnCommentModalOpen,
+            setCommentPostId,
+            commentPostId,
+            commentId,
+            setCommentId,
+          }}
         ></Outlet>
         {/* Modals */}
         <NewPostModal
@@ -40,6 +56,12 @@ function GridLayout() {
           postId={commentPostId}
           user={user}
         ></NewCommentModal>
+        <NewCommentOnCommentModal
+          isOpen={isCommentOnCommentModalOpen}
+          setIsOpen={setIsCommentOnCommentModalOpen}
+          commentId={commentId}
+          user={user}
+        ></NewCommentOnCommentModal>
       </main>
     </section>
   );

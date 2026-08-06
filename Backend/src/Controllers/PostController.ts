@@ -122,6 +122,9 @@ const getPostWithCommentsById = async (req: Request, res: Response) => {
         media_url: true,
         createdAt: true,
         comments: {
+          where: {
+            sub_comment_id: null,
+          },
           include: {
             author: true,
             _count: true,

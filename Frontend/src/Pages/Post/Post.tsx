@@ -43,6 +43,7 @@ function Post() {
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>Please log in to view this page.</div>;
 
+  console.log(post);
   return (
     <>
       <section className={styles.post}>
@@ -55,7 +56,9 @@ function Post() {
 
             <section className={styles.post__comments}>
               {post.comments.map((comment: any) => (
-                <Comment author={comment.author} comment={comment}></Comment>
+                <>
+                  <Comment author={comment.author} comment={comment}></Comment>
+                </>
               ))}
             </section>
           </>

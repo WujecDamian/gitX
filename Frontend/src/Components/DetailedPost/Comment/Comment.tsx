@@ -5,12 +5,12 @@ import CommentHeader from "./subcomponents/CommentHeader";
 import CommentContent from "./subcomponents/CommentContent";
 import CommentMedia from "./subcomponents/CommentMedia";
 import CommentActions from "./subcomponents/CommentActions";
+import SubComment from "../SubComment/SubComment";
 
 type props = {
   author: User;
   comment: CommentType;
 };
-
 export default function Comment(props: props) {
   return (
     <Link to={`/post/${props.comment.id}`} className={styles.comment__card}>
@@ -25,6 +25,11 @@ export default function Comment(props: props) {
           counts={props.comment._count}
           commentId={props.comment.id}
         ></CommentActions>
+      </div>
+      <div className="comment__replies">
+        {props.comment.sub_comments.map((comment: CommentType) => (
+          <SubComment author={comment.author} comment={comment}></SubComment>
+        ))}
       </div>
     </Link>
   );

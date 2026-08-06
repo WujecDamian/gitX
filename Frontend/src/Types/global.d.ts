@@ -50,6 +50,7 @@ declare global {
     media_url?: string;
     post_id: string;
     sub_comment_id?: string;
+    sub_comments: [CommentType];
     _count: {
       commentLikes: number;
       sub_comments: number;

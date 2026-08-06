@@ -23,8 +23,6 @@ export default function NewCommentModal({
 
   useEffect(() => {
     const getPost = async () => {
-      console.log("Function working and trying to fetch");
-      console.log(postId);
       try {
         const response = await fetch(
           `http://localhost:3000/api/post/${postId}`,
@@ -50,13 +48,10 @@ export default function NewCommentModal({
   }, [postId]);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log(event.target);
-      console.log("DropdownRef", dropdownRef.current);
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        console.log("closed");
         setIsOpen(false);
       }
     };

@@ -23,7 +23,6 @@ export default function NewCommentOnCommentModal({
 
   useEffect(() => {
     const getComment = async () => {
-      console.log("! ! ! CommentId: ", commentId);
       try {
         const response = await fetch(
           `http://localhost:3000/api/comment/getComment/${commentId}`,
@@ -47,17 +46,13 @@ export default function NewCommentOnCommentModal({
     };
     getComment();
   }, [commentId]);
-  console.log(commentId);
-  console.log(comment);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log(event.target);
-      console.log("DropdownRef", dropdownRef.current);
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        console.log("closed");
         setIsOpen(false);
       }
     };

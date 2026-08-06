@@ -16,8 +16,6 @@ function Post() {
 
   useEffect(() => {
     const getPost = async () => {
-      console.log("Function working and trying to fetch");
-      console.log(postId);
       try {
         const response = await fetch(
           `http://localhost:3000/api/post/postWithComments/${postId}`,
@@ -41,12 +39,10 @@ function Post() {
     };
     getPost();
   }, []);
-  console.log(post);
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>Please log in to view this page.</div>;
 
-  console.log(post?.comments);
   return (
     <>
       <section className={styles.post}>

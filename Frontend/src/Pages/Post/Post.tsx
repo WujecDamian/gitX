@@ -4,6 +4,7 @@ import { useAuth } from "../../Contexts/Auth/AuthContext";
 import { useParams } from "react-router-dom";
 import DetailedPostCard from "../../Components/DetailedPost/DetailedPostCard";
 import Comment from "../../Components/DetailedPost/Comment/Comment";
+import Reply from "../../Components/DetailedPost/Reply/Reply";
 
 function Post() {
   const { user } = useAuth();
@@ -53,7 +54,7 @@ function Post() {
               author={post.author}
               post={post}
             ></DetailedPostCard>
-
+            <Reply author={user} postId={post.id}></Reply>
             <section className={styles.post__comments}>
               {post.comments.map((comment: any) => (
                 <>

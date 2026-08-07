@@ -71,15 +71,15 @@ const getAllPosts = async (req: Request, res: Response) => {
 //Post get functions
 const getPostById = async (req: Request, res: Response) => {
   try {
-    const newPostId = req.params.postId;
+    const { postId } = req.params;
 
-    if (!newPostId) {
-      return res.status(400).json({ error: "Invalid post ID format" });
+    if (typeof postId !== "string") {
+      return res.status(400).json({ error: "Invalid or missing Post ID" });
     }
 
     const post = await prisma.post.findUnique({
       where: {
-        id: newPostId.toString(),
+        id: postId,
       },
       select: {
         author: true,

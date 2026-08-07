@@ -13,7 +13,7 @@ type props = {
 };
 export default function Comment(props: props) {
   return (
-    <Link to={`/post/${props.comment.id}`} className={styles.comment__card}>
+    <Link to={`/comment/${props.comment.id}`} className={styles.comment__card}>
       <CommentHeader
         author={props.author}
         comment={props.comment}

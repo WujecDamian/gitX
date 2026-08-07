@@ -12,7 +12,7 @@ type props = {
 };
 export default function SubComment(props: props) {
   return (
-    <Link to={`/post/${props.comment.id}`} className={styles.comment__card}>
+    <Link to={`/comment/${props.comment.id}`} className={styles.comment__card}>
       <SubCommentHeader
         author={props.author}
         comment={props.comment}

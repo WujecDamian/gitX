@@ -1,5 +1,6 @@
 .reply {
   border: 1px solid rgb(67, 67, 67);
+  max-width: 100%;
   margin: 0;
   padding: 1.25rem;
   margin-top: -1px;
@@ -14,6 +15,7 @@
   textarea {
     flex: 1;
     background: transparent;
+    resize: none;
     border: none;
     color: #e7e9ea;
     font-size: 20px;

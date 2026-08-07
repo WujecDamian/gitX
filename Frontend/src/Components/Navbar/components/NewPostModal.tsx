@@ -80,14 +80,25 @@ export default function NewPostModal({
     isOpen && (
       <div className={styles.post__modal} ref={dropdownRef}>
         <form className={styles.form} onSubmit={handleFormSubmit}>
-          <ProfilePicture url={user.profile_picture_url}></ProfilePicture>
-          <textarea
-            name="content"
-            id="content"
-            cols={65}
-            rows={10}
-            placeholder="What's happening?"
-          ></textarea>
+          <button
+            className={styles.close__btn}
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
+            ✕
+          </button>
+          <div className={styles.modal__wrapper}>
+            <ProfilePicture url={user.profile_picture_url}></ProfilePicture>
+            <textarea
+              name="content"
+              id="content"
+              cols={65}
+              rows={10}
+              placeholder="What's happening?"
+            ></textarea>
+          </div>
+
           <input type="submit" value="Post" />
           {loading && <span>Loading...</span>}
           {error && <span>{error}</span>}

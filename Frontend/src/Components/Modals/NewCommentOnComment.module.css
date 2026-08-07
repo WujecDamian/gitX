@@ -4,6 +4,8 @@
   left: 33vw;
   width: 700px;
   min-height: 300px;
+  max-height: 80vh;
+
   background-color: #16181c;
   display: flex;
   flex-direction: column;
@@ -63,6 +65,9 @@
 .form textarea {
   flex: 1;
   background: transparent;
+  field-sizing: content;
+  min-height: 3lh;
+  max-height: 20lh;
   border: none;
   color: #e7e9ea;
   font-size: 1.25rem; /* Clean, prominent font size */
@@ -97,6 +102,8 @@
   background-color: #e7e9ea; /* High contrast post button */
   color: #0f1419;
   padding: 0.5rem 1.25rem;
+  width: fit-content;
+  margin-left: auto;
   border-radius: 9999px;
   border: none;
   font-weight: bold;

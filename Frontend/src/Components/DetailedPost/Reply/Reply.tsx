@@ -55,12 +55,7 @@ export default function Reply(props: props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    const textarea = textareaRef.current;
     setContent(e.target.value);
-    if (textarea) {
-      textarea.style.height = "auto";
-      textarea.style.height = `${textarea.scrollHeight}px`;
-    }
   };
   return (
     <div className={styles.reply}>

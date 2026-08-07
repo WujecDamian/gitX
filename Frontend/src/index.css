@@ -55,6 +55,7 @@
 * {
   box-sizing: border-box;
   corner-shape: squircle;
+  scroll-behavior: smooth;
 }
 
 html,

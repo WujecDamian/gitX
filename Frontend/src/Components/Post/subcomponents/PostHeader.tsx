@@ -8,8 +8,6 @@ type PostHeaderTypes = {
 };
 
 export default function PostHeader(props: PostHeaderTypes) {
-  console.log(props.author);
-
   return (
     <>
       <div className={styles.post__header}>

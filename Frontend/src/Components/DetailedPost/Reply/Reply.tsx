@@ -69,7 +69,6 @@ export default function Reply(props: props) {
         <textarea
           name="content"
           id="content"
-          cols={65}
           rows={1}
           placeholder="Post your reply"
           value={content}

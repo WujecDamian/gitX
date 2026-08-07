@@ -23,6 +23,11 @@
     }
   }
 }
+.nav__link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
 .nav__profile__img {
   width: 50px;

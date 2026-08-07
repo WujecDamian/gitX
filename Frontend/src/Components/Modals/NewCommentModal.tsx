@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styles from "./NewCommentModal.module.css";
 import PostHeader from "../Post/subcomponents/PostHeader";
 import PostContent from "../Post/subcomponents/PostContent";
@@ -25,7 +26,7 @@ export default function NewCommentModal({
     const getPost = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/post/${postId}`,
+          `http://localhost:3000/api/post/getPost/${postId}`,
           {
             method: "GET",
             credentials: "include",
@@ -110,13 +111,31 @@ export default function NewCommentModal({
     isOpen && (
       <div className={styles.post__modal} ref={dropdownRef}>
         <form className={styles.form} onSubmit={handleFormSubmit}>
-          <PostHeader author={post.author} post={post}></PostHeader>
-          <PostContent content={post.content}></PostContent>
+          <button
+            className={styles.close__btn}
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
+            ✕
+          </button>
+          <div className={styles.modal__header}>
+            <PostHeader author={post.author} post={post}></PostHeader>
+          </div>
+          <div className={styles.modal__content}>
+            <PostContent content={post.content}></PostContent>
+          </div>
+          <span className={styles.replying}>
+            Replying to
+            <Link to={`profile/${post.author.id}`}>
+              @{post.author.username}
+            </Link>
+          </span>
           <textarea
             name="content"
             id="content"
             cols={65}
-            rows={10}
+            rows={6}
             placeholder="Post your reply"
           ></textarea>
           <input type="submit" value="Post" />

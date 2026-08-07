@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styles from "./NewCommentOnComment.module.css";
 import CommentHeader from "../DetailedPost/Comment/subcomponents/CommentHeader";
 import CommentContent from "../DetailedPost/Comment/subcomponents/CommentContent";
@@ -111,16 +112,34 @@ export default function NewCommentOnCommentModal({
     isOpen && (
       <div className={styles.post__modal} ref={dropdownRef}>
         <form className={styles.form} onSubmit={handleFormSubmit}>
-          <CommentHeader
-            author={comment.author}
-            comment={comment}
-          ></CommentHeader>
-          <CommentContent content={comment.content}></CommentContent>
+          <button
+            className={styles.close__btn}
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
+            ✕
+          </button>
+          <div className={styles.modal__header}>
+            <CommentHeader
+              author={comment.author}
+              comment={comment}
+            ></CommentHeader>
+          </div>
+          <div className={styles.modal__content}>
+            <CommentContent content={comment.content}></CommentContent>
+          </div>
+          <span className={styles.replying}>
+            Replying to
+            <Link to={`profile/${comment.author.id}`}>
+              @{comment.author.username}
+            </Link>
+          </span>
           <textarea
             name="content"
             id="content"
             cols={65}
-            rows={10}
+            rows={6}
             placeholder="Post your reply"
           ></textarea>
           <input type="submit" value="Post" />

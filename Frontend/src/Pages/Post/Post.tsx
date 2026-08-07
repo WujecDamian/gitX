@@ -58,7 +58,11 @@ function Post() {
             <section className={styles.post__comments}>
               {post.comments.map((comment: any) => (
                 <>
-                  <Comment author={comment.author} comment={comment}></Comment>
+                  <Comment
+                    author={comment.author}
+                    comment={comment}
+                    key={comment.id}
+                  ></Comment>
                 </>
               ))}
             </section>

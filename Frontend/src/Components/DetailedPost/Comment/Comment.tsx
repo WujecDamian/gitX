@@ -28,7 +28,11 @@ export default function Comment(props: props) {
       </div>
       <div className="comment__replies">
         {props.comment.sub_comments.map((comment: CommentType) => (
-          <SubComment author={comment.author} comment={comment}></SubComment>
+          <SubComment
+            author={comment.author}
+            comment={comment}
+            key={comment.id}
+          ></SubComment>
         ))}
       </div>
     </Link>

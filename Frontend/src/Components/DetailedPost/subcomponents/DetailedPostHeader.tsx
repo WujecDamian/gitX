@@ -1,6 +1,7 @@
 import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
 import styles from "../DetailedPostCard.module.css";
 import { TimePosted } from "../../UI/Time/TimePosted";
+import { Link } from "react-router-dom";
 
 type PostHeaderTypes = {
   author: User;
@@ -12,7 +13,7 @@ export default function DetailedPostHeader(props: PostHeaderTypes) {
 
   return (
     <>
-      <div className={styles.post__header}>
+      <Link to={`/profile/${props.author.id}`} className={styles.post__header}>
         <ProfilePicture url={props.author.profile_picture_url}></ProfilePicture>
         <div className={styles.post__header__text__wrapper}>
           <h3 className="user__name">{props.author.display_name}</h3>
@@ -24,7 +25,7 @@ export default function DetailedPostHeader(props: PostHeaderTypes) {
 
           <TimePosted createTime={props.post.createdAt}></TimePosted>
         </div>
-      </div>
+      </Link>
     </>
   );
 }

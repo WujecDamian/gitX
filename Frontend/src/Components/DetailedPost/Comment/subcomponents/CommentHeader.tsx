@@ -1,6 +1,7 @@
 import { ProfilePicture } from "../../../UI/ProfilePicture/ProfilePicture";
 import styles from "../Comment.module.css";
 import { TimePosted } from "../../../UI/Time/TimePosted";
+import { Link } from "react-router-dom";
 
 type CommentHeaderTypes = {
   author: User;
@@ -12,7 +13,10 @@ export default function CommentHeader(props: CommentHeaderTypes) {
 
   return (
     <>
-      <div className={styles.comment__header}>
+      <Link
+        to={`/profile/${props.author.id}`}
+        className={styles.comment__header}
+      >
         <ProfilePicture url={props.author.profile_picture_url}></ProfilePicture>
         <div className={styles.comment__header__text__wrapper}>
           <h3 className="user__name">{props.author.display_name}</h3>
@@ -24,7 +28,7 @@ export default function CommentHeader(props: CommentHeaderTypes) {
 
           <TimePosted createTime={props.comment.createdAt}></TimePosted>
         </div>
-      </div>
+      </Link>
     </>
   );
 }

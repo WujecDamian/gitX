@@ -22,6 +22,11 @@ declare global {
     socials?: string[];
     tags?: string[];
     username: string;
+    posts: Post;
+    _count: {
+      following: number;
+      followers: number;
+    };
   };
 
   type Post = {

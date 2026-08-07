@@ -2,67 +2,55 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useParams, Link } from "react-router";
 import styles from "./Profile.module.css";
+import ProfileCard from "../../Components/ProfileCard/ProfileCard";
+import PostCard from "../../Components/Post/PostCard";
 
 function Profile() {
-  const [cookies] = useCookies(["user", "token"]);
-  const token = cookies.token;
-  const user = cookies.user;
-
-  const [profile, setProfile] = useState([]);
+  const [profile, setProfile] = useState<(User & { posts: Post[] }) | null>(
+    null,
+  );
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   let params = useParams();
-
   useEffect(() => {
-    const fetchProfile = async () => {
-      console.log(params.userId);
+    const getProfile = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/profile/${params.userId}`,
+          `http://localhost:3000/api/user/profile/${params.userId}`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
         );
-
-        const result = await response.json();
-
         if (!response.ok) {
-          throw new Error(
-            `HTTP error ${result.error}! Status: ${response.status}`,
-          );
+          throw new Error(`Failed to fetch posts: ${response.statusText}`);
         }
-        setProfile(result.profile);
-      } catch (err) {
-        console.error("Fetch failed", err);
+        const data = await response.json();
+        setProfile(data.userProfile);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unexpected error occurred");
+        }
       }
     };
-    fetchProfile();
+    getProfile();
   }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (!profile) return <div>No profile.</div>;
   console.log(profile);
 
   return (
     <>
-      <section className={styles.home}>
-        <h1>Profile</h1>
-        <section className={styles.profile__wrapper}>
-          <img
-            src={profile?.profile?.[0]?.bannerPhotoUrl}
-            alt="Banner"
-            className={styles.banner__picture}
-          />
-          <img
-            src={profile?.profile?.[0]?.profilePhotoUrl}
-            alt="Profile"
-            className={styles.profile__picture}
-          />
-
-          <h2 className={styles.profile__name}>{profile.displayName} </h2>
-          <Link
-            to={`/chat/${params.userId}`}
-            className={styles.profile__messageBtn}
-          >
-            Message
-          </Link>
-        </section>
-        {loading && <span>loading....</span>}
-        {error && <span>{error?.message ? error.message : String(error)}</span>}
+      <section className={styles.profile__wrapper}>
+        <ProfileCard owner={profile} posts={profile.posts}></ProfileCard>
+      </section>
+      <section className={styles.posts}>
+        {profile.posts.map((post: Post) => (
+          <PostCard author={profile} post={post}></PostCard>
+        ))}
       </section>
     </>
   );

@@ -134,7 +134,6 @@ main,
 section,
 article {
   display: grid;
-  gap: 12px;
 }
 
 aside {

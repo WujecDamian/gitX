@@ -178,6 +178,11 @@ const getUserProfile = async (
         profile_picture_url: true,
         socials: true,
         tags: true,
+        posts: {
+          include: {
+            _count: true,
+          },
+        },
         _count: {
           select: { followers: true, following: true },
         },

@@ -186,7 +186,7 @@ const getUserProfile = async (
         },
         followers: {
           where: {
-            id: user.id,
+            follower_id: user.id,
           },
           select: {
             id: true,
@@ -203,13 +203,11 @@ const getUserProfile = async (
     }
     const isFollowing =
       Array.isArray(userProfile.followers) && userProfile.followers.length > 0;
-    return res
-      .status(200)
-      .json({
-        message: "Successfully fetched user Profile!",
-        userProfile,
-        isFollowing,
-      });
+    return res.status(200).json({
+      message: "Successfully fetched user Profile!",
+      userProfile,
+      isFollowing,
+    });
   } catch (error) {
     return res.status(500).json({ error: error });
   }

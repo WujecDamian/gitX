@@ -38,7 +38,6 @@ export const FollowersModal = ({ id, owner }: FollowsTypes) => {
     };
     getProfile();
   }, [owner.id]);
-  console.log(followersList);
   return (
     <div id={id} popover="auto" className={styles.modal}>
       <div className={styles.modal__content}>

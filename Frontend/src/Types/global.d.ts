@@ -23,6 +23,8 @@ declare global {
     tags?: string[];
     username: string;
     posts: Post;
+    follower: User;
+    following: User;
     _count: {
       following: number;
       followers: number;

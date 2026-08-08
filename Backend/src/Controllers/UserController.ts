@@ -197,6 +197,95 @@ const getUserProfile = async (
   }
 };
 
+const getUserFollowing = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { userId } = req.params;
+
+  if (typeof userId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing User ID" });
+  }
+
+  try {
+    const following = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        following: {
+          orderBy: {
+            following: {
+              followers: {
+                _count: "desc", // Orders by highest follower count first
+              },
+            },
+          },
+          include: {
+            following: {
+              include: {
+                _count: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({
+      message: "Successfully fetched user Following List!",
+      following: following?.following,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+const getUserFollowers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { userId } = req.params;
+
+  if (typeof userId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing User ID" });
+  }
+
+  try {
+    const followers = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        followers: {
+          orderBy: {
+            follower: {
+              followers: {
+                _count: "desc", // Orders by highest follower count first
+              },
+            },
+          },
+          include: {
+            follower: {
+              include: {
+                _count: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({
+      message: "Successfully fetched user Following List!",
+      followers: followers?.followers,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
 export {
   editUserBio,
   editUserTags,
@@ -206,4 +295,6 @@ export {
   editUserBanner,
   deleteUser,
   getUserProfile,
+  getUserFollowers,
+  getUserFollowing,
 };

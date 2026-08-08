@@ -157,6 +157,7 @@ const getUserProfile = async (
   next: NextFunction,
 ) => {
   const { userId } = req.params;
+  const user = req.user;
 
   if (typeof userId !== "string") {
     return res.status(400).json({ error: "Invalid or missing User ID" });
@@ -183,15 +184,32 @@ const getUserProfile = async (
             _count: true,
           },
         },
+        followers: {
+          where: {
+            id: user.id,
+          },
+          select: {
+            id: true,
+          },
+        },
         _count: {
           select: { followers: true, following: true },
         },
       },
     });
-
+    //logic for checking if user is following
+    if (!userProfile) {
+      return res.status(404).json({ error: "User profile not found" });
+    }
+    const isFollowing =
+      Array.isArray(userProfile.followers) && userProfile.followers.length > 0;
     return res
       .status(200)
-      .json({ message: "Successfully fetched user Profile!", userProfile });
+      .json({
+        message: "Successfully fetched user Profile!",
+        userProfile,
+        isFollowing,
+      });
   } catch (error) {
     return res.status(500).json({ error: error });
   }

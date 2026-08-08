@@ -9,6 +9,7 @@ function Profile() {
   const [profile, setProfile] = useState<(User & { posts: Post[] }) | null>(
     null,
   );
+  const [isFollowing, setIsFollowing] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   let params = useParams();
@@ -27,6 +28,7 @@ function Profile() {
         }
         const data = await response.json();
         setProfile(data.userProfile);
+        setIsFollowing(data.isFollowing);
       } catch (error) {
         if (error instanceof Error) {
           setError(error.message);

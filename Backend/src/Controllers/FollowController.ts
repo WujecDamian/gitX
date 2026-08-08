@@ -13,12 +13,27 @@ const followUser = async (req: Request, res: Response) => {
   }
 
   try {
-    await prisma.follows.create({
-      data: {
+    const isFollowing = await prisma.follows.findMany({
+      where: {
         follower_id: followerId,
         following_id: followedId,
       },
     });
+    if (isFollowing.length > 0) {
+      await prisma.follows.deleteMany({
+        where: {
+          follower_id: followerId,
+          following_id: followedId,
+        },
+      });
+    } else {
+      await prisma.follows.create({
+        data: {
+          follower_id: followerId,
+          following_id: followedId,
+        },
+      });
+    }
 
     return res.status(201).json({ message: "Successfully followed user!" });
   } catch (error) {

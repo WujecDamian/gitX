@@ -5,7 +5,7 @@ import { useOutletContext } from "react-router-dom";
 import type { LayoutContextType } from "../../../Layouts/GridLayout";
 
 type PostActionsTypes = {
-  counts: { postLikes: number; comments: number };
+  counts: { postLikes: number; comments: number; bookmarks: number };
   postId: string;
 };
 export default function DetailedPostActions({
@@ -104,6 +104,7 @@ export default function DetailedPostActions({
             alt="Bookmark icon"
           />
         </button>
+        <span className={styles.count}>{counts.bookmarks}</span>
       </div>
       {error && <span>{error}</span>}
     </section>

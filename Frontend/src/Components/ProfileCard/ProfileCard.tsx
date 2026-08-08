@@ -1,24 +1,51 @@
 import styles from "./ProfileCard.module.css";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { TimeAccountCreated } from "../UI/Time/TimeAccountCreated";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
 
+import { FollowingModal } from "../Modals/FollowsModal/FollowingModal";
+import { FollowersModal } from "../Modals/FollowsModal/FollowersModal";
+
 type props = {
   owner: User;
-  posts: Post;
 };
 
-export default function ProfileCard({ owner, posts }: props) {
+export default function ProfileCard({ owner }: props) {
+  const [error, setError] = useState<String | null>(null);
+
   const { user } = useAuth();
+
+  const onFollowClick = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/follow/user/${owner.id}`,
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Something went wrong");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+    }
+  };
 
   return (
     <section className={styles.profile__wrapper}>
-      {/* Banner & PFP Area */}
       <section className={styles.profile__visuals}>
         <img
           src={owner.banner_picture_url}
           alt={`${owner.display_name}'s banner`}
-          className={styles.banner_image}
+          className={styles.banner__image}
         />
         <div className={styles.pfp__container}>
           <img
@@ -28,15 +55,20 @@ export default function ProfileCard({ owner, posts }: props) {
         </div>
       </section>
 
-      {/* Button Action Row */}
       <div className={styles.action__row}>
-        <button className={styles.edit__button}>Edit profile</button>
+        {owner.id === user?.id ? (
+          <button className={styles.edit__button}>Edit profile</button>
+        ) : (
+          <button className={styles.follow__button} onClick={onFollowClick}>
+            Follow
+          </button>
+        )}
       </div>
 
-      {/* Bio / Metadata Details */}
       <section className={styles.profile__details}>
         <span className={styles.display__name}>{owner.display_name}</span>
         <span className={styles.username}>@{owner.username}</span>
+        <span className={styles.bio}>{owner.bio}</span>
 
         <div className={styles.meta__info}>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
@@ -46,12 +78,27 @@ export default function ProfileCard({ owner, posts }: props) {
         </div>
 
         <div className={styles.statsRow}>
-          <span>
-            <strong>{owner._count.following}</strong> Following
-          </span>
-          <span>
-            <strong>{owner._count.followers}</strong> Followers
-          </span>
+          <button
+            className={styles.follower__count__button}
+            popoverTarget="following-popover"
+            popoverTargetAction="show"
+          >
+            <span>
+              <strong>{owner._count.following}</strong> Following
+            </span>
+          </button>
+          <FollowingModal id="following-popover" owner={owner}></FollowingModal>
+
+          <button
+            className={styles.follower__count__button}
+            popoverTarget="followers-popover"
+            popoverTargetAction="show"
+          >
+            <span>
+              <strong>{owner._count.followers}</strong> Followers
+            </span>
+          </button>
+          <FollowersModal id="followers-popover" owner={owner}></FollowersModal>
         </div>
       </section>
     </section>

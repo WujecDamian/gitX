@@ -36,21 +36,24 @@ function Profile() {
       }
     };
     getProfile();
-  }, []);
+  }, [params.userId]);
 
   if (loading) return <div>Loading...</div>;
   if (!profile) return <div>No profile.</div>;
-  console.log(profile);
 
   return (
     <>
-      <section className={styles.profile__wrapper}>
-        <ProfileCard owner={profile} posts={profile.posts}></ProfileCard>
-      </section>
+      <ProfileCard owner={profile}></ProfileCard>
       <section className={styles.posts}>
-        {profile.posts.map((post: Post) => (
-          <PostCard author={profile} post={post}></PostCard>
-        ))}
+        {profile.posts.length > 0 ? (
+          profile.posts.map((post: Post) => (
+            <PostCard author={profile} post={post} key={post.id}></PostCard>
+          ))
+        ) : (
+          <div className={styles.no__posts__message}>
+            <p>{profile.display_name} Has no posts to show!</p>
+          </div>
+        )}
       </section>
     </>
   );

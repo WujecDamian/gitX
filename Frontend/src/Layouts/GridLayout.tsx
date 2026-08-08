@@ -29,8 +29,23 @@ function GridLayout() {
   const [commentPostId, setCommentPostId] = useState(null);
   const [commentId, setCommentId] = useState(null);
 
+  //checking if any modal is open (for darkening background and making inactive)
+  const isAnyModalOpen =
+    isPostOpen || isCommentModalOpen || isCommentOnCommentModalOpen;
+
   return (
     <section className={styles.root__layout}>
+      {isAnyModalOpen && (
+        <div
+          className={styles.backdrop__overlay}
+          onClick={() => {
+            // Optional: Close all modals when clicking the dark background
+            setIsPostOpen(false);
+            setIsCommentModalOpen(false);
+            setIsCommentOnCommentModalOpen(false);
+          }}
+        />
+      )}
       <Navbar onPostClick={() => setIsPostOpen(true)}></Navbar>
 
       <main>

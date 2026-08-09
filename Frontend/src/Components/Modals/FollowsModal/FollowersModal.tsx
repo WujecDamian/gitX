@@ -58,7 +58,7 @@ export const FollowersModal = ({ id, owner }: FollowsTypes) => {
             ))}
           </ul>
         ) : (
-          <span>{owner.display_name} is not following anyone!</span>
+          <span>{owner.display_name} is not followed by anyone!</span>
         )}
       </div>
     </div>

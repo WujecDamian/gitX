@@ -45,7 +45,7 @@ function Profile() {
 
   return (
     <>
-      <ProfileCard owner={profile}></ProfileCard>
+      <ProfileCard owner={profile} isFollowing={isFollowing}></ProfileCard>
       <section className={styles.posts}>
         {profile.posts.length > 0 ? (
           profile.posts.map((post: Post) => (

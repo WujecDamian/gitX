@@ -60,7 +60,9 @@
   transition: background-color 0.2s ease;
 }
 
-.follow__button {
+.follow__button,
+.following__button,
+.message__button {
   color: #000000;
   background-color: #ffffff;
   border: 1px solid #536471;
@@ -71,8 +73,31 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-
+.follow__button:hover {
+  background-color: rgb(255, 255, 255, 0.9);
+}
+.following__button {
+  background-color: #000000;
+  color: #ffffff;
+  width: 110px;
+}
+.following__button:hover {
+  background-color: rgb(255, 0, 0, 0.1);
+  color: red;
+  border: 1px solid red;
+}
 .edit__button:hover {
+  background-color: rgba(239, 243, 244, 0.1);
+}
+.message__button {
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+  color: #ffffff;
+  padding: 8px;
+  margin-inline: 0.5rem;
+}
+.message__button:hover {
   background-color: rgba(239, 243, 244, 0.1);
 }
 

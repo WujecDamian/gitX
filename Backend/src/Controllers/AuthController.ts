@@ -2,6 +2,14 @@ import { type NextFunction, type Request, type Response } from "express";
 import passport from "passport";
 import "../Authentication/passport-config";
 
+const getUser = (req: Request, res: Response) => {
+  if (!req.isAuthenticated() || !req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  res.json({ user: req.user });
+};
+
 const loginError = (req: Request, res: Response) => {
   res.json({ erroe: "Unknown Error" });
 };
@@ -11,7 +19,8 @@ const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const handleSuccess = (req: Request, res: Response) => {
-  res.json({ message: "Success", user: req.user });
+  //res.json({ message: "Success", user: req.user });
+  res.redirect("http://localhost:5173/");
 };
 
 const callbackAuthenticate = (
@@ -47,6 +56,7 @@ const logOutUser = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export {
+  getUser,
   loginError,
   authenticateUser,
   handleSuccess,

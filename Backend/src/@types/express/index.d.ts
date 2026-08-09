@@ -1,15 +1,11 @@
-import { User as PrismaUser } from "@prisma/client";
-
-declare module "express-serve-static-core" {
-  interface Request {
-    user?: PrismaUser;
-  }
-}
+import { User as PrismaUser, Post as PrismaPost } from "@prisma/client";
 
 declare global {
   namespace Express {
-    interface User extends PrismaUser {}
+    interface Request {
+      user?: PrismaUser;
+    }
   }
 }
 
-// this adds type of PrismaUser (from prisma model) to req.user
+export {};

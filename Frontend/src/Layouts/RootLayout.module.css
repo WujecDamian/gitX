@@ -1,0 +1,21 @@
+.root__layout {
+  display: grid;
+  grid-template-columns: minmax(68px, 300px) 700px 200px;
+  min-height: 100vh;
+  width: min(1280px, 100%);
+
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+}
+
+.backdrop__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  pointer-events: auto;
+}

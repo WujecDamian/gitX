@@ -13,40 +13,34 @@ const likePost = async (req: Request, res: Response) => {
   }
 
   try {
-    await prisma.postLike.create({
-      data: {
-        user_id: userId,
+    const hasLiked = await prisma.postLike.findMany({
+      where: {
         post_id: postId,
+        user_id: userId,
       },
     });
-
+    console.log(hasLiked);
+    if (hasLiked.length > 0) {
+      await prisma.postLike.deleteMany({
+        where: {
+          user_id: userId,
+          post_id: postId,
+        },
+      });
+    } else {
+      await prisma.postLike.create({
+        data: {
+          user_id: userId,
+          post_id: postId,
+        },
+      });
+    }
     return res.status(201).json({ message: "Successfully liked post!" });
   } catch (error) {
     return res.status(500).json({ error: "Failed to like post" });
   }
 };
 
-const unlikePost = async (req: Request, res: Response) => {
-  const { postId } = req.params;
-  const userId = req.user.id;
-
-  if (typeof postId !== "string") {
-    return res.status(400).json({ error: "Invalid or missing Post ID" });
-  }
-
-  try {
-    await prisma.postLike.deleteMany({
-      where: {
-        post_id: postId,
-        user_id: userId,
-      },
-    });
-
-    return res.status(200).json({ message: "Successfully unliked post!" });
-  } catch (error) {
-    return res.status(500).json({ error: "Failed to unlike post" });
-  }
-};
 const likeComment = async (req: Request, res: Response) => {
   const { commentId } = req.params;
   const userId = req.user.id;
@@ -56,37 +50,31 @@ const likeComment = async (req: Request, res: Response) => {
   }
 
   try {
-    await prisma.commentLike.create({
-      data: {
-        user_id: userId,
-        comment_id: commentId,
-      },
-    });
-
-    return res.status(201).json({ message: "Successfully liked post!" });
-  } catch (error) {
-    return res.status(500).json({ error: "Failed to like post" });
-  }
-};
-const unlikeComment = async (req: Request, res: Response) => {
-  const { commentId } = req.params;
-  const userId = req.user.id;
-
-  if (typeof commentId !== "string") {
-    return res.status(400).json({ error: "Invalid or missing Comment ID" });
-  }
-
-  try {
-    await prisma.commentLike.deleteMany({
+    const hasLiked = await prisma.commentLike.findMany({
       where: {
         comment_id: commentId,
         user_id: userId,
       },
     });
-
-    return res.status(200).json({ message: "Successfully unliked comment!" });
+    console.log(hasLiked);
+    if (hasLiked.length > 0) {
+      await prisma.commentLike.deleteMany({
+        where: {
+          user_id: userId,
+          comment_id: commentId,
+        },
+      });
+    } else {
+      await prisma.commentLike.create({
+        data: {
+          user_id: userId,
+          comment_id: commentId,
+        },
+      });
+    }
+    return res.status(201).json({ message: "Successfully liked comment!" });
   } catch (error) {
-    return res.status(500).json({ error: "Failed to unlike comment" });
+    return res.status(500).json({ error: "Failed to like comment" });
   }
 };
 
@@ -127,4 +115,4 @@ const getLikedPosts = async (req: Request, res: Response) => {
   }
 };
 
-export { likePost, unlikePost, likeComment, unlikeComment, getLikedPosts };
+export { likePost, likeComment, getLikedPosts };

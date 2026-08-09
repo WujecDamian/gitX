@@ -5,8 +5,9 @@ import isAuthenticated from "../Authentication/isAuthenticated";
 const router = Router();
 
 // Routes
+router.get("/user", authController.getUser);
 router.get("/error", authController.loginError);
-router.get("/github", authController.authenticateUser);
+router.get("/login/github", authController.authenticateUser);
 router.get(
   "/github/callback",
   authController.callbackAuthenticate,

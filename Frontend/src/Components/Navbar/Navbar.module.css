@@ -1,0 +1,102 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  padding: 1rem;
+  padding-top: 1rem;
+  gap: 1rem;
+  .navbar__logo {
+    width: 24px;
+  }
+  .links {
+    display: flex;
+    flex-direction: column;
+    a {
+      background-color: transparent;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 500;
+      padding: 1rem;
+      transition: background-color 0.25s;
+      border-radius: 1rem;
+      transition: border-radius 0.7s ease-in-out;
+    }
+    a:hover,
+    a:focus {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10rem;
+    }
+  }
+  button {
+    margin-top: 1rem;
+  }
+}
+.nav__link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav__mini__profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  corner-shape: squircle;
+  border-radius: 10rem;
+  cursor: pointer;
+  padding: 1rem;
+  transition: background-color 0.25s;
+  .mini__profile--left {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+
+    :first-child {
+      margin-right: 0.5rem;
+    }
+    :last-child {
+      display: flex;
+      flex-direction: column;
+      margin-right: 0.5rem;
+      :first-child {
+        font-weight: 900;
+      }
+      :last-child {
+        font-weight: 200;
+        color: var(--text);
+      }
+    }
+  }
+  .mini__profile--right {
+    margin-left: auto;
+    text-align: center;
+    font-weight: 900;
+  }
+}
+.nav__mini__profile:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* dropdown */
+.dropdown {
+  position: relative;
+  background-color: rgb(41, 41, 43);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 10rem;
+  margin-bottom: 1rem;
+}
+.dropdown::after {
+  content: " ";
+
+  position: absolute;
+  bottom: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+
+  border-width: 0.75rem 0.75rem 0 0.75rem;
+  border-style: solid;
+  border-color: rgb(41, 41, 43) transparent transparent transparent;
+}

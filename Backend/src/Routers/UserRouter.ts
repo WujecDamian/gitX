@@ -6,6 +6,12 @@ import express, {
 import * as UserController from "../Controllers/UserController";
 
 const router = express.Router();
+//get user profile
+router.get("/profile/:userId", UserController.getUserProfile);
+//get following & followers
+router.get("/:userId/following", UserController.getUserFollowing);
+router.get("/:userId/followers", UserController.getUserFollowers);
+
 //user delete
 router.delete("/delete", UserController.deleteUser);
 

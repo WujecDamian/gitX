@@ -12,9 +12,7 @@ router.get("/:postId", LikeController.getLikedPosts);
 
 //like | unlike
 router.post("/post/:postId", LikeController.likePost);
-router.delete("/post/:postId", LikeController.unlikePost);
 
 router.post("/comment/:commentId", LikeController.likeComment);
-router.delete("/comment/:commentId", LikeController.unlikeComment);
 
 export default router;

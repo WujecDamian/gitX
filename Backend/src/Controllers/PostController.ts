@@ -44,9 +44,6 @@ const createPost = async (req: Request, res: Response) => {
 const getAllPosts = async (req: Request, res: Response) => {
   try {
     const posts = await prisma.post.findMany({
-      where: {
-        groupId: null,
-      },
       select: {
         author: true,
         id: true,
@@ -55,7 +52,7 @@ const getAllPosts = async (req: Request, res: Response) => {
         createdAt: true,
         _count: {
           select: {
-            likes: true,
+            postLikes: true,
             comments: true,
           },
         },
@@ -67,10 +64,93 @@ const getAllPosts = async (req: Request, res: Response) => {
 
     return res.status(200).json({ posts });
   } catch (error) {
-    return res.status(500).json({ error: "Failed to create post" });
+    return res.status(500).json({ error: "Failed to fetch post" });
   }
 };
 
+//Post get functions
+const getPostById = async (req: Request, res: Response) => {
+  try {
+    const { postId } = req.params;
+
+    if (typeof postId !== "string") {
+      return res.status(400).json({ error: "Invalid or missing Post ID" });
+    }
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+      select: {
+        author: true,
+        id: true,
+        content: true,
+        media_url: true,
+        createdAt: true,
+        _count: {
+          select: {
+            postLikes: true,
+            comments: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ post });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to fetch post" });
+  }
+};
+
+//Post get functions
+const getPostWithCommentsById = async (req: Request, res: Response) => {
+  try {
+    const newPostId = req.params.postId;
+
+    if (!newPostId) {
+      return res.status(400).json({ error: "Invalid post ID format" });
+    }
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: newPostId.toString(),
+      },
+      select: {
+        author: true,
+        id: true,
+        content: true,
+        media_url: true,
+        createdAt: true,
+        comments: {
+          where: {
+            sub_comment_id: null,
+          },
+          include: {
+            author: true,
+            sub_comments: {
+              include: {
+                author: true,
+                _count: true,
+              },
+            },
+            _count: true,
+          },
+        },
+        _count: {
+          select: {
+            postLikes: true,
+            comments: true,
+            bookmarks: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ post });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to fetch post" });
+  }
+};
 const getFollowingPosts = async (req: Request, res: Response) => {
   const userId = req.user.id;
 
@@ -178,6 +258,8 @@ export {
   deletePost,
   createPost,
   getAllPosts,
+  getPostById,
+  getPostWithCommentsById,
   getFollowingPosts,
   getUserPosts,
   getGroupPosts,

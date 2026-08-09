@@ -1,0 +1,89 @@
+/* * MAIN comment CARD */
+.comment__card {
+  border: 1px solid rgb(67, 67, 67);
+  margin: 0;
+  padding: 1.25rem;
+  margin-top: -1px;
+  height: fit-content;
+}
+
+.comment__content__wrapper {
+  padding-left: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+}
+/* comment MEDIA */
+.comment__header {
+  display: flex;
+  height: 1.25rem;
+
+  img {
+    margin-right: 10px;
+  }
+  .comment__header__text__wrapper {
+    display: flex;
+    height: 10px;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0;
+    margin-top: 0.25rem;
+
+    h3 {
+      font-size: 0.75rem;
+      margin: 0;
+    }
+    font-size: 0.75rem;
+  }
+}
+
+.comment__media__img {
+  width: fit-content;
+  max-height: 510px;
+  object-fit: contain;
+  object-position: left;
+  border-radius: 1.5rem;
+  border: 1px solid rgb(67, 67, 67);
+}
+
+/* comment actions */
+.comment__actions {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.75rem;
+
+  button {
+    background-color: transparent;
+    border: 0;
+  }
+  .comments,
+  .likes,
+  .bookmarks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      cursor: pointer;
+    }
+  }
+
+  .comments:hover {
+    filter: invert(59%) sepia(34%) saturate(2008%) hue-rotate(151deg)
+      brightness(102%) contrast(106%) drop-shadow(0px 0px 5px #00d0ff);
+  }
+  .likes:hover {
+    filter: invert(16%) sepia(97%) saturate(6230%) hue-rotate(324deg)
+      brightness(105%) contrast(107%) drop-shadow(0px 0px 5px #ff0080);
+  }
+  .bookmarks:hover {
+    filter: invert(71%) sepia(97%) saturate(480%) hue-rotate(37deg)
+      brightness(200%) contrast(107%) drop-shadow(0px 0px 5px #7bfd02);
+  }
+  .bookmarks {
+    margin-left: auto;
+  }
+}

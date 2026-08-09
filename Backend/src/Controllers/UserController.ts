@@ -151,6 +151,157 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getUserProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { userId } = req.params;
+  const user = req.user;
+
+  if (typeof userId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing User ID" });
+  }
+
+  try {
+    const userProfile = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+        banner_picture_url: true,
+        bio: true,
+        createdAt: true,
+        username: true,
+        display_name: true,
+        github_profile_url: true,
+        profile_picture_url: true,
+        socials: true,
+        tags: true,
+        posts: {
+          include: {
+            _count: true,
+          },
+        },
+        followers: {
+          where: {
+            follower_id: user.id,
+          },
+          select: {
+            id: true,
+          },
+        },
+        _count: {
+          select: { followers: true, following: true },
+        },
+      },
+    });
+    //logic for checking if user is following
+    if (!userProfile) {
+      return res.status(404).json({ error: "User profile not found" });
+    }
+    const isFollowing =
+      Array.isArray(userProfile.followers) && userProfile.followers.length > 0;
+    return res.status(200).json({
+      message: "Successfully fetched user Profile!",
+      userProfile,
+      isFollowing,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+const getUserFollowing = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { userId } = req.params;
+
+  if (typeof userId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing User ID" });
+  }
+
+  try {
+    const following = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        following: {
+          orderBy: {
+            following: {
+              followers: {
+                _count: "desc", // Orders by highest follower count first
+              },
+            },
+          },
+          include: {
+            following: {
+              include: {
+                _count: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({
+      message: "Successfully fetched user Following List!",
+      following: following?.following,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+const getUserFollowers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { userId } = req.params;
+
+  if (typeof userId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing User ID" });
+  }
+
+  try {
+    const followers = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        followers: {
+          orderBy: {
+            follower: {
+              followers: {
+                _count: "desc", // Orders by highest follower count first
+              },
+            },
+          },
+          include: {
+            follower: {
+              include: {
+                _count: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({
+      message: "Successfully fetched user Following List!",
+      followers: followers?.followers,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
 export {
   editUserBio,
   editUserTags,
@@ -159,4 +310,7 @@ export {
   editUserPfp,
   editUserBanner,
   deleteUser,
+  getUserProfile,
+  getUserFollowers,
+  getUserFollowing,
 };

@@ -1,0 +1,22 @@
+.posts {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0;
+}
+
+.no__posts__message {
+  display: flex;
+  margin-top: -1px;
+  padding: 2rem;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: 1px solid rgb(67, 67, 67);
+  p {
+    margin-top: 1rem;
+    font-weight: 200;
+    font-style: italic;
+  }
+}

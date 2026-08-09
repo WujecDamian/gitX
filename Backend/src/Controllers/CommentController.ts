@@ -129,4 +129,45 @@ const getPostComments = async (req: Request, res: Response) => {
   }
 };
 
-export { createComment, createSubComment, deleteComment, getPostComments };
+//Post get functions
+const getComment = async (req: Request, res: Response) => {
+  const { commentId } = req.params;
+
+  if (typeof commentId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing Post ID" });
+  }
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: commentId,
+      },
+      include: {
+        author: true,
+        sub_comments: {
+          include: {
+            author: true,
+            _count: true,
+            sub_comments: {
+              include: {
+                author: true,
+                _count: true,
+              },
+            },
+          },
+        },
+        _count: true,
+      },
+    });
+
+    return res.status(200).json({ comment });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to create post" });
+  }
+};
+export {
+  createComment,
+  createSubComment,
+  deleteComment,
+  getPostComments,
+  getComment,
+};

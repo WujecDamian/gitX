@@ -1,8 +1,9 @@
 .navbar {
   display: flex;
   justify-content: space-between;
+  height: 100%;
   padding: 1rem;
-  padding-top: 0;
+  padding-top: 1rem;
   gap: 1rem;
   .navbar__logo {
     width: 24px;

@@ -6,6 +6,7 @@ import { RedisStore } from "connect-redis";
 import passport from "passport";
 import cors from "cors";
 import isAuthenticated from "./Authentication/isAuthenticated";
+import "dotenv/config";
 //session
 import { sessionMiddleware } from "./session";
 //socket

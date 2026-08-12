@@ -10,6 +10,7 @@ import Login from "./Pages/Authentication/Login/Login";
 import Profile from "./Pages/Profile/Profile";
 import Post from "./Pages/Post/Post";
 import CommentPage from "./Pages/Comment/CommentPage";
+import Chat from "./Pages/Chat/Chat";
 
 //https://reactrouter.com/start/modes#data
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
               {
                 path: "/comment/:commentId",
                 element: <CommentPage></CommentPage>,
+              },
+              {
+                path: "/chat/:chatId",
+                element: <Chat></Chat>,
               },
             ],
           },

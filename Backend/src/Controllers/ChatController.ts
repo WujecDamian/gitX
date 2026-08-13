@@ -4,6 +4,72 @@ import { prisma } from "../lib/prisma";
 
 //following / unfollowing User
 
+const getChats = async (req: Request, res: Response) => {
+  const userId = req.user.id;
+
+  if (typeof userId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing User ID" });
+  }
+
+  try {
+    const chats = await prisma.chat.findMany({
+      where: {
+        OR: [{ user1_id: userId }, { user2_id: userId }],
+      },
+      include: {
+        messages: {
+          take: 1,
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Successfully queried chat!", chats });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to query / create chat" });
+  }
+};
+
+const getGroupChats = async (req: Request, res: Response) => {
+  const userId = req.user.id;
+
+  if (typeof userId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing User ID" });
+  }
+
+  try {
+    const groupChats = await prisma.groupChat.findMany({
+      where: {
+        group: {
+          members: {
+            some: {
+              id: userId,
+            },
+          },
+        },
+      },
+      include: {
+        group: true,
+        messages: {
+          take: 1,
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Successfully queried chat!", groupChats });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to query / create chat" });
+  }
+};
 const getOrCreateChat = async (req: Request, res: Response) => {
   const { recipientId } = req.params;
   const senderId = req.user.id;
@@ -24,7 +90,7 @@ const getOrCreateChat = async (req: Request, res: Response) => {
     if (existingChat) {
       return res
         .status(200)
-        .json({ message: "Successfully queried chat!", chat: existingChat });
+        .json({ message: "Successfully queried chat!", chat: existingChat.id });
     }
     const newChat = await prisma.chat.create({
       data: {
@@ -34,7 +100,7 @@ const getOrCreateChat = async (req: Request, res: Response) => {
     });
     return res
       .status(201)
-      .json({ message: "Successfully created chat!", chat: newChat });
+      .json({ message: "Successfully created chat!", chat: newChat.id });
   } catch (error) {
     return res.status(500).json({ error: "Failed to query / create chat" });
   }
@@ -63,4 +129,4 @@ const getGroupChat = async (req: Request, res: Response) => {
   }
 };
 
-export { getOrCreateChat, getGroupChat };
+export { getOrCreateChat, getGroupChat, getChats, getGroupChats };

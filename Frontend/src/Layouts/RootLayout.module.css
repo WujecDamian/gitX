@@ -10,7 +10,7 @@
 }
 .root__layout--mini {
   --nav__width: 110px;
-  grid-template-columns: 110px 890px 200px;
+  grid-template-columns: 110px 1090px;
 }
 .backdrop__overlay {
   position: fixed;

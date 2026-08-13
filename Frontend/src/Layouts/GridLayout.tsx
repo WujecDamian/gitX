@@ -36,7 +36,7 @@ function GridLayout() {
 
   //checking on what page am I to render navbar conditionally
   const location = useLocation();
-  const isOnPageWithSmallNav = location.pathname === "/chat";
+  const isOnPageWithSmallNav = location.pathname.startsWith("/chat");
 
   return (
     <section

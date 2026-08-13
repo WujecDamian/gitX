@@ -1,5 +1,6 @@
 import styles from "./ProfileCard.module.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { TimeAccountCreated } from "../UI/Time/TimeAccountCreated";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
 
@@ -13,7 +14,7 @@ type props = {
 
 export default function ProfileCard({ owner, isFollowing }: props) {
   const [error, setError] = useState<String | null>(null);
-
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [buttonContent, setButtonContent] = useState("Following");
   console.log(isFollowing);
@@ -41,20 +42,24 @@ export default function ProfileCard({ owner, isFollowing }: props) {
     }
   };
   const onMessageClick = async () => {
+    // 1. get chat id using getorcreate api route.
+    // 2. redirect to chat
+    let chatId = "";
     try {
       const response = await fetch(
-        `http://localhost:3000/api/follow/user/${owner.id}`,
+        `http://localhost:3000/api/chat/${owner.id}`,
         {
           method: "POST",
           credentials: "include",
         },
       );
 
-      const result = await response.json();
-
       if (!response.ok) {
-        throw new Error(result.error || "Something went wrong");
+        throw new Error(response.statusText || "Something went wrong");
       }
+      const data = await response.json();
+      chatId = data.chat;
+      navigate(`/chat/${chatId}`);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

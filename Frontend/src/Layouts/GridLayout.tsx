@@ -1,5 +1,6 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../Components/Navbar/Navbar";
+import SmallNavbar from "../Components/Navbar/SmallNavbar";
 
 import { useAuth } from "../Contexts/Auth/AuthContext";
 import styles from "./RootLayout.module.css";
@@ -33,8 +34,14 @@ function GridLayout() {
   const isAnyModalOpen =
     isPostOpen || isCommentModalOpen || isCommentOnCommentModalOpen;
 
+  //checking on what page am I to render navbar conditionally
+  const location = useLocation();
+  const isOnPageWithSmallNav = location.pathname === "/chat";
+
   return (
-    <section className={styles.root__layout}>
+    <section
+      className={`${styles.root__layout} ${isOnPageWithSmallNav ? styles["root__layout--mini"] : ""}`}
+    >
       {isAnyModalOpen && (
         <div
           className={styles.backdrop__overlay}
@@ -46,8 +53,11 @@ function GridLayout() {
           }}
         />
       )}
-      <Navbar onPostClick={() => setIsPostOpen(true)}></Navbar>
-
+      {isOnPageWithSmallNav ? (
+        <SmallNavbar onPostClick={() => setIsPostOpen(true)}></SmallNavbar>
+      ) : (
+        <Navbar onPostClick={() => setIsPostOpen(true)}></Navbar>
+      )}
       <main>
         <Outlet
           context={{

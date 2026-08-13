@@ -33,7 +33,7 @@ const router = createBrowserRouter([
                 element: <CommentPage></CommentPage>,
               },
               {
-                path: "/chat/:chatId",
+                path: "/chat/",
                 element: <Chat></Chat>,
               },
             ],

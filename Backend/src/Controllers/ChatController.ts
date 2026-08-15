@@ -91,6 +91,7 @@ const getGroupChats = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Failed to query / create chat" });
   }
 };
+
 const getOrCreateChat = async (req: Request, res: Response) => {
   const { recipientId } = req.params;
   const senderId = req.user.id;
@@ -149,5 +150,68 @@ const getGroupChat = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Failed to query / create chat" });
   }
 };
+//get specific chat (detailed)
 
-export { getOrCreateChat, getGroupChat, getChats, getGroupChats };
+const getChat = async (req: Request, res: Response) => {
+  const { chatId } = req.params;
+  const userId = req.user.id; // Using userId to match your first query's naming
+
+  if (typeof chatId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing Chat ID" });
+  }
+
+  if (typeof userId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing User ID" });
+  }
+
+  try {
+    // 1. Fetch the specific chat and verify the user is a participant
+    const rawChat = await prisma.chat.findFirst({
+      where: {
+        id: chatId,
+      },
+      include: {
+        messages: {
+          orderBy: {
+            createdAt: "asc", // "asc" so history scrolls oldest to newest
+          },
+        },
+      },
+    });
+
+    // Handle 404 if chat doesn't exist or user doesn't have access
+    if (!rawChat) {
+      return res.status(404).json({ error: "Chat not found or access denied" });
+    }
+
+    // 2. Identify and fetch the recipient profile data
+    const recipientId =
+      rawChat.user1_id === userId ? rawChat.user2_id : rawChat.user1_id;
+
+    const recipient = await prisma.user.findUnique({
+      where: { id: recipientId },
+      select: {
+        id: true,
+        display_name: true,
+        profile_picture_url: true,
+      },
+    });
+
+    // 3. Construct the matching unified payload structure
+    const chat = {
+      id: rawChat.id,
+      user1_id: rawChat.user1_id,
+      user2_id: rawChat.user2_id,
+      messages: rawChat.messages,
+      recipient,
+    };
+
+    return res
+      .status(200)
+      .json({ message: "Successfully queried chat!", chat });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to query chat history" });
+  }
+};
+
+export { getOrCreateChat, getGroupChat, getChats, getGroupChats, getChat };

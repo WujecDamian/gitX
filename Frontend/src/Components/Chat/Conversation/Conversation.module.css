@@ -1,0 +1,9 @@
+.conversation__wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-inline: 1px solid rgb(67, 67, 67);
+  width: 100%;
+  min-height: 100%;
+  margin-left: -1px;
+}

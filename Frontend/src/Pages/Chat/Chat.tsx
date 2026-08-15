@@ -2,18 +2,53 @@ import { useEffect, useState, useRef } from "react";
 import { useCookies } from "react-cookie";
 import { useParams, Link } from "react-router";
 import styles from "./Chat.module.css";
+import { Sidebar } from "../../Components/Chat/Sidebar/Sidebar";
+import { Conversation } from "../../Components/Chat/Conversation/Conversation";
+import { useAuth } from "../../Contexts/Auth/AuthContext";
 
 function Chat() {
-  const [chat, setChat] = useState([]);
+  const { user } = useAuth();
+  const [chats, setChats] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   let params = useParams();
+  if (!user) {
+    return <h2>Log in first</h2>;
+  }
+  useEffect(() => {
+    const getPost = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/chat/getChats/`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
+        if (!response.ok) {
+          throw new Error(`Failed to fetch chats: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setChats(data.chats);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unexpected error occurred");
+        }
+      }
+    };
+    getPost();
+  }, []);
 
+  if (loading) return <div>Loading...</div>;
+  if (!user) return <div>Please log in to view this page.</div>;
+  console.log(chats);
   return (
     <>
-      <section className={styles.home}>
-        <h1>Chat</h1>
-        <section className={styles.chat__wrapper}></section>
+      <section className={styles.chat__wrapper}>
+        <Sidebar chats={chats}></Sidebar>
+        <Conversation></Conversation>
       </section>
     </>
   );

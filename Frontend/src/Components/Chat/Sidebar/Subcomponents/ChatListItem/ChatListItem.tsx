@@ -1,7 +1,7 @@
 import styles from "./ChatListItem.module.css";
 import { ProfilePicture } from "../../../../UI/ProfilePicture/ProfilePicture";
-import { TimePosted } from "../../../../UI/Time/TimePosted";
 import { TimeSent } from "../../../../UI/Time/TimeSent";
+import { Link } from "react-router-dom";
 
 type ChatListItemTypes = {
   chat: Chat;
@@ -13,7 +13,7 @@ export const ChatListItem = ({ chat }: ChatListItemTypes) => {
     isMessageSentByRecipient = true;
   }
   return (
-    <li className={styles.chat__list__item}>
+    <Link to={`/chat/${chat.id}`} className={styles.chat__list__item}>
       <div className={styles["list__item--left"]}>
         <ProfilePicture url={chat.recipient.profile_picture_url} />
       </div>
@@ -44,6 +44,6 @@ export const ChatListItem = ({ chat }: ChatListItemTypes) => {
           </p>
         </div>
       </div>
-    </li>
+    </Link>
   );
 };

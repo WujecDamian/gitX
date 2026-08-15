@@ -2,8 +2,6 @@ import { type Request, type Response } from "express";
 import "../Authentication/passport-config";
 import { prisma } from "../lib/prisma";
 
-//following / unfollowing User
-
 const getChats = async (req: Request, res: Response) => {
   const userId = req.user.id;
 
@@ -12,7 +10,7 @@ const getChats = async (req: Request, res: Response) => {
   }
 
   try {
-    const chats = await prisma.chat.findMany({
+    const rawChats = await prisma.chat.findMany({
       where: {
         OR: [{ user1_id: userId }, { user2_id: userId }],
       },
@@ -25,7 +23,30 @@ const getChats = async (req: Request, res: Response) => {
         },
       },
     });
+    const chats = await Promise.all(
+      rawChats.map(async (chat) => {
+        const recipientId =
+          chat.user1_id === userId ? chat.user2_id : chat.user1_id;
 
+        const recipient = await prisma.user.findUnique({
+          where: { id: recipientId },
+          select: {
+            id: true,
+            display_name: true,
+            profile_picture_url: true,
+          },
+        });
+
+        //return object (same as rawChats but with additional recipient data)
+        return {
+          id: chat.id,
+          user1_id: chat.user1_id,
+          user2_id: chat.user2_id,
+          messages: chat.messages,
+          recipient, // The resolved user profile
+        };
+      }),
+    );
     return res
       .status(200)
       .json({ message: "Successfully queried chat!", chats });

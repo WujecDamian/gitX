@@ -68,8 +68,9 @@ declare global {
     message: Message;
     user1_id: string;
     user2_id: string;
+    recipient: User;
   };
-  type Chat = {
+  type GroupChat = {
     id: string;
     message: Message;
     group_id: string;

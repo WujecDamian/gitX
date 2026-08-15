@@ -16,7 +16,7 @@ function Chat() {
     return <h2>Log in first</h2>;
   }
   useEffect(() => {
-    const getPost = async () => {
+    const getChats = async () => {
       try {
         const response = await fetch(
           `http://localhost:3000/api/chat/getChats/`,
@@ -38,7 +38,7 @@ function Chat() {
         }
       }
     };
-    getPost();
+    getChats();
   }, []);
 
   if (loading) return <div>Loading...</div>;

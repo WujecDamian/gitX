@@ -65,7 +65,7 @@ declare global {
   };
   type Chat = {
     id: string;
-    message: Message;
+    messages: Message[0];
     user1_id: string;
     user2_id: string;
     recipient: User;

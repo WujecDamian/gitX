@@ -1,9 +1,19 @@
 .chat__sidebar {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
   width: 350px;
   min-width: 350px;
   min-height: 100%;
   border-inline: 1px solid rgb(67, 67, 67);
+}
+
+.chat__list__item__list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  margin-top: 2rem;
+  width: 100%;
+  justify-content: center;
 }

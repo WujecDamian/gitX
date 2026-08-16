@@ -40,6 +40,10 @@ const router = createBrowserRouter([
                 path: "/chat/:chatId",
                 element: <Chat></Chat>,
               },
+              {
+                path: "/group/",
+                element: <Chat></Chat>,
+              },
             ],
           },
         ],

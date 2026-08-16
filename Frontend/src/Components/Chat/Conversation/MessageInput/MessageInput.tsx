@@ -42,10 +42,6 @@ export const MessageInput = ({ chatId }: MessageInputTypes) => {
       setMediaUrl("");
 
       // Programmatically close the native HTML popover tray safely
-      const popoverEl = document.getElementById("media-popover");
-      if (popoverEl && "hidePopover" in popoverEl) {
-        (popoverEl as any).hidePopover();
-      }
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {
@@ -63,7 +59,6 @@ export const MessageInput = ({ chatId }: MessageInputTypes) => {
         ＋
       </button>
 
-      {/* Native HTML Popover Container element declared with popover attribute */}
       <div id="media-popover" popover="auto" className={styles.popover__menu}>
         <p className={styles.popover__title}>Attach Media Link</p>
         <input
@@ -93,7 +88,6 @@ export const MessageInput = ({ chatId }: MessageInputTypes) => {
             disabled={isSending}
           />
 
-          {/* Shows trigger button if text exists OR a media attachment URL is configured */}
           {(text.trim() || mediaUrl.trim()) && (
             <button
               type="submit"

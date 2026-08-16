@@ -39,7 +39,7 @@ export const ChatListItem = ({ chat }: ChatListItemTypes) => {
                 : styles.receivedMessage
             }`}
           >
-            {isMessageSentByRecipient && (
+            {!isMessageSentByRecipient && chat.messages[0] && (
               <span className={styles.you_prefix}>You: </span>
             )}
             {chat.messages[0]

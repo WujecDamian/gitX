@@ -11,6 +11,7 @@ import Profile from "./Pages/Profile/Profile";
 import Post from "./Pages/Post/Post";
 import CommentPage from "./Pages/Comment/CommentPage";
 import Chat from "./Pages/Chat/Chat";
+import Group from "./Pages/Group/Group";
 
 //https://reactrouter.com/start/modes#data
 const router = createBrowserRouter([
@@ -41,8 +42,8 @@ const router = createBrowserRouter([
                 element: <Chat></Chat>,
               },
               {
-                path: "/group/",
-                element: <Chat></Chat>,
+                path: "/groups/",
+                element: <Group></Group>,
               },
             ],
           },

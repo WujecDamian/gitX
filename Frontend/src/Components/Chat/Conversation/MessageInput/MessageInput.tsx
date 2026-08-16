@@ -37,11 +37,8 @@ export const MessageInput = ({ chatId }: MessageInputTypes) => {
         throw new Error("Failed to send message");
       }
 
-      // Reset values upon success
       setText("");
       setMediaUrl("");
-
-      // Programmatically close the native HTML popover tray safely
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {

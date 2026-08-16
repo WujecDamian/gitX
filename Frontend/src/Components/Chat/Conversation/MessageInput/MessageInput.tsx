@@ -1,5 +1,5 @@
 import styles from "./MessageInput.module.css";
-import { useState } from "react";
+import React, { useState } from "react";
 
 type MessageInputTypes = {
   chatId: string;
@@ -7,11 +7,13 @@ type MessageInputTypes = {
 
 export const MessageInput = ({ chatId }: MessageInputTypes) => {
   const [text, setText] = useState("");
+  const [mediaUrl, setMediaUrl] = useState(""); // Track the media input value
   const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!text.trim() || isSending) return;
+
+    if ((!text.trim() && !mediaUrl.trim()) || isSending) return;
 
     setIsSending(true);
     try {
@@ -26,6 +28,7 @@ export const MessageInput = ({ chatId }: MessageInputTypes) => {
           body: JSON.stringify({
             chatId,
             content: text.trim(),
+            mediaUrl: mediaUrl.trim() || null,
           }),
         },
       );
@@ -34,10 +37,15 @@ export const MessageInput = ({ chatId }: MessageInputTypes) => {
         throw new Error("Failed to send message");
       }
 
-      const data = await response.json();
+      // Reset values upon success
+      setText("");
+      setMediaUrl("");
 
-      // Pass the returned message object up to the parent array state
-      setText(""); // Clear the input field
+      // Programmatically close the native HTML popover tray safely
+      const popoverEl = document.getElementById("media-popover");
+      if (popoverEl && "hidePopover" in popoverEl) {
+        (popoverEl as any).hidePopover();
+      }
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {
@@ -47,23 +55,46 @@ export const MessageInput = ({ chatId }: MessageInputTypes) => {
 
   return (
     <footer className={styles.input__footer}>
-      <button type="button" className={styles.icon__btn}>
+      <button
+        type="button"
+        className={styles.icon__btn}
+        popoverTarget="media-popover"
+      >
         ＋
       </button>
+
+      {/* Native HTML Popover Container element declared with popover attribute */}
+      <div id="media-popover" popover="auto" className={styles.popover__menu}>
+        <p className={styles.popover__title}>Attach Media Link</p>
+        <input
+          type="url"
+          placeholder="Paste image or video URL..."
+          className={styles.popover__input}
+          value={mediaUrl}
+          onChange={(e) => setMediaUrl(e.target.value)}
+        />
+        {mediaUrl.trim() && (
+          <div className={styles.popover__preview_indicator}>
+            ✓ Link attached
+          </div>
+        )}
+      </div>
 
       <form className={styles.input__form} onSubmit={handleSubmit}>
         <div className={styles.input__container}>
           <input
             type="text"
-            placeholder="Unencrypted message"
+            placeholder={
+              mediaUrl ? "Message with attachment..." : "Unencrypted message"
+            }
             className={styles.text__input}
             value={text}
             onChange={(e) => setText(e.target.value)}
             disabled={isSending}
           />
 
-          {/* Send Button visible only when there is text typed */}
-          {text.trim() && (
+          {/* Shows trigger button if text exists OR a media attachment URL is configured */}
+          {(text.trim() || mediaUrl.trim()) && (
             <button
               type="submit"
               className={styles.send__button}

@@ -214,4 +214,37 @@ const getChat = async (req: Request, res: Response) => {
   }
 };
 
-export { getOrCreateChat, getGroupChat, getChats, getGroupChats, getChat };
+// ? SENDING MESSAGES
+const sendMessage = async (req: Request, res: Response) => {
+  const { content, mediaUrl, chatId } = req.body;
+  const senderId = req.user.id;
+
+  if (typeof chatId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing chat ID" });
+  }
+
+  try {
+    const newMessage = await prisma.message.create({
+      data: {
+        chat_id: chatId,
+        content,
+        media_url: mediaUrl,
+        senderId,
+      },
+    });
+    return res
+      .status(201)
+      .json({ message: "Successfully created chat!", newMessage });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to send message" });
+  }
+};
+
+export {
+  getOrCreateChat,
+  getGroupChat,
+  getChats,
+  getGroupChats,
+  getChat,
+  sendMessage,
+};

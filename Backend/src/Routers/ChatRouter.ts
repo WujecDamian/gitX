@@ -13,6 +13,8 @@ router.get("/getGroupChats/", ChatController.getGroupChats);
 
 //specific chat (more detailed)
 router.get("/getChat/:chatId", ChatController.getChat);
+// send message to 1:1 Chat
+router.post("sendMessage/", ChatController.sendMessage);
 
 router.post("/:recipientId", ChatController.getOrCreateChat);
 router.get("/group/:groupId", ChatController.getGroupChat);

@@ -15,7 +15,6 @@ export const MessageBubble = ({ message }: MessageBubbleTypes) => {
   const isSender = message.senderId === user.id;
   const mediaUrl = message.media_url;
 
-  // Simple checks for file extensions
   const isImage = (url: string) => /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(url);
   const isVideo = (url: string) => /\.(mp4|webm|ogg|mov)$/i.test(url);
 
@@ -24,7 +23,6 @@ export const MessageBubble = ({ message }: MessageBubbleTypes) => {
       className={`${styles.bubble__row} ${isSender ? styles.sent : styles.received}`}
     >
       <div className={styles.bubble}>
-        {/* Render media attachments cleanly at the top of the bundle */}
         {mediaUrl && (
           <div className={styles.media__wrapper}>
             {isImage(mediaUrl) ? (
@@ -49,7 +47,6 @@ export const MessageBubble = ({ message }: MessageBubbleTypes) => {
           </div>
         )}
 
-        {/* Text and Time Layout block */}
         <div className={styles.content__wrapper}>
           {message.content && (
             <span className={styles.text}>{message.content}</span>

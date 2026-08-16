@@ -9,10 +9,12 @@ import { useState } from "react";
 import NewPostModal from "../Components/Navbar/components/NewPostModal";
 import NewCommentModal from "../Components/Modals/NewCommentModal";
 import NewCommentOnCommentModal from "../Components/Modals/NewCommentOnCommentModal";
+import NewGroupModal from "../Components/Modals/NewGroupModal";
 
 export type LayoutContextType = {
   setIsCommentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCommentOnCommentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsNewGroupModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 
   setCommentPostId: React.Dispatch<React.SetStateAction<string>>;
   setCommentId: React.Dispatch<React.SetStateAction<string>>;
@@ -27,16 +29,27 @@ function GridLayout() {
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [isCommentOnCommentModalOpen, setIsCommentOnCommentModalOpen] =
     useState(false);
+  const [isNewGroupModalOpen, setIsNewGroupModalOpen] = useState(false);
+
   const [commentPostId, setCommentPostId] = useState(null);
   const [commentId, setCommentId] = useState(null);
 
   //checking if any modal is open (for darkening background and making inactive)
   const isAnyModalOpen =
-    isPostOpen || isCommentModalOpen || isCommentOnCommentModalOpen;
+    isPostOpen ||
+    isCommentModalOpen ||
+    isCommentOnCommentModalOpen ||
+    isNewGroupModalOpen;
 
   //checking on what page am I to render navbar conditionally
   const location = useLocation();
-  const isOnPageWithSmallNav = location.pathname.startsWith("/chat");
+  let isOnPageWithSmallNav = false;
+  if (
+    location.pathname.startsWith("/chat") ||
+    location.pathname.startsWith("/groups")
+  ) {
+    isOnPageWithSmallNav = true;
+  }
 
   return (
     <section
@@ -50,6 +63,7 @@ function GridLayout() {
             setIsPostOpen(false);
             setIsCommentModalOpen(false);
             setIsCommentOnCommentModalOpen(false);
+            setIsNewGroupModalOpen(false);
           }}
         />
       )}
@@ -63,6 +77,7 @@ function GridLayout() {
           context={{
             setIsCommentModalOpen,
             setIsCommentOnCommentModalOpen,
+            setIsNewGroupModalOpen,
             setCommentPostId,
             commentPostId,
             commentId,
@@ -87,6 +102,11 @@ function GridLayout() {
           commentId={commentId}
           user={user}
         ></NewCommentOnCommentModal>
+        <NewGroupModal
+          isOpen={isNewGroupModalOpen}
+          setIsOpen={setIsNewGroupModalOpen}
+          user={user}
+        ></NewGroupModal>
       </main>
     </section>
   );

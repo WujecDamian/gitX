@@ -58,13 +58,17 @@
   margin-top: 3px;
 }
 
-.message_preview {
+.members__preview {
   margin: 0;
   font-size: 14px;
   font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  span {
+    font-style: italic;
+    font-weight: 400;
+  }
 }
 
 /* Conditional Colors */

@@ -1,6 +1,14 @@
+import { Link } from "react-router-dom";
 import styles from "./RecipientProfileCard.module.css";
 
-export const RecipientProfileCard = ({ recipient }: any) => {
+type RecipientProfileCardTypes = {
+  recipient: User;
+};
+
+export const RecipientProfileCard = ({
+  recipient,
+}: RecipientProfileCardTypes) => {
+  console.log(recipient);
   return (
     <div className={styles.profile__card}>
       <img
@@ -11,17 +19,13 @@ export const RecipientProfileCard = ({ recipient }: any) => {
 
       <div className={styles.name__row}>
         <h2>{recipient.display_name}</h2>
-        {recipient.isVerified && <span className={styles.badge}>✓</span>}
       </div>
 
       <p className={styles.username}>{recipient.username}</p>
 
-      <p className={styles.meta}>
-        <strong>{recipient.followers}</strong> Followers · Joined{" "}
-        {recipient.joined}
-      </p>
-
-      <button className={styles.view__btn}>View Profile</button>
+      <Link to={`/profile/${recipient.id}`} className={styles.view__btn}>
+        View Profile
+      </Link>
     </div>
   );
 };

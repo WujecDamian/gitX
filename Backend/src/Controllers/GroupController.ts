@@ -40,6 +40,11 @@ const createGroup = async (req: Request, res: Response) => {
         groupChats: {
           create: {},
         },
+        members: {
+          connect: {
+            id: userId,
+          },
+        },
       },
     });
 

@@ -84,20 +84,12 @@ declare global {
     media_url: string;
     senderId: string;
   };
+
+  type Group = {
+    group_name: string;
+    group_profile_picture_url: string;
+    id: string;
+  };
 }
 
 export {};
-
-/*
-id
-: 
-"15455e29-9d4a-46eb-9f4a-ed37e3fe4830"
-messages
-: 
-[]
-user1_id
-: 
-"6edc16b9-628f-4d55-8ef9-e988e24d9e32"
-user2_id
-: 
-"7ceb5b76-2dda-47c6-ae29-854f20cd0d0f" */

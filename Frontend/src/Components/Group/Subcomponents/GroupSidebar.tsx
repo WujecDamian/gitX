@@ -1,10 +1,10 @@
 import styles from "./GroupSidebar.module.css";
-import { GroupListItem } from "./Subcomponents/ChatListItem/GroupListItem";
+import { GroupListItem } from "./GroupListItem";
 import { useOutletContext } from "react-router-dom";
 import type { LayoutContextType } from "../../../Layouts/GridLayout";
 
 type GroupSidebarTypes = {
-  groups: any;
+  groups: Group[];
 };
 
 export const GroupSidebar = ({ groups }: GroupSidebarTypes) => {

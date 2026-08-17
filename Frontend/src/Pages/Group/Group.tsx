@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie";
 import { useParams, Link } from "react-router";
 import styles from "./Group.module.css";
 import { Sidebar } from "../../Components/Chat/Sidebar/Sidebar";
-import { GroupSidebar } from "../../Components/Chat/Sidebar/GroupSidebar";
+import { GroupSidebar } from "../../Components/Group/Subcomponents/GroupSidebar";
 import { Conversation } from "../../Components/Chat/Conversation/Conversation";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
 

@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useParams, Link } from "react-router";
 import styles from "./Group.module.css";
-import { Sidebar } from "../../Components/Chat/Sidebar/Sidebar";
 import { GroupSidebar } from "../../Components/Group/Subcomponents/GroupSidebar";
-import { Conversation } from "../../Components/Chat/Conversation/Conversation";
+import { GroupPanel } from "../../Components/Group/GroupPanel/GroupPanel";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
 
 function Group() {
@@ -46,7 +45,7 @@ function Group() {
     <>
       <section className={styles.group__wrapper}>
         <GroupSidebar groups={groups}></GroupSidebar>
-        <Conversation></Conversation>
+        <GroupPanel></GroupPanel>
       </section>
     </>
   );

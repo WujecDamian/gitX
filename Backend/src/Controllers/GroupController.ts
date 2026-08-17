@@ -66,11 +66,16 @@ const getUserGroups = async (req: Request, res: Response) => {
           },
         },
       },
+      select: {
+        group_name: true,
+        group_profile_picture_url: true,
+        id: true,
+      },
     });
 
     return res.status(200).json({ groups });
   } catch (error) {
-    return res.status(500).json({ error: "Failed to create post" });
+    return res.status(500).json({ error: "Failed to fetch group" });
   }
 };
 

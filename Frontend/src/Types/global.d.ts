@@ -89,6 +89,9 @@ declare global {
     group_name: string;
     group_profile_picture_url: string;
     id: string;
+    _count: {
+      members: number;
+    };
   };
 }
 

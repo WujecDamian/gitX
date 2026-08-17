@@ -70,10 +70,42 @@ const getUserGroups = async (req: Request, res: Response) => {
         group_name: true,
         group_profile_picture_url: true,
         id: true,
+        _count: {
+          select: {
+            members: true,
+          },
+        },
       },
     });
 
     return res.status(200).json({ groups });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to fetch group" });
+  }
+};
+
+const getGroup = async (req: Request, res: Response) => {
+  const { groupId } = req.params;
+  const userId = req.user.id;
+
+  if (typeof groupId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing Group ID" });
+  }
+  try {
+    const group = await prisma.group.findUnique({
+      where: {
+        id: groupId,
+      },
+      include: {
+        _count: {
+          select: {
+            members: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ group });
   } catch (error) {
     return res.status(500).json({ error: "Failed to fetch group" });
   }
@@ -161,6 +193,7 @@ const kickFromGroup = async (req: Request, res: Response) => {
 };
 export {
   getUserGroups,
+  getGroup,
   createGroup,
   deleteGroup,
   joinGroup,

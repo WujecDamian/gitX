@@ -9,6 +9,8 @@ const router = express.Router();
 
 //get user / group posts
 router.get("/", GroupController.getUserGroups);
+router.get("/:groupId", GroupController.getGroup);
+
 router.post("/join/:groupId", GroupController.joinGroup);
 router.post("/leave/:groupId", GroupController.leaveGroup);
 router.post("/kick/:groupId/user/:userId", GroupController.kickFromGroup);

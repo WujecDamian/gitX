@@ -92,6 +92,7 @@ declare global {
     bio: string;
     id: string;
     createdAt: string;
+    creator_id: string;
     _count: {
       members: number;
     };

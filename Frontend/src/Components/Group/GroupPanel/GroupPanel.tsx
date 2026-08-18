@@ -117,7 +117,9 @@ export const GroupPanel = () => {
                     <PostCard author={post.author} post={post} key={post.id} />
                   ))
                 ) : (
-                  <p>There are no posts to show.</p>
+                  <p className={styles.no__posts__info}>
+                    There are no posts to show.
+                  </p>
                 )}
               </section>
             </div>

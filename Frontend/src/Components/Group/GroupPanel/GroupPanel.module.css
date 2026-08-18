@@ -1,7 +1,6 @@
 .group__wrapper {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgb(67, 67, 67);
   width: 100%;
   gap: 0;
 }
@@ -10,4 +9,9 @@
   flex-direction: column;
   width: 100%;
   gap: 0;
+}
+.no__posts__info {
+  padding: 1rem;
+  color: rgb(136, 135, 135);
+  font-weight: 300;
 }

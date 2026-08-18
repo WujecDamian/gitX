@@ -2,7 +2,7 @@
 .post__card {
   border: 1px solid rgb(67, 67, 67);
   padding: 1.25rem;
-  margin: -1px -1px 0 -1px;
+  margin-top: -1px;
 }
 
 .post__content__wrapper {

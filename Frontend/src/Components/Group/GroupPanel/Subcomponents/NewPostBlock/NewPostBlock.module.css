@@ -1,16 +1,22 @@
 .post__modal {
   position: sticky;
-  top: 0;
+  top: -4rem;
   left: 33vw;
   max-height: 400px;
   width: 100%;
-
+  background-color: black;
   display: flex;
   flex-direction: column;
   padding: 1rem 1.25rem;
   z-index: 10;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   border-bottom: 1px solid rgb(67, 67, 67);
+  border-inline: 1px solid rgb(67, 67, 67);
+
+  transition: top 0.5s ease-in-out;
+}
+.post__modal:hover {
+  top: 0;
 }
 
 .modal__header {

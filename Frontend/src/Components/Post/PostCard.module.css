@@ -1,7 +1,7 @@
 /* * MAIN POST CARD */
 .post__card {
   border: 1px solid rgb(67, 67, 67);
-  margin: 0;
+  margin-in:;
   padding: 1.25rem;
   margin-top: -1px;
 }

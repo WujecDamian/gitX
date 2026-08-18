@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import GroupCard from "./Subcomponents/GroupCard/GroupCard";
 import TabNav from "./Subcomponents/TabNav/TabNav";
+import { NewPostBlock } from "./Subcomponents/NewPostBlock/NewPostBlock";
+import PostCard from "../../Post/PostCard";
 
 export type TabOption = "Posts" | "Chat";
 
@@ -10,6 +12,8 @@ export const GroupPanel = () => {
   const { groupId } = useParams<{ groupId: string }>();
 
   const [group, setGroup] = useState<Group | null>(null);
+  const [posts, setPosts] = useState<Post[] | null>(null);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,6 +51,36 @@ export const GroupPanel = () => {
 
     fetchGroup();
   }, [groupId]);
+  useEffect(() => {
+    if (!groupId) {
+      setPosts(null);
+      return;
+    }
+    const fetchGroupPosts = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/post/group/${groupId}`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
+        if (!response.ok) {
+          throw new Error("Failed to load conversation history.");
+        }
+        const data = await response.json();
+        setPosts(data.posts);
+      } catch (err: any) {
+        setError(err.message || "Something went wrong.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchGroupPosts();
+  }, [groupId]);
   if (!groupId) {
     return (
       <section className={styles.no__group__selected}>
@@ -74,7 +108,20 @@ export const GroupPanel = () => {
             activeTab={currentTab}
             setActiveTab={setCurrentTab}
           ></TabNav>
-          {currentTab === "Posts" && <div>List of user posts...</div>}
+          {currentTab === "Posts" && (
+            <div>
+              <NewPostBlock></NewPostBlock>
+              <section className={styles.posts}>
+                {posts && posts.length > 0 ? (
+                  posts.map((post: Post) => (
+                    <PostCard author={post.author} post={post} key={post.id} />
+                  ))
+                ) : (
+                  <p>There are no posts to show.</p>
+                )}
+              </section>
+            </div>
+          )}
           {currentTab === "Chat" && <div>User replies and comments...</div>}
         </>
       ) : (

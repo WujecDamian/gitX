@@ -12,9 +12,9 @@ router.get("/", PostController.getAllPosts);
 router.get("/getPost/:postId", PostController.getPostById);
 router.get("/postWithComments/:postId", PostController.getPostWithCommentsById);
 
-router.get("following/:userId", PostController.getFollowingPosts);
-router.get("user/:userId", PostController.getUserPosts);
-router.get("group/:groupId", PostController.getGroupPosts);
+router.get("/following/:userId", PostController.getFollowingPosts);
+router.get("/user/:userId", PostController.getUserPosts);
+router.get("/group/:groupId", PostController.getGroupPosts);
 
 //create | delete
 router.delete("/delete/:postId", PostController.deletePost);

@@ -22,7 +22,7 @@ const deletePost = async (req: Request, res: Response) => {
 };
 
 const createPost = async (req: Request, res: Response) => {
-  const { content, media_url } = req.body;
+  const { content, media_url, groupId } = req.body;
   const authorId = req.user.id;
 
   try {
@@ -31,6 +31,7 @@ const createPost = async (req: Request, res: Response) => {
         author_id: authorId,
         content,
         media_url,
+        groupId,
       },
     });
 
@@ -173,7 +174,7 @@ const getFollowingPosts = async (req: Request, res: Response) => {
         media_url: true,
         _count: {
           select: {
-            likes: true,
+            postLikes: true,
             comments: true,
           },
         },
@@ -205,7 +206,7 @@ const getUserPosts = async (req: Request, res: Response) => {
         media_url: true,
         _count: {
           select: {
-            likes: true,
+            postLikes: true,
             comments: true,
           },
         },
@@ -229,7 +230,7 @@ const getGroupPosts = async (req: Request, res: Response) => {
   try {
     const posts = await prisma.post.findMany({
       where: {
-        groupId: groupId,
+        groupId,
       },
       select: {
         author: true,
@@ -239,7 +240,7 @@ const getGroupPosts = async (req: Request, res: Response) => {
         media_url: true,
         _count: {
           select: {
-            likes: true,
+            postLikes: true,
             comments: true,
           },
         },
@@ -251,7 +252,7 @@ const getGroupPosts = async (req: Request, res: Response) => {
 
     return res.status(200).json({ posts });
   } catch (error) {
-    return res.status(500).json({ error: "Failed to create post" });
+    return res.status(500).json({ error: "Failed to fetch posts" });
   }
 };
 export {

@@ -1,6 +1,7 @@
 .group__wrapper {
   display: flex;
   flex-direction: column;
+  border-right: 1px solid rgb(67, 67, 67);
   width: 100%;
   gap: 0;
 }

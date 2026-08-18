@@ -2,7 +2,7 @@
 .navContainer {
   width: 100%;
   background-color: #000000;
-  border-bottom: 1px solid #27272a;
+  border-bottom: 1px solid rgb(67, 67, 67);
 }
 
 /* Wrapper to center and align the tabs */

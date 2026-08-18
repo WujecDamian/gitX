@@ -111,6 +111,36 @@ const getGroup = async (req: Request, res: Response) => {
   }
 };
 
+const getGroupMembers = async (req: Request, res: Response) => {
+  const { groupId } = req.params;
+
+  if (typeof groupId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing Group ID" });
+  }
+  try {
+    const members = await prisma.group.findUnique({
+      where: {
+        id: groupId,
+      },
+      select: {
+        members: {
+          include: {
+            _count: {
+              select: {
+                followers: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ members });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to fetch group" });
+  }
+};
+
 const joinGroup = async (req: Request, res: Response) => {
   const { groupId } = req.params;
   const userId = req.user.id;
@@ -194,6 +224,7 @@ const kickFromGroup = async (req: Request, res: Response) => {
 export {
   getUserGroups,
   getGroup,
+  getGroupMembers,
   createGroup,
   deleteGroup,
   joinGroup,

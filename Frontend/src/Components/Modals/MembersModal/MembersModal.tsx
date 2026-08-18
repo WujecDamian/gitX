@@ -9,15 +9,15 @@ type MembersTypes = {
 };
 
 export const MembersModal = ({ id, group }: MembersTypes) => {
-  const [followingList, setFollowingList] = useState<User[]>([]);
+  const [groupMembers, setGroupMembers] = useState<User[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const params = useParams();
   useEffect(() => {
-    const getProfile = async () => {
+    const getGroupMembers = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/user/${params.userId}/following`,
+          `http://localhost:3000/api/group/${params.groupId}/members`,
           {
             method: "GET",
             credentials: "include",
@@ -27,7 +27,7 @@ export const MembersModal = ({ id, group }: MembersTypes) => {
           throw new Error(`Failed to fetch posts: ${response.statusText}`);
         }
         const data = await response.json();
-        setFollowingList(data.following || []);
+        setGroupMembers(data.members.members || []);
       } catch (error) {
         if (error instanceof Error) {
           setError(error.message);
@@ -36,8 +36,9 @@ export const MembersModal = ({ id, group }: MembersTypes) => {
         }
       }
     };
-    getProfile();
+    getGroupMembers();
   }, [group.id]);
+  console.log(groupMembers);
   return (
     <div id={id} popover="auto" className={styles.modal}>
       <div className={styles.modal__content}>
@@ -48,13 +49,10 @@ export const MembersModal = ({ id, group }: MembersTypes) => {
         >
           ✕
         </button>
-        {followingList.length > 0 ? (
+        {groupMembers.length > 0 ? (
           <ul className={styles.modal__list}>
-            {followingList.map((followedUser: User) => (
-              <UserListItem
-                key={followedUser.id}
-                user={followedUser.following}
-              />
+            {groupMembers.map((member: User) => (
+              <UserListItem key={member.id} user={member} />
             ))}
           </ul>
         ) : (

@@ -109,7 +109,7 @@ export const GroupPanel = () => {
             setActiveTab={setCurrentTab}
           ></TabNav>
           {currentTab === "Posts" && (
-            <div>
+            <div className={styles.feed__container}>
               <NewPostBlock></NewPostBlock>
               <section className={styles.posts}>
                 {posts && posts.length > 0 ? (

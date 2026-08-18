@@ -74,6 +74,9 @@ declare global {
     id: string;
     message: Message;
     group_id: string;
+    name: string;
+    description: string;
+    picture_url: string;
   };
   type Message = {
     chat_id: string;

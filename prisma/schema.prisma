@@ -156,10 +156,13 @@ model Chat {
 }
 
 model GroupChat {
-  id       String    @id @default(uuid())
-  messages Message[]
-  groupId  String
-  group    Group     @relation(fields: [groupId], references: [id])
+  id          String    @id @default(uuid())
+  name        String    @default("Group Chat")
+  description String    @default("No description.")
+  picture_url String    @default("https://png.pngtree.com/png-clipart/20200225/original/pngtree-group-chat-icon-png-image_5282821.jpg")
+  messages    Message[]
+  groupId     String
+  group       Group     @relation(fields: [groupId], references: [id])
 }
 
 model Message {

@@ -7,7 +7,7 @@ export function TimeAccountCreated({ createTime }: TimeAccountCreatedTypes) {
 
   // Handle invalid dates safely
   if (isNaN(date.getTime())) {
-    return <span>Joined Unknown date</span>;
+    return <span>Unknown date</span>;
   }
 
   // Formats to: "Month Year" (e.g., "July 2026")
@@ -16,5 +16,5 @@ export function TimeAccountCreated({ createTime }: TimeAccountCreatedTypes) {
     year: "numeric",
   });
 
-  return <span>Joined {formatter.format(date)}</span>;
+  return <span>{formatter.format(date)}</span>;
 }

@@ -1,6 +1,7 @@
 import styles from "./GroupPanel.module.css";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import GroupCard from "./Subcomponents/GroupCard/GroupCard";
 
 export const GroupPanel = () => {
   const { groupId } = useParams<{ groupId: string }>();
@@ -58,8 +59,12 @@ export const GroupPanel = () => {
 
   console.log("GroupPanel | Group: ", group);
   return (
-    <section className={styles.conversation__wrapper}>
-      {group && <h1>Group info</h1>}
+    <section className={styles.group__wrapper}>
+      {group ? (
+        <GroupCard group={group} isMember={true}></GroupCard>
+      ) : (
+        <h1>No group selected</h1>
+      )}
     </section>
   );
 };

@@ -2,6 +2,9 @@ import styles from "./GroupPanel.module.css";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import GroupCard from "./Subcomponents/GroupCard/GroupCard";
+import TabNav from "./Subcomponents/TabNav/TabNav";
+
+export type TabOption = "Posts" | "Chat";
 
 export const GroupPanel = () => {
   const { groupId } = useParams<{ groupId: string }>();
@@ -9,6 +12,9 @@ export const GroupPanel = () => {
   const [group, setGroup] = useState<Group | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [currentTab, setCurrentTab] = useState<TabOption>("Posts");
+  const PROFILE_TABS = ["Posts", "Chat"] as const;
 
   useEffect(() => {
     if (!groupId) {
@@ -61,7 +67,16 @@ export const GroupPanel = () => {
   return (
     <section className={styles.group__wrapper}>
       {group ? (
-        <GroupCard group={group} isMember={true}></GroupCard>
+        <>
+          <GroupCard group={group} isMember={true}></GroupCard>
+          <TabNav
+            tabs={PROFILE_TABS}
+            activeTab={currentTab}
+            setActiveTab={setCurrentTab}
+          ></TabNav>
+          {currentTab === "Posts" && <div>List of user posts...</div>}
+          {currentTab === "Chat" && <div>User replies and comments...</div>}
+        </>
       ) : (
         <h1>No group selected</h1>
       )}

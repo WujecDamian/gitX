@@ -88,7 +88,10 @@ declare global {
   type Group = {
     group_name: string;
     group_profile_picture_url: string;
+    group_banner_picture_url: string;
+    bio: string;
     id: string;
+    createdAt: string;
     _count: {
       members: number;
     };

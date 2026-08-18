@@ -123,6 +123,8 @@ model Group {
   id                        String        @id @default(uuid())
   group_name                String
   group_profile_picture_url String        @default("https://static.vecteezy.com/system/resources/previews/026/019/617/non_2x/group-profile-avatar-icon-default-social-media-forum-profile-photo-vector.jpg")
+  group_banner_picture_url  String        @default("https://wallpaperaccess.com/full/1638087.png")
+  bio                       String        @default("No bio.")
   creator_id                String
   createdAt                 DateTime      @default(now())
   members                   User[]

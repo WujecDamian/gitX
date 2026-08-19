@@ -5,6 +5,7 @@ import GroupCard from "./Subcomponents/GroupCard/GroupCard";
 import TabNav from "./Subcomponents/TabNav/TabNav";
 import { NewPostBlock } from "./Subcomponents/NewPostBlock/NewPostBlock";
 import PostCard from "../../Post/PostCard";
+import { GroupChats } from "../GroupChats/GroupChats";
 
 export type TabOption = "Posts" | "Chat";
 
@@ -84,7 +85,7 @@ export const GroupPanel = () => {
   if (!groupId) {
     return (
       <section className={styles.no__group__selected}>
-        <p>Select a message from your inbox to start groupting.</p>
+        <p>Select a group from sidebar to view it.</p>
       </section>
     );
   }
@@ -124,7 +125,11 @@ export const GroupPanel = () => {
               </section>
             </div>
           )}
-          {currentTab === "Chat" && <div>User replies and comments...</div>}
+          {currentTab === "Chat" && (
+            <div className={styles.group__chats__container}>
+              <GroupChats></GroupChats>
+            </div>
+          )}
         </>
       ) : (
         <h1>No group selected</h1>

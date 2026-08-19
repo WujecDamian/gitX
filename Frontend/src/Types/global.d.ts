@@ -77,6 +77,7 @@ declare global {
     name: string;
     description: string;
     picture_url: string;
+    messages: Message[0];
   };
   type Message = {
     chat_id: string;

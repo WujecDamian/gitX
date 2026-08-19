@@ -4,9 +4,9 @@ import { RecipientHeading } from "./Heading/RecipientHeading";
 import { RecipientProfileCard } from "./RecipientProfileCard/RecipientProfileCard";
 import { MessageBubble } from "./MessageBubble/MessageBubble";
 import { MessageInput } from "./MessageInput/MessageInput";
-import styles from "./Conversation.module.css";
+import styles from "./GroupConversation.module.css";
 
-export const Conversation = () => {
+export const GroupConversation = () => {
   const { chatId } = useParams<{ chatId: string }>();
 
   const [chat, setChat] = useState<Chat | null>(null);
@@ -24,7 +24,7 @@ export const Conversation = () => {
       setError(null);
       try {
         const response = await fetch(
-          `http://localhost:3000/api/chat/getChat/${chatId}`,
+          `http://localhost:3000/api/chat/getGroupChat/${chatId}`,
           {
             method: "GET",
             credentials: "include",

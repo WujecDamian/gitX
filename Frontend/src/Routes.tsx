@@ -13,6 +13,9 @@ import CommentPage from "./Pages/Comment/CommentPage";
 import Chat from "./Pages/Chat/Chat";
 import Group from "./Pages/Group/Group";
 
+//group children components
+import { GroupConversation } from "./Components/Group/GroupChats/GroupConversation";
+
 //https://reactrouter.com/start/modes#data
 const router = createBrowserRouter([
   {
@@ -53,7 +56,7 @@ const router = createBrowserRouter([
                   // This is empty by default so it shows nothing or a default view on initial page click
                   {
                     path: "chat/:chatId",
-                    element: <Chat></Chat>, // Reuses your unified <Chat /> or <Conversation /> sub-view frame
+                    element: <GroupConversation></GroupConversation>, // Reuses your unified <Chat /> or <Conversation /> sub-view frame
                   },
                 ],
               },

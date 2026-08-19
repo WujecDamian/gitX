@@ -4,8 +4,8 @@ import { RecipientHeading } from "./Heading/RecipientHeading";
 import { RecipientProfileCard } from "./RecipientProfileCard/RecipientProfileCard";
 import { MessageBubble } from "./MessageBubble/MessageBubble";
 import { MessageInput } from "./MessageInput/MessageInput";
-import { GroupChat } from "./GroupChat";
-import styles from "./Conversation.module.css";
+import { GroupChatListItem } from "./GroupChatListItem";
+import styles from "./GroupChats.module.css";
 
 export const GroupChats = () => {
   const { groupId } = useParams<{ groupId: string }>();
@@ -57,7 +57,9 @@ export const GroupChats = () => {
   return (
     <section className={styles.group__chats}>
       {chats ? (
-        chats.map((chat) => <GroupChat chat={chat} key={chat.id}></GroupChat>)
+        chats.map((chat) => (
+          <GroupChatListItem chat={chat} key={chat.id}></GroupChatListItem>
+        ))
       ) : (
         <p>No chats</p>
       )}

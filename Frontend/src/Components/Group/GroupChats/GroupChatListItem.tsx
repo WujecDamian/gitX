@@ -1,14 +1,14 @@
 import { useParams } from "react-router-dom";
-import styles from "./GroupChat.module.css";
+import styles from "./GroupChatListItem.module.css";
 import { Link } from "react-router-dom";
 import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
 import { TimeSent } from "../../UI/Time/TimeSent";
 
-type GroupChatTypes = {
+type GroupChatListItemTypes = {
   chat: GroupChat;
 };
 
-export const GroupChat = ({ chat }: GroupChatTypes) => {
+export const GroupChatListItem = ({ chat }: GroupChatListItemTypes) => {
   const { groupId } = useParams<{ groupId: string }>();
 
   return (

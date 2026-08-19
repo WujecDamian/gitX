@@ -1,6 +1,6 @@
 .root__layout {
   display: grid;
-  grid-template-columns: minmax(68px, 300px) 700px 200px;
+  grid-template-columns: 300px 700px 200px;
   min-height: 100vh;
   width: min(1280px, 100%);
 
@@ -8,7 +8,10 @@
   padding: 0;
   border: 0;
 }
-
+.root__layout--mini {
+  --nav__width: 110px;
+  grid-template-columns: 110px 1090px;
+}
 .backdrop__overlay {
   position: fixed;
   top: 0;

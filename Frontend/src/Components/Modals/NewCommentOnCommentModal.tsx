@@ -69,7 +69,8 @@ export default function NewCommentOnCommentModal({
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const content = formData.get("content");
+    const rawContent = formData.get("content");
+    const content = `Replying to @${comment!.author.username}: ${rawContent}`;
 
     const bodyData = {
       content,

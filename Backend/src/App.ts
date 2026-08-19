@@ -1,11 +1,16 @@
 import express, { type Express, type Request, type Response } from "express";
 
 import { createClient } from "redis";
+import { createServer } from "http";
 import { RedisStore } from "connect-redis";
-import session from "express-session";
 import passport from "passport";
 import cors from "cors";
 import isAuthenticated from "./Authentication/isAuthenticated";
+import "dotenv/config";
+//session
+import { sessionMiddleware } from "./session";
+//socket
+import { initSocket } from "./socket";
 //routers
 import userRouter from "./Routers/UserRouter";
 import authRouter from "./Routers/AuthRouter";
@@ -20,6 +25,7 @@ import chatRouter from "./Routers/ChatRouter";
 import messageRouter from "./Routers/MessageRouter";
 
 const app: Express = express();
+const httpServer = createServer(app);
 
 //as async function to wait for connection to Redis server
 const startServer = async () => {
@@ -41,17 +47,12 @@ const startServer = async () => {
     }),
   );
 
-  app.use(
-    session({
-      store: redisStore,
-      resave: false,
-      saveUninitialized: false,
-      secret: process.env.REDIS_SECRET as string,
-    }),
-  );
+  app.use(sessionMiddleware);
 
   app.use(passport.initialize()); //adds authentication hooks to req
   app.use(passport.session()); // related to serialize/deSerialize functions, makes req.user available
+
+  initSocket(httpServer);
 
   app.use("/api/auth", authRouter);
   app.use("/api/user", isAuthenticated, userRouter);

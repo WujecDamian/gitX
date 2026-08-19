@@ -44,6 +44,7 @@ model User {
   group_inviting      GroupInvite[] @relation("SentInvites")
   group_invited       GroupInvite[] @relation("ReceivedInvites")
   comments            Comment[]
+  messages            Message[]
 }
 
 model Follows {
@@ -120,14 +121,17 @@ model Bookmark {
 }
 
 model Group {
-  id           String        @id @default(uuid())
-  group_name   String
-  creator_id   String
-  createdAt    DateTime      @default(now())
-  members      User[]
-  posts        Post[]
-  groupInvites GroupInvite[]
-  groupChats   GroupChat[]
+  id                        String        @id @default(uuid())
+  group_name                String
+  group_profile_picture_url String        @default("https://static.vecteezy.com/system/resources/previews/026/019/617/non_2x/group-profile-avatar-icon-default-social-media-forum-profile-photo-vector.jpg")
+  group_banner_picture_url  String        @default("https://wallpaperaccess.com/full/1638087.png")
+  bio                       String        @default("No bio.")
+  creator_id                String
+  createdAt                 DateTime      @default(now())
+  members                   User[]
+  posts                     Post[]
+  groupInvites              GroupInvite[]
+  groupChats                GroupChat[]
 }
 
 model GroupInvite {
@@ -153,10 +157,13 @@ model Chat {
 }
 
 model GroupChat {
-  id       String    @id @default(uuid())
-  messages Message[]
-  groupId  String
-  group    Group     @relation(fields: [groupId], references: [id])
+  id          String    @id @default(uuid())
+  name        String    @default("Group Chat")
+  description String    @default("No description.")
+  picture_url String    @default("https://png.pngtree.com/png-clipart/20200225/original/pngtree-group-chat-icon-png-image_5282821.jpg")
+  messages    Message[]
+  groupId     String
+  group       Group     @relation(fields: [groupId], references: [id])
 }
 
 model Message {
@@ -165,6 +172,7 @@ model Message {
   media_url     String?
   createdAt     DateTime   @default(now())
   senderId      String
+  sender        User       @relation(fields: [senderId], references: [id], onDelete: Cascade)
   chat          Chat?      @relation(fields: [chat_id], references: [id], onDelete: Cascade) // <- where message was sent?
   chat_id       String?
   group_chat    GroupChat? @relation(fields: [group_chat_id], references: [id], onDelete: Cascade)

@@ -1,0 +1,85 @@
+/* Container reset and item layout */
+.group__list__item {
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+  list-style: none;
+  margin: 0;
+  padding: 1rem 1rem 0 1rem;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.group__list__item:hover {
+  background-color: #1e1e1e;
+}
+
+.list__item--left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding-bottom: 0.7rem;
+}
+
+.list__item--right {
+  border-bottom: 1px solid rgba(67, 67, 67, 0.7);
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  min-width: 0;
+}
+
+.item__right--top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+}
+
+.username {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.time_wrapper {
+  color: #71717a;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.item__right--bottom {
+  margin-top: 3px;
+}
+
+.members__preview {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  span {
+    font-style: italic;
+    font-weight: 400;
+  }
+}
+
+/* Conditional Colors */
+.sentMessage {
+  color: #71717a; /* sent by user */
+}
+
+.receivedMessage {
+  color: #e4e4e7; /* incoming messages */
+}
+
+.you_prefix {
+  font-weight: 400;
+}

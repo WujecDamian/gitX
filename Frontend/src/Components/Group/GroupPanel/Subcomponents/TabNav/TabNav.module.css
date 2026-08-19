@@ -1,0 +1,71 @@
+/* Container holding the navigation bar */
+.navContainer {
+  width: 100%;
+  background-color: #000000;
+  border-bottom: 1px solid rgb(67, 67, 67);
+  border-inline: 1px solid rgb(67, 67, 67);
+}
+
+/* Wrapper to center and align the tabs */
+.tabsWrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 36rem;
+  margin: 0 auto;
+  height: 3.5rem;
+}
+
+/* Base style for all tab buttons */
+.tabButton {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+  transition: color 0.2s ease;
+}
+
+.inactive {
+  color: #71717a;
+}
+
+.inactive:hover {
+  color: #d4d4d8;
+}
+
+.active {
+  color: #ffffff;
+}
+
+/* ─── THE ALIGNMENT FIX ─── */
+/* The parent wrapper moves across the whole column width */
+.indicator {
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  height: 4px;
+  display: flex;
+  justify-content: center; /* Centers the actual blue line inside the column */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* This creates the actual visible line, shrunk down to text size */
+.indicator::after {
+  content: "";
+  display: block;
+  /* Control line length relative to text size here */
+  width: 45%;
+  height: 100%;
+  background-color: #0ea5e9; /* Sky blue */
+  border-top-left-radius: 9999px;
+  border-top-right-radius: 9999px;
+}

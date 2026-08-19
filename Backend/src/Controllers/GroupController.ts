@@ -40,6 +40,11 @@ const createGroup = async (req: Request, res: Response) => {
         groupChats: {
           create: {},
         },
+        members: {
+          connect: {
+            id: userId,
+          },
+        },
       },
     });
 
@@ -61,11 +66,109 @@ const getUserGroups = async (req: Request, res: Response) => {
           },
         },
       },
+      select: {
+        group_name: true,
+        group_profile_picture_url: true,
+        id: true,
+        _count: {
+          select: {
+            members: true,
+          },
+        },
+      },
     });
 
     return res.status(200).json({ groups });
   } catch (error) {
-    return res.status(500).json({ error: "Failed to create post" });
+    return res.status(500).json({ error: "Failed to fetch group" });
+  }
+};
+
+const getGroup = async (req: Request, res: Response) => {
+  const { groupId } = req.params;
+  const userId = req.user.id;
+
+  if (typeof groupId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing Group ID" });
+  }
+  try {
+    const group = await prisma.group.findUnique({
+      where: {
+        id: groupId,
+      },
+      include: {
+        _count: {
+          select: {
+            members: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ group });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to fetch group" });
+  }
+};
+
+const getGroupMembers = async (req: Request, res: Response) => {
+  const { groupId } = req.params;
+
+  if (typeof groupId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing Group ID" });
+  }
+  try {
+    const members = await prisma.group.findUnique({
+      where: {
+        id: groupId,
+      },
+      select: {
+        members: {
+          include: {
+            _count: {
+              select: {
+                followers: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ members });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to fetch group" });
+  }
+};
+
+const getGroupChats = async (req: Request, res: Response) => {
+  const { groupId } = req.params;
+
+  if (typeof groupId !== "string") {
+    return res.status(400).json({ error: "Invalid or missing Group ID" });
+  }
+  try {
+    const chats = await prisma.group.findUnique({
+      where: {
+        id: groupId,
+      },
+      select: {
+        groupChats: {
+          include: {
+            messages: {
+              take: 1,
+              orderBy: {
+                createdAt: "desc",
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ chats });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to fetch group chats" });
   }
 };
 
@@ -151,6 +254,9 @@ const kickFromGroup = async (req: Request, res: Response) => {
 };
 export {
   getUserGroups,
+  getGroup,
+  getGroupMembers,
+  getGroupChats,
   createGroup,
   deleteGroup,
   joinGroup,

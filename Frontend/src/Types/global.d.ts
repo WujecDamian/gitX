@@ -63,6 +63,45 @@ declare global {
       sub_comments: number;
     };
   };
+  type Chat = {
+    id: string;
+    messages: Message[0];
+    user1_id: string;
+    user2_id: string;
+    recipient: User;
+  };
+  type GroupChat = {
+    id: string;
+    message: Message;
+    group_id: string;
+    name: string;
+    description: string;
+    picture_url: string;
+    messages: Message[0];
+  };
+  type Message = {
+    chat_id: string;
+    content: string;
+    createdAt: string;
+    group_chat_id: string;
+    id: string;
+    media_url: string;
+    senderId: string;
+    sender: User;
+  };
+
+  type Group = {
+    group_name: string;
+    group_profile_picture_url: string;
+    group_banner_picture_url: string;
+    bio: string;
+    id: string;
+    createdAt: string;
+    creator_id: string;
+    _count: {
+      members: number;
+    };
+  };
 }
 
 export {};

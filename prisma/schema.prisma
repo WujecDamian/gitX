@@ -44,6 +44,7 @@ model User {
   group_inviting      GroupInvite[] @relation("SentInvites")
   group_invited       GroupInvite[] @relation("ReceivedInvites")
   comments            Comment[]
+  messages            Message[]
 }
 
 model Follows {
@@ -171,6 +172,7 @@ model Message {
   media_url     String?
   createdAt     DateTime   @default(now())
   senderId      String
+  sender        User       @relation(fields: [senderId], references: [id], onDelete: Cascade)
   chat          Chat?      @relation(fields: [chat_id], references: [id], onDelete: Cascade) // <- where message was sent?
   chat_id       String?
   group_chat    GroupChat? @relation(fields: [group_chat_id], references: [id], onDelete: Cascade)

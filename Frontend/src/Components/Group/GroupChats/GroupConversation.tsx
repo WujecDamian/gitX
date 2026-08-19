@@ -44,6 +44,7 @@ export const GroupConversation = () => {
 
     fetchChatHistory();
   }, [chatId]);
+  console.log(chat);
   if (!chatId) {
     return (
       <section className={styles.no__chat__selected}>
@@ -64,10 +65,10 @@ export const GroupConversation = () => {
     <section className={styles.conversation__wrapper}>
       {chat && (
         <>
-          <RecipientHeading recipient={chat.recipient} />
+          {/* <RecipientHeading recipient={chat.recipient} /> */}
 
           <div className={styles.chat__body}>
-            <RecipientProfileCard recipient={chat.recipient} />
+            {/*  <RecipientProfileCard recipient={chat.recipient} /> */}
 
             <div className={styles.messages__list}>
               {chat.messages?.map((msg: any) => (

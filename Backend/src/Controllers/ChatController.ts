@@ -140,6 +140,20 @@ const getGroupChat = async (req: Request, res: Response) => {
       where: {
         id: chatId,
       },
+      include: {
+        messages: {
+          include: {
+            sender: {
+              select: {
+                username: true,
+                display_name: true,
+                profile_picture_url: true,
+                id: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return res

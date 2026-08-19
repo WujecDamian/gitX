@@ -129,17 +129,16 @@ const getOrCreateChat = async (req: Request, res: Response) => {
 };
 
 const getGroupChat = async (req: Request, res: Response) => {
-  const { groupId } = req.params;
-  const senderId = req.user.id;
+  const { chatId } = req.params;
 
-  if (typeof groupId !== "string") {
+  if (typeof chatId !== "string") {
     return res.status(400).json({ error: "Invalid or missing Group ID" });
   }
 
   try {
     const chat = await prisma.groupChat.findFirst({
       where: {
-        groupId,
+        id: chatId,
       },
     });
 
@@ -150,6 +149,7 @@ const getGroupChat = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Failed to query / create chat" });
   }
 };
+
 //get specific chat (detailed)
 
 const getChat = async (req: Request, res: Response) => {

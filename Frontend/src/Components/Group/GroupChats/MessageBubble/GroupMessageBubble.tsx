@@ -1,12 +1,12 @@
-import styles from "./MessageBubble.module.css";
+import styles from "./GroupMessageBubble.module.css";
 import { TimeSent } from "../../../UI/Time/TimeSent";
 import { useAuth } from "../../../../Contexts/Auth/AuthContext";
 
-type MessageBubbleTypes = {
+type GroupMessageBubbleTypes = {
   message: Message;
 };
 
-export const MessageBubble = ({ message }: MessageBubbleTypes) => {
+export const GroupMessageBubble = ({ message }: GroupMessageBubbleTypes) => {
   const { user } = useAuth();
 
   if (!user) {
@@ -22,6 +22,21 @@ export const MessageBubble = ({ message }: MessageBubbleTypes) => {
     <div
       className={`${styles.bubble__row} ${isSender ? styles.sent : styles.received}`}
     >
+      {!isSender && (
+        <>
+          <img
+            src={message.sender.profile_picture_url}
+            className={styles.profile__picture}
+          />
+
+          <span className={styles.username}>
+            {message.sender.display_name}{" "}
+            <span className={styles.display__name}>
+              @{message.sender.username}
+            </span>
+          </span>
+        </>
+      )}
       <div className={styles.bubble}>
         {mediaUrl && (
           <div className={styles.media__wrapper}>

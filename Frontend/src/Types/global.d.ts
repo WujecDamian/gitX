@@ -87,6 +87,7 @@ declare global {
     id: string;
     media_url: string;
     senderId: string;
+    sender: User;
   };
 
   type Group = {

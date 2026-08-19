@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { RecipientHeading } from "./Heading/RecipientHeading";
 import { RecipientProfileCard } from "./RecipientProfileCard/RecipientProfileCard";
-import { MessageBubble } from "./MessageBubble/MessageBubble";
-import { MessageInput } from "./MessageInput/MessageInput";
+import { GroupMessageBubble } from "./MessageBubble/GroupMessageBubble";
+import { GroupMessageInput } from "./MessageInput/GroupMessageInput";
 import styles from "./GroupConversation.module.css";
 
 export const GroupConversation = () => {
@@ -71,13 +71,13 @@ export const GroupConversation = () => {
             {/*  <RecipientProfileCard recipient={chat.recipient} /> */}
 
             <div className={styles.messages__list}>
-              {chat.messages?.map((msg: any) => (
-                <MessageBubble key={msg.id} message={msg} />
+              {chat.messages?.map((message: Message) => (
+                <GroupMessageBubble key={message.id} message={message} />
               ))}
             </div>
           </div>
 
-          <MessageInput chatId={chatId} />
+          <GroupMessageInput chatId={chatId} />
         </>
       )}
     </section>

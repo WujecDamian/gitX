@@ -1,7 +1,11 @@
 .bubble__row {
   display: flex;
+  position: relative;
   width: 100%;
   margin-bottom: 6px; /* Added slight vertical spacing between rows */
+  align-items: end;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
 }
 
 .bubble__row.sent {
@@ -78,4 +82,26 @@
   color: rgba(255, 255, 255, 0.7);
   white-space: nowrap;
   user-select: none;
+}
+
+.profile__picture {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100%;
+  corner-shape: unset;
+  object-fit: cover;
+  align-items: center;
+  justify-content: center;
+}
+.username {
+  position: absolute;
+  top: -1rem;
+  left: 3rem;
+  font-size: 0.7rem;
+  font-weight: 200;
+}
+.display__name {
+  margin-left: 2px;
+  font-weight: 100;
+  font-style: italic;
 }

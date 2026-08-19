@@ -1,9 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { RecipientHeading } from "./Heading/RecipientHeading";
-import { RecipientProfileCard } from "./RecipientProfileCard/RecipientProfileCard";
-import { MessageBubble } from "./MessageBubble/MessageBubble";
-import { MessageInput } from "./MessageInput/MessageInput";
 import { GroupChatListItem } from "./GroupChatListItem";
 import styles from "./GroupChats.module.css";
 

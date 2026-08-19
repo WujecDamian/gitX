@@ -1,11 +1,11 @@
-import styles from "./MessageInput.module.css";
+import styles from "./GroupMessageInput.module.css";
 import React, { useState } from "react";
 
-type MessageInputTypes = {
+type GroupMessageInputTypes = {
   chatId: string;
 };
 
-export const MessageInput = ({ chatId }: MessageInputTypes) => {
+export const GroupMessageInput = ({ chatId }: GroupMessageInputTypes) => {
   const [text, setText] = useState("");
   const [mediaUrl, setMediaUrl] = useState(""); // Track the media input value
   const [isSending, setIsSending] = useState(false);
@@ -18,7 +18,7 @@ export const MessageInput = ({ chatId }: MessageInputTypes) => {
     setIsSending(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/api/chat/sendMessage`,
+        `http://localhost:3000/api/chat/sendGroupMessage`,
         {
           method: "POST",
           headers: {

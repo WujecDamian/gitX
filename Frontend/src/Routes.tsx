@@ -12,6 +12,7 @@ import Post from "./Pages/Post/Post";
 import CommentPage from "./Pages/Comment/CommentPage";
 import Chat from "./Pages/Chat/Chat";
 import Group from "./Pages/Group/Group";
+import Explore from "./Pages/Explore/Explore";
 
 //group children components
 import { GroupConversation } from "./Components/Group/GroupChats/GroupConversation";
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
                     element: <GroupConversation></GroupConversation>, // Reuses your unified <Chat /> or <Conversation /> sub-view frame
                   },
                 ],
+              },
+              {
+                path: "/explore/",
+                element: <Explore></Explore>,
               },
             ],
           },

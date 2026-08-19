@@ -20,6 +20,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+
   padding-bottom: 0.7rem;
 }
 
@@ -37,7 +38,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   width: 100%;
 }
 
@@ -59,7 +59,7 @@
   margin-top: 3px;
 }
 
-.members__preview {
+.message__preview {
   margin: 0;
   font-size: 14px;
   font-weight: 400;
@@ -81,6 +81,6 @@
   color: #e4e4e7; /* incoming messages */
 }
 
-.you_prefix {
+.you__prefix {
   font-weight: 400;
 }

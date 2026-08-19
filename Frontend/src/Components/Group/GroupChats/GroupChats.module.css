@@ -1,0 +1,7 @@
+.group__chats {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  flex-grow: 1;
+  border-inline: 1px solid rgb(67, 67, 67);
+}

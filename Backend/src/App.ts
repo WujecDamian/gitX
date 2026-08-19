@@ -27,9 +27,16 @@ import messageRouter from "./Routers/MessageRouter";
 const app: Express = express();
 const httpServer = createServer(app);
 
-//as async function to wait for connection to Redis server
+// Use dynamic environment variables for deployment
+const PORT = process.env.PORT || 3000;
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
 const startServer = async () => {
-  const redisClient = createClient();
+  // 1. Pass the cloud connection string (e.g., Upstash) when deployed, fallback to local
+  const redisClient = process.env.REDIS_URL
+    ? createClient({ url: process.env.REDIS_URL })
+    : createClient();
+
   await redisClient.connect().catch(console.error);
 
   let redisStore = new RedisStore({
@@ -37,20 +44,20 @@ const startServer = async () => {
     prefix: "myapp:",
   });
 
-  //body parser to handle JSON from req
   app.use(express.json());
-  //enable CORS
+
+  // 2. Allow dynamic CORS based on environment
   app.use(
     cors({
-      origin: "http://localhost:5173",
-      credentials: true, // Crucial since your endpoint is /auth/
+      origin: FRONTEND_URL,
+      credentials: true,
     }),
   );
 
   app.use(sessionMiddleware);
 
-  app.use(passport.initialize()); //adds authentication hooks to req
-  app.use(passport.session()); // related to serialize/deSerialize functions, makes req.user available
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   initSocket(httpServer);
 
@@ -66,8 +73,10 @@ const startServer = async () => {
   app.use("/api/chat", isAuthenticated, chatRouter);
   app.use("/api/message", isAuthenticated, messageRouter);
 
-  app.listen(3000);
-  console.log("Server is listening on port http://localhost:3000");
+  // 3. FIXED: Listen via httpServer so Socket.io routes function alongside Express
+  httpServer.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
+  });
 };
 
 startServer().catch((error) => {

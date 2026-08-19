@@ -1,5 +1,5 @@
 import styles from "./GroupPanel.module.css";
-import { useParams } from "react-router-dom";
+import { useParams, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import GroupCard from "./Subcomponents/GroupCard/GroupCard";
 import TabNav from "./Subcomponents/TabNav/TabNav";
@@ -10,7 +10,9 @@ import { GroupChats } from "../GroupChats/GroupChats";
 export type TabOption = "Posts" | "Chat";
 
 export const GroupPanel = () => {
-  const { groupId } = useParams<{ groupId: string }>();
+  const { groupId, chatId } = useParams<{ groupId: string; chatId: string }>();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [group, setGroup] = useState<Group | null>(null);
   const [posts, setPosts] = useState<Post[] | null>(null);
@@ -20,6 +22,23 @@ export const GroupPanel = () => {
 
   const [currentTab, setCurrentTab] = useState<TabOption>("Posts");
   const PROFILE_TABS = ["Posts", "Chat"] as const;
+
+  useEffect(() => {
+    if (location.pathname.includes("/chat")) {
+      setCurrentTab("Chat");
+    } else {
+      setCurrentTab("Posts");
+    }
+  }, [location.pathname]);
+
+  const handleTabChange = (tab: TabOption) => {
+    setCurrentTab(tab);
+    if (tab === "Posts") {
+      navigate(`/groups/${groupId}`);
+    } else if (tab === "Chat" && !chatId) {
+      navigate(`/groups/${groupId}`);
+    }
+  };
 
   useEffect(() => {
     if (!groupId) {
@@ -107,7 +126,7 @@ export const GroupPanel = () => {
           <TabNav
             tabs={PROFILE_TABS}
             activeTab={currentTab}
-            setActiveTab={setCurrentTab}
+            setActiveTab={handleTabChange}
           ></TabNav>
           {currentTab === "Posts" && (
             <div className={styles.feed__container}>
@@ -127,7 +146,7 @@ export const GroupPanel = () => {
           )}
           {currentTab === "Chat" && (
             <div className={styles.group__chats__container}>
-              <GroupChats></GroupChats>
+              {chatId ? <Outlet /> : <GroupChats />}
             </div>
           )}
         </>

@@ -45,9 +45,17 @@ const router = createBrowserRouter([
                 path: "/groups/",
                 element: <Group></Group>,
               },
+              //nesting of group (opening posts/chats without redirection to new page)
               {
                 path: "/groups/:groupId",
                 element: <Group></Group>,
+                children: [
+                  // This is empty by default so it shows nothing or a default view on initial page click
+                  {
+                    path: "chat/:chatId",
+                    element: <Chat></Chat>, // Reuses your unified <Chat /> or <Conversation /> sub-view frame
+                  },
+                ],
               },
             ],
           },

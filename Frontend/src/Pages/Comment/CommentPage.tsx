@@ -12,7 +12,7 @@ function CommentPage() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<String | null>(null);
-  const [comment, setcomment] = useState<CommentType | null>(null);
+  const [comment, setComment] = useState<CommentType | null>(null);
   const [post, setPost] = useState<DetailedPost | null>(null);
   const { commentId } = useParams<{ commentId: string }>();
   type feedTypeTypes = "forYou" | "following";
@@ -32,7 +32,7 @@ function CommentPage() {
           throw new Error(`Failed to fetch comments: ${response.statusText}`);
         }
         const data = await response.json();
-        setcomment(data.comment);
+        setComment(data.comment);
       } catch (error) {
         if (error instanceof Error) {
           setError(error.message);

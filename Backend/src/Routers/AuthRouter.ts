@@ -8,6 +8,8 @@ const router = Router();
 router.get("/user", authController.getUser);
 router.get("/error", authController.loginError);
 router.get("/login/github", authController.authenticateUser);
+router.get("/login/guest", authController.guestLogin);
+
 router.get(
   "/github/callback",
   authController.callbackAuthenticate,

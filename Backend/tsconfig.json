@@ -11,7 +11,7 @@
 
     //
 
-    "types": ["node"],
+    "types": [],
     "typeRoots": ["./node_modules/@types", "./src/@types"],
     "sourceMap": true,
     

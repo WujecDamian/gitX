@@ -10,6 +10,8 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "// --- PRODUCTION BUILDS ---": "",
     "build:server": "tsc --project Backend/tsconfig.json",
+    "start:server": "node Backend/dist/App.js",
+    "start": "npm run start:server",
     "build:client": "vite build",
     "build": "npm run build:server && npm run build:client"
   },

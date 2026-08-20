@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import UserListItem from "./subcomponents/UserListItem";
 import styles from "./MembersModal.module.css";
+import { API_URL } from "../../../config";
 
 type MembersTypes = {
   id: string;
@@ -17,7 +18,7 @@ export const MembersModal = ({ id, group }: MembersTypes) => {
     const getGroupMembers = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/group/${params.groupId}/members`,
+          `${API_URL}/api/group/${params.groupId}/members`,
           {
             method: "GET",
             credentials: "include",

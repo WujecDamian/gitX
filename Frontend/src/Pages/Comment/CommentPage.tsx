@@ -7,6 +7,7 @@ import Reply from "../../Components/DetailedPost/Reply/Reply";
 import Comment from "../../Components/DetailedPost/Comment/Comment";
 import SubComment from "../../Components/DetailedPost/SubComment/SubComment";
 import PostCard from "../../Components/Post/PostCard";
+import { API_URL } from "../../config";
 
 function CommentPage() {
   const { user } = useAuth();
@@ -22,7 +23,7 @@ function CommentPage() {
     const getcomment = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/comment/getComment/${commentId}`,
+          `${API_URL}/api/comment/getComment/${commentId}`,
           {
             method: "GET",
             credentials: "include",
@@ -52,7 +53,7 @@ function CommentPage() {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/api/post/getPost/${comment!.post_id}`,
+          `${API_URL}/api/post/getPost/${comment!.post_id}`,
           {
             method: "GET",
             credentials: "include",

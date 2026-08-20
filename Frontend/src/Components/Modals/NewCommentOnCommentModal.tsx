@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./NewCommentOnComment.module.css";
 import CommentHeader from "../DetailedPost/Comment/subcomponents/CommentHeader";
 import CommentContent from "../DetailedPost/Comment/subcomponents/CommentContent";
+import { API_URL } from "../../config";
 
 type NewCommentModalProps = {
   isOpen: boolean;
@@ -26,7 +27,7 @@ export default function NewCommentOnCommentModal({
     const getComment = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/comment/getComment/${commentId}`,
+          `${API_URL}/api/comment/getComment/${commentId}`,
           {
             method: "GET",
             credentials: "include",
@@ -78,7 +79,7 @@ export default function NewCommentOnCommentModal({
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/comment/create/${comment?.post_id}/comment/${commentId}`,
+        `${API_URL}/api/comment/create/${comment?.post_id}/comment/${commentId}`,
         {
           method: "POST",
           headers: {

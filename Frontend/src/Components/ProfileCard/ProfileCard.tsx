@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TimeAccountCreated } from "../UI/Time/TimeAccountCreated";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
+import { API_URL } from "../../config";
 
 import { FollowingModal } from "../Modals/FollowsModal/FollowingModal";
 import { FollowersModal } from "../Modals/FollowsModal/FollowersModal";
@@ -20,13 +21,10 @@ export default function ProfileCard({ owner, isFollowing }: props) {
   console.log(isFollowing);
   const onFollowClick = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/follow/user/${owner.id}`,
-        {
-          method: "POST",
-          credentials: "include",
-        },
-      );
+      const response = await fetch(`${API_URL}/api/follow/user/${owner.id}`, {
+        method: "POST",
+        credentials: "include",
+      });
 
       const result = await response.json();
 
@@ -46,13 +44,10 @@ export default function ProfileCard({ owner, isFollowing }: props) {
     // 2. redirect to chat
     let chatId = "";
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/chat/${owner.id}`,
-        {
-          method: "POST",
-          credentials: "include",
-        },
-      );
+      const response = await fetch(`${API_URL}/api/chat/${owner.id}`, {
+        method: "POST",
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(response.statusText || "Something went wrong");

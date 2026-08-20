@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./NewCommentModal.module.css";
 import PostHeader from "../Post/subcomponents/PostHeader";
 import PostContent from "../Post/subcomponents/PostContent";
+import { API_URL } from "../../config";
 
 type NewCommentModalProps = {
   isOpen: boolean;
@@ -25,13 +26,10 @@ export default function NewCommentModal({
   useEffect(() => {
     const getPost = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/post/getPost/${postId}`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        );
+        const response = await fetch(`${API_URL}/api/post/getPost/${postId}`, {
+          method: "GET",
+          credentials: "include",
+        });
         if (!response.ok) {
           throw new Error(`Failed to fetch posts: ${response.statusText}`);
         }
@@ -75,17 +73,14 @@ export default function NewCommentModal({
     };
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/comment/create/${postId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(bodyData),
+      const response = await fetch(`${API_URL}/api/comment/create/${postId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        credentials: "include",
+        body: JSON.stringify(bodyData),
+      });
 
       const result = await response.json();
 

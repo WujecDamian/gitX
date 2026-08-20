@@ -1,5 +1,6 @@
 import styles from "./MessageInput.module.css";
 import React, { useState } from "react";
+import { API_URL } from "../../../../config";
 
 type MessageInputTypes = {
   chatId: string;
@@ -17,21 +18,18 @@ export const MessageInput = ({ chatId }: MessageInputTypes) => {
 
     setIsSending(true);
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/chat/sendMessage`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            chatId,
-            content: text.trim(),
-            mediaUrl: mediaUrl.trim() || null,
-          }),
+      const response = await fetch(`${API_URL}/api/chat/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        credentials: "include",
+        body: JSON.stringify({
+          chatId,
+          content: text.trim(),
+          mediaUrl: mediaUrl.trim() || null,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to send message");

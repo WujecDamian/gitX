@@ -3,6 +3,7 @@ import styles from "./Home.module.css";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
 import NewPostModal from "../../Components/Navbar/components/NewPostModal";
 import PostCard from "../../Components/Post/PostCard";
+import { API_URL } from "../../config";
 
 function Home() {
   const { user } = useAuth();
@@ -16,9 +17,9 @@ function Home() {
     const getPosts = async () => {
       let url = "";
       if (feedType === "forYou") {
-        url = "http://localhost:3000/api/post";
+        url = `${API_URL}/api/post`;
       } else {
-        url = `http://localhost:3000/api/post/${user!.id}`;
+        url = `${API_URL}/api/post/${user!.id}`;
       }
 
       try {

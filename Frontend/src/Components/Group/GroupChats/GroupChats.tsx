@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { GroupChatListItem } from "./GroupChatListItem";
 import styles from "./GroupChats.module.css";
+import { API_URL } from "../../../config";
 
 export const GroupChats = () => {
   const { groupId } = useParams<{ groupId: string }>();
@@ -20,13 +21,10 @@ export const GroupChats = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/group/${groupId}/chats`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        );
+        const response = await fetch(`${API_URL}/api/group/${groupId}/chats`, {
+          method: "GET",
+          credentials: "include",
+        });
         if (!response.ok) {
           throw new Error("Failed to load conversation history.");
         }

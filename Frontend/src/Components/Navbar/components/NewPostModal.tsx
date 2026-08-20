@@ -3,6 +3,7 @@ import type { RefObject } from "react";
 import styles from "./NewPostModal.module.css";
 import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../../config";
 
 type NewPostModalProps = {
   isOpen: boolean;
@@ -50,7 +51,7 @@ export default function NewPostModal({
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/api/post/create/`, {
+      const response = await fetch(`${API_URL}/api/post/create/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -4,6 +4,7 @@ import { RecipientHeading } from "./Heading/RecipientHeading";
 import { RecipientProfileCard } from "./RecipientProfileCard/RecipientProfileCard";
 import { GroupMessageBubble } from "./MessageBubble/GroupMessageBubble";
 import { GroupMessageInput } from "./MessageInput/GroupMessageInput";
+import { API_URL } from "../../../config";
 import styles from "./GroupConversation.module.css";
 
 export const GroupConversation = () => {
@@ -24,7 +25,7 @@ export const GroupConversation = () => {
       setError(null);
       try {
         const response = await fetch(
-          `http://localhost:3000/api/chat/getGroupChat/${chatId}`,
+          `${API_URL}/api/chat/getGroupChat/${chatId}`,
           {
             method: "GET",
             credentials: "include",

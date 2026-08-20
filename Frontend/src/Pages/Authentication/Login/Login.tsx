@@ -1,14 +1,15 @@
 import styles from "./Login.module.css";
+import { API_URL } from "../../../config";
 
 const Login = () => {
-  //const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+  //const API_BASE_URL = import.meta.env.VITE_API_URL || "${API_URL}";
 
   const handleLogin = () => {
-    window.location.href = "http://localhost:3000/api/auth/login/github";
+    window.location.href = `${API_URL}/api/auth/login/github`;
   };
 
   const handleGuestLogin = () => {
-    window.location.href = "http://localhost:3000/api/auth/login/guest";
+    window.location.href = `${API_URL}/api/auth/login/guest`;
   };
 
   return (

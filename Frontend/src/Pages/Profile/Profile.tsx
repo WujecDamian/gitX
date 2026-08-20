@@ -4,7 +4,7 @@ import { useParams, Link } from "react-router";
 import styles from "./Profile.module.css";
 import ProfileCard from "../../Components/ProfileCard/ProfileCard";
 import PostCard from "../../Components/Post/PostCard";
-
+import { API_URL } from "../../config";
 function Profile() {
   const [profile, setProfile] = useState<(User & { posts: Post[] }) | null>(
     null,
@@ -17,7 +17,7 @@ function Profile() {
     const getProfile = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/user/profile/${params.userId}`,
+          `${API_URL}/api/user/profile/${params.userId}`,
           {
             method: "GET",
             credentials: "include",

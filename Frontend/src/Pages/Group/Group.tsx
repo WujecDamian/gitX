@@ -5,6 +5,7 @@ import styles from "./Group.module.css";
 import { GroupSidebar } from "../../Components/Group/Subcomponents/GroupSidebar";
 import { GroupPanel } from "../../Components/Group/GroupPanel/GroupPanel";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
+import { API_URL } from "../../config";
 
 function Group() {
   const { user } = useAuth();
@@ -18,7 +19,7 @@ function Group() {
   useEffect(() => {
     const getGroups = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/group/`, {
+        const response = await fetch(`${API_URL}/api/group/`, {
           method: "GET",
           credentials: "include",
         });

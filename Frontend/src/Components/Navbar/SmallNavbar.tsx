@@ -1,6 +1,7 @@
 import { useAuth } from "../../Contexts/Auth/AuthContext";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../config";
 import styles from "./SmallNavbar.module.css";
 import MiniNavProfile from "./components/MiniNavProfile";
 
@@ -128,8 +129,7 @@ export default function SmallNavbar({ onPostClick }: NavbarProps) {
       ) : (
         <button
           onClick={() =>
-            (window.location.href =
-              "http://localhost:3000/api/auth/login/github")
+            (window.location.href = `${API_URL}/api/auth/login/github`)
           }
         >
           Login with GitHub

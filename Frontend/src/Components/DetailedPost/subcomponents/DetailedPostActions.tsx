@@ -3,6 +3,7 @@ import { useAuth } from "../../../Contexts/Auth/AuthContext";
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import type { LayoutContextType } from "../../../Layouts/GridLayout";
+import { API_URL } from "../../../config";
 
 type PostActionsTypes = {
   counts: { postLikes: number; comments: number; bookmarks: number };
@@ -21,13 +22,10 @@ export default function DetailedPostActions({
     e.preventDefault();
     e.stopPropagation();
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/like/post/${postId}`,
-        {
-          method: "POST",
-          credentials: "include",
-        },
-      );
+      const response = await fetch(`${API_URL}/api/like/post/${postId}`, {
+        method: "POST",
+        credentials: "include",
+      });
 
       const result = await response.json();
 
@@ -47,13 +45,10 @@ export default function DetailedPostActions({
     e.preventDefault();
     e.stopPropagation();
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/bookmark/post/${postId}`,
-        {
-          method: "POST",
-          credentials: "include",
-        },
-      );
+      const response = await fetch(`${API_URL}/api/bookmark/post/${postId}`, {
+        method: "POST",
+        credentials: "include",
+      });
 
       const result = await response.json();
 

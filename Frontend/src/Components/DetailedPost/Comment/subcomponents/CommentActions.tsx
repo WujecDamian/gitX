@@ -3,6 +3,7 @@ import { useAuth } from "../../../../Contexts/Auth/AuthContext";
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import type { LayoutContextType } from "../../../../Layouts/GridLayout";
+import { API_URL } from "../../../../config";
 
 type CommentActionsTypes = {
   counts: { commentLikes: number; sub_comments: number };
@@ -21,13 +22,10 @@ export default function CommentActions({
     e.preventDefault();
     e.stopPropagation();
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/like/comment/${commentId}`,
-        {
-          method: "POST",
-          credentials: "include",
-        },
-      );
+      const response = await fetch(`${API_URL}/api/like/comment/${commentId}`, {
+        method: "POST",
+        credentials: "include",
+      });
 
       const result = await response.json();
 
@@ -48,7 +46,7 @@ export default function CommentActions({
     e.stopPropagation();
     try {
       const response = await fetch(
-        `http://localhost:3000/api/bookmark/comment/${commentId}`,
+        `${API_URL}/api/bookmark/comment/${commentId}`,
         {
           method: "POST",
           credentials: "include",

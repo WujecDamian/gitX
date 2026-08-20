@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, useRef } from "react";
 import type { ChangeEvent } from "react";
 import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
-
+import { API_URL } from "../../../config";
 type props = {
   author: User;
   postId: string;
@@ -25,7 +25,7 @@ export default function Reply(props: props) {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/comment/create/${props.postId}`,
+        `${API_URL}/api/comment/create/${props.postId}`,
         {
           method: "POST",
           headers: {

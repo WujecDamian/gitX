@@ -5,6 +5,7 @@ import styles from "./Chat.module.css";
 import { Sidebar } from "../../Components/Chat/Sidebar/Sidebar";
 import { Conversation } from "../../Components/Chat/Conversation/Conversation";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
+import { API_URL } from "../../config";
 
 function Chat() {
   const { user } = useAuth();
@@ -18,13 +19,10 @@ function Chat() {
   useEffect(() => {
     const getChats = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/chat/getChats/`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        );
+        const response = await fetch(`${API_URL}/api/chat/getChats/`, {
+          method: "GET",
+          credentials: "include",
+        });
         if (!response.ok) {
           throw new Error(`Failed to fetch chats: ${response.statusText}`);
         }

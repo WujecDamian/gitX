@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { API_URL } from "../../../config";
 import UserListItem from "./subcomponents/UserListItem";
 import styles from "./Follows.module.css";
 
@@ -17,7 +18,7 @@ export const FollowingModal = ({ id, owner }: FollowsTypes) => {
     const getProfile = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/user/${params.userId}/following`,
+          `${API_URL}/api/user/${params.userId}/following`,
           {
             method: "GET",
             credentials: "include",

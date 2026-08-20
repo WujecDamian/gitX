@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./NewGroupModal.module.css";
 import { ProfilePicture } from "../UI/ProfilePicture/ProfilePicture";
+import { API_URL } from "../../config";
 
 type NewGroupModalProps = {
   isOpen: boolean;
@@ -48,7 +49,7 @@ export default function NewGroupModal({
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/api/group/create/`, {
+      const response = await fetch(`${API_URL}/api/group/create/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

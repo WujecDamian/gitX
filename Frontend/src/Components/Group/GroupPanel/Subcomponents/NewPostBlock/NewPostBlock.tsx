@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../../../../Contexts/Auth/AuthContext";
 import { ProfilePicture } from "../../../../UI/ProfilePicture/ProfilePicture";
+import { API_URL } from "../../../../../config";
 
 export type TabOption = "Posts" | "Chat";
 
@@ -24,7 +25,7 @@ export const NewPostBlock = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/api/post/create/`, {
+      const response = await fetch(`${API_URL}/api/post/create/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

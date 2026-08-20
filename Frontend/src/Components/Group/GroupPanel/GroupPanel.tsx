@@ -6,6 +6,7 @@ import TabNav from "./Subcomponents/TabNav/TabNav";
 import { NewPostBlock } from "./Subcomponents/NewPostBlock/NewPostBlock";
 import PostCard from "../../Post/PostCard";
 import { GroupChats } from "../GroupChats/GroupChats";
+import { API_URL } from "../../../config";
 
 export type TabOption = "Posts" | "Chat";
 
@@ -50,13 +51,10 @@ export const GroupPanel = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/group/${groupId}`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        );
+        const response = await fetch(`${API_URL}/api/group/${groupId}`, {
+          method: "GET",
+          credentials: "include",
+        });
         if (!response.ok) {
           throw new Error("Failed to load conversation history.");
         }
@@ -80,13 +78,10 @@ export const GroupPanel = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/post/group/${groupId}`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        );
+        const response = await fetch(`${API_URL}/api/post/group/${groupId}`, {
+          method: "GET",
+          credentials: "include",
+        });
         if (!response.ok) {
           throw new Error("Failed to load conversation history.");
         }

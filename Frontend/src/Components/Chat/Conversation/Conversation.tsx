@@ -5,6 +5,7 @@ import { RecipientProfileCard } from "./RecipientProfileCard/RecipientProfileCar
 import { MessageBubble } from "./MessageBubble/MessageBubble";
 import { MessageInput } from "./MessageInput/MessageInput";
 import styles from "./Conversation.module.css";
+import { API_URL } from "../../../config";
 
 export const Conversation = () => {
   const { chatId } = useParams<{ chatId: string }>();
@@ -23,13 +24,10 @@ export const Conversation = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/chat/getChat/${chatId}`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        );
+        const response = await fetch(`${API_URL}/api/chat/getChat/${chatId}`, {
+          method: "GET",
+          credentials: "include",
+        });
         if (!response.ok) {
           throw new Error("Failed to load conversation history.");
         }

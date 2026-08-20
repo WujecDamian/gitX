@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import DetailedPostCard from "../../Components/DetailedPost/DetailedPostCard";
 import Comment from "../../Components/DetailedPost/Comment/Comment";
 import Reply from "../../Components/DetailedPost/Reply/Reply";
+import { API_URL } from "../../config";
 
 function Post() {
   const { user } = useAuth();
@@ -19,7 +20,7 @@ function Post() {
     const getPost = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/post/postWithComments/${postId}`,
+          `${API_URL}/api/post/postWithComments/${postId}`,
           {
             method: "GET",
             credentials: "include",

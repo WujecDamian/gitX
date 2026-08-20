@@ -2,12 +2,14 @@ import { Server as HttpServer } from "http";
 import { Server as SocketServer } from "socket.io";
 import { sessionMiddleware } from "./session";
 
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
 let io: SocketServer | null = null;
 
 export const initSocket = (httpServer: HttpServer) => {
   io = new SocketServer(httpServer, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: FRONTEND_URL,
       credentials: true,
     },
   });

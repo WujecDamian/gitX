@@ -3,6 +3,8 @@ import passport from "passport";
 import "../Authentication/passport-config";
 import { prisma } from "../lib/prisma";
 
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
 const getUser = (req: Request, res: Response) => {
   if (!req.isAuthenticated() || !req.user) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -30,7 +32,7 @@ const guestLogin = async (req: Request, res: Response, next: NextFunction) => {
         return next(error);
       }
       // Redirect to the frontend workspace just like a successful GitHub login
-      return res.redirect("http://localhost:5173/");
+      return res.redirect(`${FRONTEND_URL}/`);
     });
   } catch (error) {
     return next(error);
@@ -43,7 +45,7 @@ const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
 
 const handleSuccess = (req: Request, res: Response) => {
   //res.json({ message: "Success", user: req.user });
-  res.redirect("http://localhost:5173/");
+  res.redirect(`${FRONTEND_URL}/`);
 };
 
 const callbackAuthenticate = (

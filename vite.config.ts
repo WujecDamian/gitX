@@ -5,7 +5,7 @@ import { resolve } from "path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  root: "./",
+  root: "./Frontend",
   build: {
     // Outputs the compiled frontend to a clean dist directory at the root
     outDir: resolve("Frontend/dist"),

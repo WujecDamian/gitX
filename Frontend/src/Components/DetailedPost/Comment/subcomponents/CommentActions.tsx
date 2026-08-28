@@ -80,7 +80,7 @@ export default function CommentActions({
       >
         <button className={styles.comment}>
           <img
-            src="../Frontend/public/icons/mode_comment_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
+            src="/icons/mode_comment_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
             alt="Comment icon"
           />
         </button>
@@ -89,7 +89,7 @@ export default function CommentActions({
       <div className={styles.likes} onClick={onLikeClick}>
         <button className={styles.like}>
           <img
-            src="../Frontend/public/icons/favorite_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
+            src="/icons/favorite_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
             alt="Heart icon"
           />
         </button>
@@ -98,7 +98,7 @@ export default function CommentActions({
       <div className={styles.bookmarks} onClick={onBookmarkClick}>
         <button className={styles.bookmark}>
           <img
-            src="../Frontend/public/icons/bookmark_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
+            src="/icons/bookmark_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
             alt="Bookmark icon"
           />
         </button>

@@ -26,7 +26,7 @@ const Login = () => {
         </p>
       </section>
       <section className={styles.main__right}>
-        <img src="../../../Frontend/public/X_logo_png.png" alt="GitX logo" />
+        <img src="/X_logo.png" alt="GitX logo" />
       </section>
     </main>
   );

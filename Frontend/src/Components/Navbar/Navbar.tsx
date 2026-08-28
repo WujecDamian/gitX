@@ -18,7 +18,7 @@ export default function Navbar({ onPostClick }: NavbarProps) {
         <div className={styles.links}>
           <Link to="/" className={styles.nav__link}>
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/X_logo_2023_%28white%29.png/250px-X_logo_2023_%28white%29.png"
+              src="/X_logo.png"
               alt="GitX logo"
               className={styles.navbar__logo}
             />

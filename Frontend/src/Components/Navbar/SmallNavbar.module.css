@@ -17,6 +17,7 @@
   .links {
     display: flex;
     flex-direction: column;
+    gap: 0.25rem;
     a {
       background-color: transparent;
       color: white;

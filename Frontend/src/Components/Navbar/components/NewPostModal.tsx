@@ -4,6 +4,7 @@ import styles from "./NewPostModal.module.css";
 import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../../config";
+import { ErrorMessage } from "../../UI/ErrorMessage/ErrorMessage";
 
 type NewPostModalProps = {
   isOpen: boolean;
@@ -65,6 +66,7 @@ export default function NewPostModal({
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
       }
+      setIsOpen(false);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -73,7 +75,6 @@ export default function NewPostModal({
       }
     } finally {
       setLoading(false);
-      setIsOpen(false);
     }
   };
 
@@ -102,7 +103,7 @@ export default function NewPostModal({
 
           <input type="submit" value="Post" />
           {loading && <span>Loading...</span>}
-          {error && <span>{error}</span>}
+          {error && <ErrorMessage error={error}></ErrorMessage>}
         </form>
       </div>
     )

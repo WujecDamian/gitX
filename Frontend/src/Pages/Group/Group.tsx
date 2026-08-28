@@ -6,6 +6,7 @@ import { GroupSidebar } from "../../Components/Group/Subcomponents/GroupSidebar"
 import { GroupPanel } from "../../Components/Group/GroupPanel/GroupPanel";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
 import { API_URL } from "../../config";
+import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
 
 function Group() {
   const { user } = useAuth();
@@ -41,6 +42,7 @@ function Group() {
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>Please log in to view this page.</div>;
+  if (error) return <ErrorMessage error={error}></ErrorMessage>;
   console.log(groups);
   return (
     <>

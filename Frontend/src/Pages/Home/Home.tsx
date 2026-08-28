@@ -4,6 +4,7 @@ import { useAuth } from "../../Contexts/Auth/AuthContext";
 import NewPostModal from "../../Components/Navbar/components/NewPostModal";
 import PostCard from "../../Components/Post/PostCard";
 import { API_URL } from "../../config";
+import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
 
 function Home() {
   const { user } = useAuth();
@@ -52,6 +53,7 @@ function Home() {
     <>
       <section className={styles.home}>
         <section className={styles.post__cards}>
+          {error && <ErrorMessage error={error}></ErrorMessage>}
           {posts.map((post: any) => (
             <PostCard author={post.author} post={post}></PostCard>
           ))}

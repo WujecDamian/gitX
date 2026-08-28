@@ -6,6 +6,7 @@ import { Sidebar } from "../../Components/Chat/Sidebar/Sidebar";
 import { Conversation } from "../../Components/Chat/Conversation/Conversation";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
 import { API_URL } from "../../config";
+import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
 
 function Chat() {
   const { user } = useAuth();
@@ -41,6 +42,7 @@ function Chat() {
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>Please log in to view this page.</div>;
+  if (error) return <ErrorMessage error={error}></ErrorMessage>;
   console.log(chats);
   return (
     <>

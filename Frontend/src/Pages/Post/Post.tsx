@@ -6,6 +6,7 @@ import DetailedPostCard from "../../Components/DetailedPost/DetailedPostCard";
 import Comment from "../../Components/DetailedPost/Comment/Comment";
 import Reply from "../../Components/DetailedPost/Reply/Reply";
 import { API_URL } from "../../config";
+import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
 
 function Post() {
   const { user } = useAuth();
@@ -49,6 +50,7 @@ function Post() {
   return (
     <>
       <section className={styles.post}>
+        {error && <ErrorMessage error={error}></ErrorMessage>}
         {post && (
           <>
             <DetailedPostCard

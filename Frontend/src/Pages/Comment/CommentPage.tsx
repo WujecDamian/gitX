@@ -8,6 +8,7 @@ import Comment from "../../Components/DetailedPost/Comment/Comment";
 import SubComment from "../../Components/DetailedPost/SubComment/SubComment";
 import PostCard from "../../Components/Post/PostCard";
 import { API_URL } from "../../config";
+import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
 
 function CommentPage() {
   const { user } = useAuth();
@@ -83,6 +84,7 @@ function CommentPage() {
   return (
     <>
       <section className={styles.comment}>
+        {error && <ErrorMessage error={error}></ErrorMessage>}
         {comment && (
           <>
             {post && <PostCard author={post!.author} post={post!}></PostCard>}

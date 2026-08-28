@@ -5,6 +5,7 @@ import styles from "./Profile.module.css";
 import ProfileCard from "../../Components/ProfileCard/ProfileCard";
 import PostCard from "../../Components/Post/PostCard";
 import { API_URL } from "../../config";
+import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
 function Profile() {
   const [profile, setProfile] = useState<(User & { posts: Post[] }) | null>(
     null,
@@ -41,6 +42,7 @@ function Profile() {
   }, [params.userId]);
 
   if (loading) return <div>Loading...</div>;
+  if (error) return <ErrorMessage error={error}></ErrorMessage>;
   if (!profile) return <div>No profile.</div>;
 
   return (

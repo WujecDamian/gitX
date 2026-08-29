@@ -45,6 +45,9 @@ const createPost = async (req: Request, res: Response) => {
 const getAllPosts = async (req: Request, res: Response) => {
   try {
     const posts = await prisma.post.findMany({
+      where: {
+        groupId: null,
+      },
       select: {
         author: true,
         id: true,

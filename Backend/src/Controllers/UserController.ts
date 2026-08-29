@@ -374,6 +374,58 @@ const getUserFollowers = async (
     return res.status(500).json({ error: error });
   }
 };
+
+const searchUsers = async (req: Request, res: Response) => {
+  const { query } = req.query;
+  const userId = req.user.id;
+
+  if (typeof query !== "string" || query.trim().length === 0) {
+    return res.status(400).json({ error: "Search query is required" });
+  }
+
+  const trimmed = query.trim();
+
+  try {
+    const users = await prisma.user.findMany({
+      where: {
+        id: {
+          not: userId,
+        },
+        OR: [
+          {
+            username: {
+              contains: trimmed,
+              mode: "insensitive",
+            },
+          },
+          {
+            display_name: {
+              contains: trimmed,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      select: {
+        id: true,
+        username: true,
+        display_name: true,
+        profile_picture_url: true,
+        _count: {
+          select: {
+            followers: true,
+          },
+        },
+      },
+      take: 20,
+    });
+
+    return res.status(200).json({ users });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to search users" });
+  }
+};
+
 export {
   updateProfile,
   editUserBio,
@@ -386,4 +438,5 @@ export {
   getUserProfile,
   getUserFollowers,
   getUserFollowing,
+  searchUsers,
 };

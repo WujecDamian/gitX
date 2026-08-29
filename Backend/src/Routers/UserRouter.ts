@@ -6,6 +6,7 @@ import express, {
 import * as UserController from "../Controllers/UserController";
 
 const router = express.Router();
+router.get("/search", UserController.searchUsers);
 //get user profile
 router.get("/profile/:userId", UserController.getUserProfile);
 //get following & followers

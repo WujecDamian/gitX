@@ -12,6 +12,7 @@
   flex-grow: 1;
   width: 100%;
   gap: 0;
+  border-inline: 1px solid rgb(67, 67, 67);
 }
 .feed__container {
   display: flex;

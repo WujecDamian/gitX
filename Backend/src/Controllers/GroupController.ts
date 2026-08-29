@@ -102,6 +102,14 @@ const getGroup = async (req: Request, res: Response) => {
             members: true,
           },
         },
+        members: {
+          where: {
+            id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
       },
     });
 

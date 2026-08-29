@@ -101,6 +101,7 @@ declare global {
     _count: {
       members: number;
     };
+    members?: { id: string }[];
   };
 }
 

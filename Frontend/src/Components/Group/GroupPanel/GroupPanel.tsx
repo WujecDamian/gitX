@@ -111,7 +111,10 @@ export const GroupPanel = () => {
     <section className={styles.group__wrapper}>
       {group ? (
         <>
-          <GroupCard group={group} isMember={true}></GroupCard>
+          <GroupCard
+            group={group}
+            isMember={Boolean(group.members && group.members.length > 0)}
+          ></GroupCard>
           <TabNav
             tabs={PROFILE_TABS}
             activeTab={currentTab}

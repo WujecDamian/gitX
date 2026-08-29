@@ -1,5 +1,5 @@
 import styles from "./GroupCard.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TimeAccountCreated } from "../../../../UI/Time/TimeAccountCreated";
 
@@ -16,11 +16,21 @@ export default function GroupCard({ group, isMember }: props) {
   const { user } = useAuth();
   const [error, setError] = useState<String | null>(null);
   const navigate = useNavigate();
-  const [buttonContent, setButtonContent] = useState("Following");
-  console.log(isMember);
-  const onFollowClick = async () => {
+  const [member, setMember] = useState(isMember);
+  const [memberCount, setMemberCount] = useState(group._count.members);
+  const [buttonContent, setButtonContent] = useState("Member");
+
+  useEffect(() => {
+    setMember(isMember);
+  }, [isMember]);
+
+  useEffect(() => {
+    setMemberCount(group._count.members);
+  }, [group._count.members]);
+
+  const onJoinClick = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/follow/group/${group.id}`, {
+      const response = await fetch(`${API_URL}/api/group/join/${group.id}`, {
         method: "POST",
         credentials: "include",
       });
@@ -30,6 +40,10 @@ export default function GroupCard({ group, isMember }: props) {
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
       }
+
+      setMember(true);
+      setMemberCount((count) => count + 1);
+      setButtonContent("Member");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -38,9 +52,39 @@ export default function GroupCard({ group, isMember }: props) {
       }
     }
   };
+
+  const onLeaveClick = async () => {
+    const didConfirm = window.confirm(
+      `Leave ${group.group_name}? You will no longer be a member.`,
+    );
+    if (!didConfirm) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/group/leave/${group.id}`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Something went wrong");
+      }
+
+      setMember(false);
+      setMemberCount((count) => Math.max(0, count - 1));
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+    }
+  };
+
   const onMessageClick = async () => {
-    // 1. get chat id using getorcreate api route.
-    // 2. redirect to chat
     let chatId = "";
     try {
       const response = await fetch(`${API_URL}/api/chat/${group.id}`, {
@@ -102,23 +146,25 @@ export default function GroupCard({ group, isMember }: props) {
               </svg>
             </button>
 
-            {isMember ? (
+            {member ? (
               <button
                 className={styles.following__button}
-                onClick={onFollowClick}
-                onMouseOver={() => setButtonContent("Unfollow")}
-                onMouseLeave={() => setButtonContent("Following")}
+                onClick={onLeaveClick}
+                onMouseOver={() => setButtonContent("Leave")}
+                onMouseLeave={() => setButtonContent("Member")}
               >
                 {buttonContent}
               </button>
             ) : (
-              <button className={styles.follow__button} onClick={onFollowClick}>
-                Follow
+              <button className={styles.follow__button} onClick={onJoinClick}>
+                Join
               </button>
             )}
           </>
         )}
       </div>
+
+      {error && <span>{error}</span>}
 
       <section className={styles.group__details}>
         <span className={styles.group__name}>{group.group_name}</span>
@@ -139,7 +185,7 @@ export default function GroupCard({ group, isMember }: props) {
             popoverTargetAction="show"
           >
             <span>
-              <strong>{group._count.members}</strong> Members
+              <strong>{memberCount}</strong> Members
             </span>
           </button>
           <MembersModal id="members-popover" group={group}></MembersModal>
@@ -147,4 +193,4 @@ export default function GroupCard({ group, isMember }: props) {
       </section>
     </section>
   );
-}
+};

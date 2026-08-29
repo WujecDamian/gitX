@@ -27,18 +27,12 @@ export const GroupPanel = () => {
   useEffect(() => {
     if (location.pathname.includes("/chat")) {
       setCurrentTab("Chat");
-    } else {
-      setCurrentTab("Posts");
     }
   }, [location.pathname]);
 
   const handleTabChange = (tab: TabOption) => {
     setCurrentTab(tab);
-    if (tab === "Posts") {
-      navigate(`/groups/${groupId}`);
-    } else if (tab === "Chat" && !chatId) {
-      navigate(`/groups/${groupId}`);
-    }
+    navigate(`/groups/${groupId}`);
   };
 
   useEffect(() => {

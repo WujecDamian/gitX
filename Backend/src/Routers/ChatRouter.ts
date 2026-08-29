@@ -20,6 +20,7 @@ router.post("/sendMessage/", ChatController.sendMessage);
 // send message to group Chat
 router.post("/sendGroupMessage/", ChatController.sendGroupMessage);
 
+router.post("/createGroupChat", ChatController.createGroupChat);
 router.post("/:recipientId", ChatController.getOrCreateChat);
 
 export default router;

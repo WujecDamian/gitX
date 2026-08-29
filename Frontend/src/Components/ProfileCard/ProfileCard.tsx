@@ -149,21 +149,15 @@ export default function ProfileCard({
         {owner.socials && owner.socials.length > 0 && (
           <div className={styles.socials}>
             {owner.socials.map((social) =>
-              social.startsWith("http") ? (
-                <a
-                  className={styles.social}
-                  href={social}
-                  key={social}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {social}
-                </a>
-              ) : (
-                <span className={styles.social} key={social}>
-                  {social}
-                </span>
-              ),
+              <a
+                className={styles.social}
+                href={social.startsWith("https") ? `${social}` : `https://${social}`}
+                key={social}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {social}
+              </a>
             )}
           </div>
         )}

@@ -254,6 +254,52 @@ const sendMessage = async (req: Request, res: Response) => {
   }
 };
 
+const createGroupChat = async (req: Request, res: Response) => {
+  const { name, groupId } = req.body;
+  const userId = req.user.id;
+
+  if (typeof groupId !== "string" || groupId.length === 0) {
+    return res.status(400).json({ error: "Invalid or missing Group ID" });
+  }
+
+  if (typeof name !== "string" || name.trim().length === 0) {
+    return res.status(400).json({ error: "Chat name is required" });
+  }
+
+  try {
+    const group = await prisma.group.findUnique({
+      where: {
+        id: groupId,
+      },
+      select: {
+        id: true,
+        creator_id: true,
+      },
+    });
+
+    if (!group) {
+      return res.status(404).json({ error: "Group not found" });
+    }
+
+    if (group.creator_id !== userId) {
+      return res
+        .status(403)
+        .json({ error: "Only the group creator can create chats" });
+    }
+
+    const chat = await prisma.groupChat.create({
+      data: {
+        groupId,
+        name: name.trim(),
+      },
+    });
+
+    return res.status(201).json({ chat });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to create group chat" });
+  }
+};
+
 const sendGroupMessage = async (req: Request, res: Response) => {
   const { content, mediaUrl, chatId } = req.body;
   const senderId = req.user.id;
@@ -286,4 +332,5 @@ export {
   getChat,
   sendMessage,
   sendGroupMessage,
+  createGroupChat,
 };

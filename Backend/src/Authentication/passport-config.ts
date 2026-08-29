@@ -1,9 +1,8 @@
+import "../loadEnv";
 import passport from "passport";
 import { Strategy as GitHubStrategy, type Profile } from "passport-github2";
 import { prisma } from "../lib/prisma";
 import { type User as prismaUser } from "../generated/prisma/client";
-import dotenv from "dotenv";
-dotenv.config();
 
 //serialization happens on Login (once on login!!)
 passport.serializeUser(function (user, done) {

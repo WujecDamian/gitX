@@ -1,3 +1,4 @@
+import "./loadEnv";
 import express, { type Express, type Request, type Response } from "express";
 
 import { createClient } from "redis";
@@ -6,7 +7,6 @@ import { RedisStore } from "connect-redis";
 import passport from "passport";
 import cors from "cors";
 import isAuthenticated from "./Authentication/isAuthenticated";
-import "dotenv/config";
 //session
 import { sessionMiddleware } from "./session";
 //socket
@@ -76,6 +76,7 @@ const startServer = async () => {
   // 3. FIXED: Listen via httpServer so Socket.io routes function alongside Express
   httpServer.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
+    console.log(`Auth will send you back to ${FRONTEND_URL}`);
   });
 };
 

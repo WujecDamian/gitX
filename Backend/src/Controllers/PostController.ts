@@ -43,6 +43,8 @@ const createPost = async (req: Request, res: Response) => {
 
 //Post get functions
 const getAllPosts = async (req: Request, res: Response) => {
+  const userId = req.user.id;
+
   try {
     const posts = await prisma.post.findMany({
       where: {
@@ -60,13 +62,37 @@ const getAllPosts = async (req: Request, res: Response) => {
             comments: true,
           },
         },
+        postLikes: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
+        bookmarks: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return res.status(200).json({ posts });
+    const postsWithLiked = posts.map((post) => {
+      return {
+        ...post,
+        isLikedByUser: post.postLikes.length > 0,
+        isBookmarkedByUser: post.bookmarks.length > 0,
+      };
+    });
+
+    return res.status(200).json({ posts: postsWithLiked });
   } catch (error) {
     return res.status(500).json({ error: "Failed to fetch post" });
   }
@@ -76,6 +102,7 @@ const getAllPosts = async (req: Request, res: Response) => {
 const getPostById = async (req: Request, res: Response) => {
   try {
     const { postId } = req.params;
+    const userId = req.user.id;
 
     if (typeof postId !== "string") {
       return res.status(400).json({ error: "Invalid or missing Post ID" });
@@ -97,10 +124,36 @@ const getPostById = async (req: Request, res: Response) => {
             comments: true,
           },
         },
+        postLikes: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
+        bookmarks: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
       },
     });
 
-    return res.status(200).json({ post });
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    return res.status(200).json({
+      post: {
+        ...post,
+        isLikedByUser: post.postLikes.length > 0,
+        isBookmarkedByUser: post.bookmarks.length > 0,
+      },
+    });
   } catch (error) {
     return res.status(500).json({ error: "Failed to fetch post" });
   }
@@ -110,6 +163,7 @@ const getPostById = async (req: Request, res: Response) => {
 const getPostWithCommentsById = async (req: Request, res: Response) => {
   try {
     const newPostId = req.params.postId;
+    const userId = req.user.id;
 
     if (!newPostId) {
       return res.status(400).json({ error: "Invalid post ID format" });
@@ -131,10 +185,42 @@ const getPostWithCommentsById = async (req: Request, res: Response) => {
           },
           include: {
             author: true,
+            commentLikes: {
+              where: {
+                user_id: userId,
+              },
+              select: {
+                id: true,
+              },
+            },
+            commentBookmarks: {
+              where: {
+                user_id: userId,
+              },
+              select: {
+                id: true,
+              },
+            },
             sub_comments: {
               include: {
                 author: true,
                 _count: true,
+                commentLikes: {
+                  where: {
+                    user_id: userId,
+                  },
+                  select: {
+                    id: true,
+                  },
+                },
+                commentBookmarks: {
+                  where: {
+                    user_id: userId,
+                  },
+                  select: {
+                    id: true,
+                  },
+                },
               },
             },
             _count: true,
@@ -147,10 +233,54 @@ const getPostWithCommentsById = async (req: Request, res: Response) => {
             bookmarks: true,
           },
         },
+        postLikes: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
+        bookmarks: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
       },
     });
 
-    return res.status(200).json({ post });
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    const commentsWithLiked = post.comments.map((comment) => {
+      const subCommentsWithLiked = comment.sub_comments.map((subComment) => {
+        return {
+          ...subComment,
+          isLikedByUser: subComment.commentLikes.length > 0,
+          isBookmarkedByUser: subComment.commentBookmarks.length > 0,
+        };
+      });
+
+      return {
+        ...comment,
+        isLikedByUser: comment.commentLikes.length > 0,
+        isBookmarkedByUser: comment.commentBookmarks.length > 0,
+        sub_comments: subCommentsWithLiked,
+      };
+    });
+
+    return res.status(200).json({
+      post: {
+        ...post,
+        isLikedByUser: post.postLikes.length > 0,
+        isBookmarkedByUser: post.bookmarks.length > 0,
+        comments: commentsWithLiked,
+      },
+    });
   } catch (error) {
     return res.status(500).json({ error: "Failed to fetch post" });
   }
@@ -181,13 +311,37 @@ const getFollowingPosts = async (req: Request, res: Response) => {
             comments: true,
           },
         },
+        postLikes: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
+        bookmarks: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return res.status(200).json({ posts });
+    const postsWithLiked = posts.map((post) => {
+      return {
+        ...post,
+        isLikedByUser: post.postLikes.length > 0,
+        isBookmarkedByUser: post.bookmarks.length > 0,
+      };
+    });
+
+    return res.status(200).json({ posts: postsWithLiked });
   } catch (error) {
     return res.status(500).json({ error: "Failed to create post" });
   }
@@ -213,13 +367,37 @@ const getUserPosts = async (req: Request, res: Response) => {
             comments: true,
           },
         },
+        postLikes: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
+        bookmarks: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return res.status(200).json({ posts });
+    const postsWithLiked = posts.map((post) => {
+      return {
+        ...post,
+        isLikedByUser: post.postLikes.length > 0,
+        isBookmarkedByUser: post.bookmarks.length > 0,
+      };
+    });
+
+    return res.status(200).json({ posts: postsWithLiked });
   } catch (error) {
     return res.status(500).json({ error: "Failed to create post" });
   }
@@ -227,6 +405,7 @@ const getUserPosts = async (req: Request, res: Response) => {
 
 const getGroupPosts = async (req: Request, res: Response) => {
   const { groupId } = req.params;
+  const userId = req.user.id;
   if (typeof groupId !== "string") {
     return res.status(400).json({ error: "Invalid or missing Group ID" });
   }
@@ -247,13 +426,37 @@ const getGroupPosts = async (req: Request, res: Response) => {
             comments: true,
           },
         },
+        postLikes: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
+        bookmarks: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return res.status(200).json({ posts });
+    const postsWithLiked = posts.map((post) => {
+      return {
+        ...post,
+        isLikedByUser: post.postLikes.length > 0,
+        isBookmarkedByUser: post.bookmarks.length > 0,
+      };
+    });
+
+    return res.status(200).json({ posts: postsWithLiked });
   } catch (error) {
     return res.status(500).json({ error: "Failed to fetch posts" });
   }

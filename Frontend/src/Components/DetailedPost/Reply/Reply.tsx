@@ -4,9 +4,11 @@ import { useState, useRef } from "react";
 import type { ChangeEvent } from "react";
 import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
 import { API_URL } from "../../../config";
+
 type props = {
   author: User;
   postId: string;
+  onCommentCreated: (comment: CommentType) => void;
 };
 export default function Reply(props: props) {
   const [error, setError] = useState<String | null>(null);
@@ -40,6 +42,10 @@ export default function Reply(props: props) {
 
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
+      }
+
+      if (result.comment) {
+        props.onCommentCreated(result.comment);
       }
     } catch (error) {
       if (error instanceof Error) {

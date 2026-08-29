@@ -37,6 +37,8 @@ declare global {
     media_url?: string | null;
     author: User;
     createdAt: string;
+    isLikedByUser: boolean;
+    isBookmarkedByUser: boolean;
     _count: { postLikes: number; comments: number };
   };
   type DetailedPost = {
@@ -45,7 +47,9 @@ declare global {
     media_url?: string | null;
     author: User;
     createdAt: string;
-    comments: [];
+    comments: CommentType[];
+    isLikedByUser: boolean;
+    isBookmarkedByUser: boolean;
     _count: { postLikes: number; comments: number; bookmarks: number };
   };
   type CommentType = {
@@ -57,7 +61,9 @@ declare global {
     media_url?: string;
     post_id: string;
     sub_comment_id?: string;
-    sub_comments: [CommentType];
+    sub_comments: CommentType[];
+    isLikedByUser: boolean;
+    isBookmarkedByUser: boolean;
     _count: {
       commentLikes: number;
       sub_comments: number;

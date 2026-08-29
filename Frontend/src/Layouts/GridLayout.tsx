@@ -4,12 +4,18 @@ import SmallNavbar from "../Components/Navbar/SmallNavbar";
 
 import { useAuth } from "../Contexts/Auth/AuthContext";
 import styles from "./RootLayout.module.css";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import NewPostModal from "../Components/Navbar/components/NewPostModal";
 import NewCommentModal from "../Components/Modals/NewCommentModal";
 import NewCommentOnCommentModal from "../Components/Modals/NewCommentOnCommentModal";
 import NewGroupModal from "../Components/Modals/NewGroupModal";
+
+export type CommentCreatedPayload = {
+  postId: string;
+  parentCommentId?: string;
+  comment: CommentType;
+};
 
 export type LayoutContextType = {
   setIsCommentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,6 +27,9 @@ export type LayoutContextType = {
 
   commentPostId: string;
   commentId: string;
+  setOnCommentCreated: (
+    handler: ((payload: CommentCreatedPayload) => void) | null,
+  ) => void;
 };
 
 function GridLayout() {
@@ -33,6 +42,20 @@ function GridLayout() {
 
   const [commentPostId, setCommentPostId] = useState(null);
   const [commentId, setCommentId] = useState(null);
+  const onCommentCreatedRef = useRef<
+    ((payload: CommentCreatedPayload) => void) | null
+  >(null);
+
+  const setOnCommentCreated = useCallback(
+    (handler: ((payload: CommentCreatedPayload) => void) | null) => {
+      onCommentCreatedRef.current = handler;
+    },
+    [],
+  );
+
+  const notifyCommentCreated = (payload: CommentCreatedPayload) => {
+    onCommentCreatedRef.current?.(payload);
+  };
 
   //checking if any modal is open (for darkening background and making inactive)
   const isAnyModalOpen =
@@ -82,6 +105,7 @@ function GridLayout() {
             commentPostId,
             commentId,
             setCommentId,
+            setOnCommentCreated,
           }}
         ></Outlet>
         {/* Modals */}
@@ -95,12 +119,14 @@ function GridLayout() {
           setIsOpen={setIsCommentModalOpen}
           postId={commentPostId}
           user={user}
+          onCommentCreated={notifyCommentCreated}
         ></NewCommentModal>
         <NewCommentOnCommentModal
           isOpen={isCommentOnCommentModalOpen}
           setIsOpen={setIsCommentOnCommentModalOpen}
           commentId={commentId}
           user={user}
+          onCommentCreated={notifyCommentCreated}
         ></NewCommentOnCommentModal>
         <NewGroupModal
           isOpen={isNewGroupModalOpen}

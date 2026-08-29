@@ -24,6 +24,8 @@ export default function PostCard(props: props) {
         <PostActions
           counts={props.post._count}
           postId={props.post.id}
+          isLikedByUser={props.post.isLikedByUser}
+          isBookmarkedByUser={props.post.isBookmarkedByUser}
         ></PostActions>
       </div>
     </Link>

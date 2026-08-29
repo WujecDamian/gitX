@@ -35,7 +35,19 @@ const likePost = async (req: Request, res: Response) => {
         },
       });
     }
-    return res.status(201).json({ message: "Successfully liked post!" });
+
+    const likeCount = await prisma.postLike.count({
+      where: {
+        post_id: postId,
+      },
+    });
+    const isLikedByUser = hasLiked.length === 0;
+
+    return res.status(201).json({
+      message: "Successfully liked post!",
+      isLikedByUser,
+      likeCount,
+    });
   } catch (error) {
     return res.status(500).json({ error: "Failed to like post" });
   }
@@ -72,7 +84,19 @@ const likeComment = async (req: Request, res: Response) => {
         },
       });
     }
-    return res.status(201).json({ message: "Successfully liked comment!" });
+
+    const likeCount = await prisma.commentLike.count({
+      where: {
+        comment_id: commentId,
+      },
+    });
+    const isLikedByUser = hasLiked.length === 0;
+
+    return res.status(201).json({
+      message: "Successfully liked comment!",
+      isLikedByUser,
+      likeCount,
+    });
   } catch (error) {
     return res.status(500).json({ error: "Failed to like comment" });
   }
@@ -99,8 +123,24 @@ const getLikedPosts = async (req: Request, res: Response) => {
         media_url: true,
         _count: {
           select: {
-            likes: true,
+            postLikes: true,
             comments: true,
+          },
+        },
+        postLikes: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
+          },
+        },
+        bookmarks: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
           },
         },
       },
@@ -109,7 +149,15 @@ const getLikedPosts = async (req: Request, res: Response) => {
       },
     });
 
-    return res.status(200).json({ posts });
+    return res.status(200).json({
+      posts: posts.map((post) => {
+        return {
+          ...post,
+          isLikedByUser: post.postLikes.length > 0,
+          isBookmarkedByUser: post.bookmarks.length > 0,
+        };
+      }),
+    });
   } catch (error) {
     return res.status(500).json({ error: "Failed to fetch posts" });
   }

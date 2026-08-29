@@ -8,13 +8,21 @@ import { API_URL } from "../../../config";
 type PostActionsTypes = {
   counts: { postLikes: number; comments: number; bookmarks: number };
   postId: string;
+  isLikedByUser: boolean;
+  isBookmarkedByUser: boolean;
 };
 export default function DetailedPostActions({
   counts,
   postId,
+  isLikedByUser,
+  isBookmarkedByUser,
 }: PostActionsTypes) {
   const { user } = useAuth();
   const [error, setError] = useState<String | null>(null);
+  const [isLiked, setIsLiked] = useState(isLikedByUser);
+  const [likeCount, setLikeCount] = useState(counts.postLikes);
+  const [isBookmarked, setIsBookmarked] = useState(isBookmarkedByUser);
+  const [bookmarkCount, setBookmarkCount] = useState(counts.bookmarks);
   const { setIsCommentModalOpen, setCommentPostId } =
     useOutletContext<LayoutContextType>();
 
@@ -32,6 +40,9 @@ export default function DetailedPostActions({
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
       }
+
+      setIsLiked(result.isLikedByUser);
+      setLikeCount(result.likeCount);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -55,6 +66,9 @@ export default function DetailedPostActions({
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
       }
+
+      setIsBookmarked(result.isBookmarkedByUser);
+      setBookmarkCount(result.bookmarkCount);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -86,20 +100,28 @@ export default function DetailedPostActions({
       <div className={styles.likes} onClick={onLikeClick}>
         <button className={styles.like}>
           <img
-            src="/icons/favorite_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
+            src={
+              isLiked
+                ? "/icons/favorite_24dp_E3E3E3_FILL1_wght300_GRAD-25_opsz24.svg"
+                : "/icons/favorite_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
+            }
             alt="Heart icon"
           />
         </button>
-        <span className={styles.count}>{counts.postLikes}</span>
+        <span className={styles.count}>{likeCount}</span>
       </div>
       <div className={styles.bookmarks} onClick={onBookmarkClick}>
         <button className={styles.bookmark}>
           <img
-            src="/icons/bookmark_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
+            src={
+              isBookmarked
+                ? "/icons/bookmark_24dp_E3E3E3_FILL1_wght300_GRAD-25_opsz24.svg"
+                : "/icons/bookmark_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
+            }
             alt="Bookmark icon"
           />
         </button>
-        <span className={styles.count}>{counts.bookmarks}</span>
+        <span className={styles.count}>{bookmarkCount}</span>
       </div>
       {error && <span>{error}</span>}
     </section>

@@ -24,10 +24,12 @@ export default function Comment(props: props) {
         <CommentActions
           counts={props.comment._count}
           commentId={props.comment.id}
+          isLikedByUser={props.comment.isLikedByUser}
+          isBookmarkedByUser={props.comment.isBookmarkedByUser}
         ></CommentActions>
       </div>
       <div className="comment__replies">
-        {props.comment.sub_comments.map((comment: CommentType) => (
+        {props.comment.sub_comments?.map((comment: CommentType) => (
           <SubComment
             author={comment.author}
             comment={comment}

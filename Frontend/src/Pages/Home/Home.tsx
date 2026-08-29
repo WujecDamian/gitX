@@ -1,16 +1,18 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Home.module.css";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
-import NewPostModal from "../../Components/Navbar/components/NewPostModal";
 import PostCard from "../../Components/Post/PostCard";
 import { API_URL } from "../../config";
 import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
+import { useOutletContext } from "react-router-dom";
+import type { LayoutContextType } from "../../Layouts/GridLayout";
 
 function Home() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<String | null>(null);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const { setOnCommentCreated } = useOutletContext<LayoutContextType>();
   type feedTypeTypes = "forYou" | "following";
   const [feedType, setFeedType] = useState<feedTypeTypes>("forYou");
 
@@ -32,7 +34,6 @@ function Home() {
           throw new Error(`Failed to fetch posts: ${response.statusText}`);
         }
         const data = await response.json();
-        console.log(data);
         setPosts(data.posts);
       } catch (error) {
         if (error instanceof Error) {
@@ -44,7 +45,28 @@ function Home() {
     };
     getPosts();
   }, []);
-  console.log(posts);
+
+  useEffect(() => {
+    setOnCommentCreated((payload) => {
+      setPosts((oldPosts) =>
+        oldPosts.map((post) =>
+          post.id === payload.postId
+            ? {
+                ...post,
+                _count: {
+                  ...post._count,
+                  comments: post._count.comments + 1,
+                },
+              }
+            : post,
+        ),
+      );
+    });
+
+    return () => {
+      setOnCommentCreated(null);
+    };
+  }, [setOnCommentCreated]);
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>Please log in to view this page.</div>;
@@ -54,8 +76,12 @@ function Home() {
       <section className={styles.home}>
         <section className={styles.post__cards}>
           {error && <ErrorMessage error={error}></ErrorMessage>}
-          {posts.map((post: any) => (
-            <PostCard author={post.author} post={post}></PostCard>
+          {posts.map((post) => (
+            <PostCard
+              author={post.author}
+              post={post}
+              key={post.id}
+            ></PostCard>
           ))}
         </section>
       </section>

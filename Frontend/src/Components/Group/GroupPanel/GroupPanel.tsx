@@ -1,5 +1,5 @@
 import styles from "./GroupPanel.module.css";
-import { useParams, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useParams, Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 import GroupCard from "./Subcomponents/GroupCard/GroupCard";
 import TabNav from "./Subcomponents/TabNav/TabNav";
@@ -7,6 +7,7 @@ import { NewPostBlock } from "./Subcomponents/NewPostBlock/NewPostBlock";
 import PostCard from "../../Post/PostCard";
 import { GroupChats } from "../GroupChats/GroupChats";
 import { API_URL } from "../../../config";
+import type { LayoutContextType } from "../../../Layouts/GridLayout";
 
 export type TabOption = "Posts" | "Chat";
 
@@ -17,6 +18,7 @@ export const GroupPanel = () => {
 
   const [group, setGroup] = useState<Group | null>(null);
   const [posts, setPosts] = useState<Post[] | null>(null);
+  const { setOnCommentCreated } = useOutletContext<LayoutContextType>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -90,6 +92,31 @@ export const GroupPanel = () => {
 
     fetchGroupPosts();
   }, [groupId]);
+
+  useEffect(() => {
+    setOnCommentCreated((payload) => {
+      setPosts((oldPosts) => {
+        if (!oldPosts) {
+          return oldPosts;
+        }
+        return oldPosts.map((post) =>
+          post.id === payload.postId
+            ? {
+                ...post,
+                _count: {
+                  ...post._count,
+                  comments: post._count.comments + 1,
+                },
+              }
+            : post,
+        );
+      });
+    });
+
+    return () => {
+      setOnCommentCreated(null);
+    };
+  }, [setOnCommentCreated]);
   if (!groupId) {
     return (
       <section className={styles.no__group__selected}>

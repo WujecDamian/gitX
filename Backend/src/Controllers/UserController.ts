@@ -254,6 +254,22 @@ const getUserProfile = async (
         posts: {
           include: {
             _count: true,
+            postLikes: {
+              where: {
+                user_id: user.id,
+              },
+              select: {
+                id: true,
+              },
+            },
+            bookmarks: {
+              where: {
+                user_id: user.id,
+              },
+              select: {
+                id: true,
+              },
+            },
           },
         },
         followers: {
@@ -277,7 +293,16 @@ const getUserProfile = async (
       Array.isArray(userProfile.followers) && userProfile.followers.length > 0;
     return res.status(200).json({
       message: "Successfully fetched user Profile!",
-      userProfile,
+      userProfile: {
+        ...userProfile,
+        posts: userProfile.posts.map((post) => {
+          return {
+            ...post,
+            isLikedByUser: post.postLikes.length > 0,
+            isBookmarkedByUser: post.bookmarks.length > 0,
+          };
+        }),
+      },
       isFollowing,
     });
   } catch (error) {

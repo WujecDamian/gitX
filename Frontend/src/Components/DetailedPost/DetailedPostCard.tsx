@@ -8,7 +8,7 @@ import DetailedPostActions from "./subcomponents/DetailedPostActions";
 
 type props = {
   author: User;
-  post: Post;
+  post: DetailedPost;
 };
 
 export default function DetailedPostCard(props: props) {
@@ -24,6 +24,8 @@ export default function DetailedPostCard(props: props) {
         <DetailedPostActions
           counts={props.post._count}
           postId={props.post.id}
+          isLikedByUser={props.post.isLikedByUser}
+          isBookmarkedByUser={props.post.isBookmarkedByUser}
         ></DetailedPostActions>
       </div>
     </Link>

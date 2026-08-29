@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
-import { useParams, Link } from "react-router";
 import styles from "./Profile.module.css";
 import ProfileCard from "../../Components/ProfileCard/ProfileCard";
 import PostCard from "../../Components/Post/PostCard";
 import { API_URL } from "../../config";
 import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
+import { useOutletContext, useParams } from "react-router-dom";
+import type { LayoutContextType } from "../../Layouts/GridLayout";
 function Profile() {
   const [profile, setProfile] = useState<(User & { posts: Post[] }) | null>(
     null,
@@ -15,6 +15,7 @@ function Profile() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { refreshUser } = useAuth();
+  const { setOnCommentCreated } = useOutletContext<LayoutContextType>();
   let params = useParams();
   const getProfile = async () => {
     try {
@@ -42,6 +43,35 @@ function Profile() {
   useEffect(() => {
     getProfile();
   }, [params.userId]);
+
+  useEffect(() => {
+    setOnCommentCreated((payload) => {
+      setProfile((oldProfile) => {
+        if (!oldProfile) {
+          return oldProfile;
+        }
+        const nextPosts = oldProfile.posts.map((post) =>
+          post.id === payload.postId
+            ? {
+                ...post,
+                _count: {
+                  ...post._count,
+                  comments: post._count.comments + 1,
+                },
+              }
+            : post,
+        );
+        return {
+          ...oldProfile,
+          posts: nextPosts,
+        } as User & { posts: Post[] };
+      });
+    });
+
+    return () => {
+      setOnCommentCreated(null);
+    };
+  }, [setOnCommentCreated]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <ErrorMessage error={error}></ErrorMessage>;

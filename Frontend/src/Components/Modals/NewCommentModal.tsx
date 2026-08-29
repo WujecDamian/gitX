@@ -4,12 +4,14 @@ import styles from "./NewCommentModal.module.css";
 import PostHeader from "../Post/subcomponents/PostHeader";
 import PostContent from "../Post/subcomponents/PostContent";
 import { API_URL } from "../../config";
+import type { CommentCreatedPayload } from "../../Layouts/GridLayout";
 
 type NewCommentModalProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  postId: string;
-  user: User;
+  postId: string | null;
+  user: User | null;
+  onCommentCreated: (payload: CommentCreatedPayload) => void;
 };
 
 export default function NewCommentModal({
@@ -17,6 +19,7 @@ export default function NewCommentModal({
   setIsOpen,
   postId,
   user,
+  onCommentCreated,
 }: NewCommentModalProps) {
   const [error, setError] = useState<String | null>(null);
   const [loading, setLoading] = useState(false);
@@ -24,6 +27,9 @@ export default function NewCommentModal({
   const [post, setPost] = useState<Post | null>(null);
 
   useEffect(() => {
+    if (!postId) {
+      return;
+    }
     const getPost = async () => {
       try {
         const response = await fetch(`${API_URL}/api/post/getPost/${postId}`, {
@@ -65,6 +71,10 @@ export default function NewCommentModal({
   const handleFormSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!postId) {
+      return;
+    }
+
     const formData = new FormData(e.target);
     const content = formData.get("content");
 
@@ -86,6 +96,13 @@ export default function NewCommentModal({
 
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
+      }
+
+      if (result.comment) {
+        onCommentCreated({
+          postId,
+          comment: result.comment,
+        });
       }
     } catch (error) {
       if (error instanceof Error) {

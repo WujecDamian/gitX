@@ -8,13 +8,20 @@ import { API_URL } from "../../../../config";
 type CommentActionsTypes = {
   counts: { commentLikes: number; sub_comments: number };
   commentId: string;
+  isLikedByUser: boolean;
+  isBookmarkedByUser: boolean;
 };
 export default function CommentActions({
   counts,
   commentId,
+  isLikedByUser,
+  isBookmarkedByUser,
 }: CommentActionsTypes) {
   const { user } = useAuth();
   const [error, setError] = useState<String | null>(null);
+  const [isLiked, setIsLiked] = useState(isLikedByUser);
+  const [likeCount, setLikeCount] = useState(counts.commentLikes);
+  const [isBookmarked, setIsBookmarked] = useState(isBookmarkedByUser);
   const { setIsCommentOnCommentModalOpen, setCommentId } =
     useOutletContext<LayoutContextType>();
 
@@ -32,6 +39,9 @@ export default function CommentActions({
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
       }
+
+      setIsLiked(result.isLikedByUser);
+      setLikeCount(result.likeCount);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -58,6 +68,8 @@ export default function CommentActions({
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
       }
+
+      setIsBookmarked(result.isBookmarkedByUser);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -89,16 +101,24 @@ export default function CommentActions({
       <div className={styles.likes} onClick={onLikeClick}>
         <button className={styles.like}>
           <img
-            src="/icons/favorite_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
+            src={
+              isLiked
+                ? "/icons/favorite_24dp_E3E3E3_FILL1_wght300_GRAD-25_opsz24.svg"
+                : "/icons/favorite_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
+            }
             alt="Heart icon"
           />
         </button>
-        <span className={styles.count}>{counts.commentLikes}</span>
+        <span className={styles.count}>{likeCount}</span>
       </div>
       <div className={styles.bookmarks} onClick={onBookmarkClick}>
         <button className={styles.bookmark}>
           <img
-            src="/icons/bookmark_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
+            src={
+              isBookmarked
+                ? "/icons/bookmark_24dp_E3E3E3_FILL1_wght300_GRAD-25_opsz24.svg"
+                : "/icons/bookmark_24dp_E3E3E3_FILL0_wght300_GRAD-25_opsz24.svg"
+            }
             alt="Bookmark icon"
           />
         </button>

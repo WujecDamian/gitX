@@ -4,12 +4,14 @@ import styles from "./NewCommentOnComment.module.css";
 import CommentHeader from "../DetailedPost/Comment/subcomponents/CommentHeader";
 import CommentContent from "../DetailedPost/Comment/subcomponents/CommentContent";
 import { API_URL } from "../../config";
+import type { CommentCreatedPayload } from "../../Layouts/GridLayout";
 
 type NewCommentModalProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  commentId: string;
-  user: User;
+  commentId: string | null;
+  user: User | null;
+  onCommentCreated: (payload: CommentCreatedPayload) => void;
 };
 
 export default function NewCommentOnCommentModal({
@@ -17,6 +19,7 @@ export default function NewCommentOnCommentModal({
   setIsOpen,
   commentId,
   user,
+  onCommentCreated,
 }: NewCommentModalProps) {
   const [error, setError] = useState<String | null>(null);
   const [loading, setLoading] = useState(false);
@@ -24,6 +27,9 @@ export default function NewCommentOnCommentModal({
   const [comment, setComment] = useState<CommentType | null>(null);
 
   useEffect(() => {
+    if (!commentId) {
+      return;
+    }
     const getComment = async () => {
       try {
         const response = await fetch(
@@ -94,6 +100,14 @@ export default function NewCommentOnCommentModal({
 
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
+      }
+
+      if (result.comment && comment?.post_id && commentId) {
+        onCommentCreated({
+          postId: comment.post_id,
+          parentCommentId: commentId,
+          comment: result.comment,
+        });
       }
     } catch (error) {
       if (error instanceof Error) {

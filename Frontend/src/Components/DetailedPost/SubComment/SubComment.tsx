@@ -23,6 +23,8 @@ export default function SubComment(props: props) {
         <SubCommentActions
           counts={props.comment._count}
           commentId={props.comment.id}
+          isLikedByUser={props.comment.isLikedByUser}
+          isBookmarkedByUser={props.comment.isBookmarkedByUser}
         ></SubCommentActions>
       </div>
     </Link>

@@ -39,6 +39,7 @@ model User {
   following           Follows[]     @relation("UserFollowers")
   post_likes          PostLike[]
   comment_likes       CommentLike[]
+  comment_bookmarks   CommentBookmark[]
   bookmarks           Bookmark[]
   groups              Group[]
   group_inviting      GroupInvite[] @relation("SentInvites")
@@ -81,7 +82,8 @@ model Comment {
   post         Post          @relation(fields: [post_id], references: [id], onDelete: Cascade)
   post_id      String
   createdAt    DateTime      @default(now())
-  commentLikes CommentLike[]
+  commentLikes      CommentLike[]
+  commentBookmarks  CommentBookmark[]
 
   parent_comment Comment?  @relation("comment_children", fields: [sub_comment_id], references: [id])
   sub_comments   Comment[] @relation("comment_children")
@@ -100,6 +102,17 @@ model PostLike {
 }
 
 model CommentLike {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String
+  comment    Comment  @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+  comment_id String
+  createdAt  DateTime @default(now())
+
+  @@unique([comment_id, user_id])
+}
+
+model CommentBookmark {
   id         String   @id @default(uuid())
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String

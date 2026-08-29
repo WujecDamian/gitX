@@ -7,11 +7,11 @@ import * as BookmarkController from "../Controllers/BookmarkController";
 
 const router = express.Router();
 
-//get Bookmarkd posts
-router.get("/:postId", BookmarkController.getBookmarkedPosts);
-
-//Bookmark | unBookmark
+router.post("/comment/:commentId", BookmarkController.bookmarkComment);
 router.post("/post/:postId", BookmarkController.bookmarkPost);
 router.delete("/post/:postId", BookmarkController.unbookmarkPost);
+
+//get bookmarked posts
+router.get("/:postId", BookmarkController.getBookmarkedPosts);
 
 export default router;

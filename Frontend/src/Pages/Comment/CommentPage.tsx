@@ -1,14 +1,12 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import styles from "./CommentPage.module.css";
 import { useAuth } from "../../Contexts/Auth/AuthContext";
-import { useParams } from "react-router-dom";
-import DetailedPostCard from "../../Components/DetailedPost/DetailedPostCard";
-import Reply from "../../Components/DetailedPost/Reply/Reply";
+import { useOutletContext, useParams } from "react-router-dom";
 import Comment from "../../Components/DetailedPost/Comment/Comment";
-import SubComment from "../../Components/DetailedPost/SubComment/SubComment";
 import PostCard from "../../Components/Post/PostCard";
 import { API_URL } from "../../config";
 import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
+import type { LayoutContextType } from "../../Layouts/GridLayout";
 
 function CommentPage() {
   const { user } = useAuth();
@@ -17,6 +15,7 @@ function CommentPage() {
   const [comment, setComment] = useState<CommentType | null>(null);
   const [post, setPost] = useState<DetailedPost | null>(null);
   const { commentId } = useParams<{ commentId: string }>();
+  const { setOnCommentCreated } = useOutletContext<LayoutContextType>();
   type feedTypeTypes = "forYou" | "following";
   const [feedType, setFeedType] = useState<feedTypeTypes>("forYou");
 
@@ -75,6 +74,44 @@ function CommentPage() {
     };
     getCommentPost();
   }, [comment]);
+
+  useEffect(() => {
+    setOnCommentCreated((payload) => {
+      setPost((oldPost) => {
+        if (!oldPost || oldPost.id !== payload.postId) {
+          return oldPost;
+        }
+        return {
+          ...oldPost,
+          _count: {
+            ...oldPost._count,
+            comments: oldPost._count.comments + 1,
+          },
+        };
+      });
+
+      setComment((oldComment) => {
+        if (!oldComment) {
+          return oldComment;
+        }
+        if (oldComment.id !== payload.parentCommentId) {
+          return oldComment;
+        }
+        return {
+          ...oldComment,
+          sub_comments: [payload.comment, ...(oldComment.sub_comments ?? [])],
+          _count: {
+            ...oldComment._count,
+            sub_comments: oldComment._count.sub_comments + 1,
+          },
+        };
+      });
+    });
+
+    return () => {
+      setOnCommentCreated(null);
+    };
+  }, [setOnCommentCreated]);
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>Please log in to view this page.</div>;

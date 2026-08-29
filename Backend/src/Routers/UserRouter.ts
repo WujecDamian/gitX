@@ -16,6 +16,9 @@ router.get("/:userId/followers", UserController.getUserFollowers);
 router.delete("/delete", UserController.deleteUser);
 
 //user edit routes
+router.put("/edit", UserController.updateProfile);
+
+//i can remove these later if we want to keep it simple
 router.put("/edit/bio", UserController.editUserBio);
 router.put("/edit/tags", UserController.editUserTags);
 router.put("/edit/socials", UserController.editUserSocials);

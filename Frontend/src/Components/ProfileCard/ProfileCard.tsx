@@ -7,14 +7,21 @@ import { API_URL } from "../../config";
 
 import { FollowingModal } from "../Modals/FollowsModal/FollowingModal";
 import { FollowersModal } from "../Modals/FollowsModal/FollowersModal";
+import { EditProfileModal } from "../Modals/EditProfileModal/EditProfileModal";
 
 type props = {
   owner: User;
   isFollowing: boolean;
+  onProfileUpdated: () => Promise<void> | void;
 };
 
-export default function ProfileCard({ owner, isFollowing }: props) {
+export default function ProfileCard({
+  owner,
+  isFollowing,
+  onProfileUpdated,
+}: props) {
   const [error, setError] = useState<String | null>(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
   const [buttonContent, setButtonContent] = useState("Following");
@@ -82,7 +89,12 @@ export default function ProfileCard({ owner, isFollowing }: props) {
 
       <div className={styles.action__row}>
         {owner.id === user?.id ? (
-          <button className={styles.edit__button}>Edit profile</button>
+          <button
+            className={styles.edit__button}
+            onClick={() => setIsEditOpen(true)}
+          >
+            Edit profile
+          </button>
         ) : (
           <>
             <button className={styles.message__button} onClick={onMessageClick}>
@@ -124,6 +136,38 @@ export default function ProfileCard({ owner, isFollowing }: props) {
         <span className={styles.username}>@{owner.username}</span>
         <span className={styles.bio}>{owner.bio}</span>
 
+        {owner.tags && owner.tags.length > 0 && (
+          <div className={styles.tags}>
+            {owner.tags.map((tag) => (
+              <span className={styles.tag} key={tag}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {owner.socials && owner.socials.length > 0 && (
+          <div className={styles.socials}>
+            {owner.socials.map((social) =>
+              social.startsWith("http") ? (
+                <a
+                  className={styles.social}
+                  href={social}
+                  key={social}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {social}
+                </a>
+              ) : (
+                <span className={styles.social} key={social}>
+                  {social}
+                </span>
+              ),
+            )}
+          </div>
+        )}
+
         <div className={styles.meta__info}>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
             <path d="M7 4V3h2v1h6V3h2v1h1.5C19.88 4 21 5.12 21 6.5v12c0 1.38-1.12 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.28 0-.5.22-.5.5v12c0 .28.22.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm7 6h-4v-2h4v2z" />
@@ -156,6 +200,14 @@ export default function ProfileCard({ owner, isFollowing }: props) {
           <FollowersModal id="followers-popover" owner={owner}></FollowersModal>
         </div>
       </section>
+      {owner.id === user?.id && (
+        <EditProfileModal
+          isOpen={isEditOpen}
+          setIsOpen={setIsEditOpen}
+          owner={owner}
+          onProfileUpdated={onProfileUpdated}
+        ></EditProfileModal>
+      )}
     </section>
   );
 }

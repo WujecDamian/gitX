@@ -2,6 +2,78 @@ import { type NextFunction, type Request, type Response } from "express";
 import "../Authentication/passport-config";
 import { prisma } from "../lib/prisma";
 
+const toOptionalText = (value: unknown) => {
+  if (typeof value !== "string") {
+    return null;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+};
+
+const toStringArray = (value: unknown) => {
+  if (!Array.isArray(value)) {
+    return null;
+  }
+  return value
+    .filter((item) => typeof item === "string")
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
+};
+
+const updateProfile = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const displayName = toOptionalText(req.body.display_name);
+    if (!displayName) {
+      return res.status(400).json({ error: "Display name is required" });
+    }
+
+    const tags = toStringArray(req.body.tags);
+    const socials = toStringArray(req.body.socials);
+    if (!tags || !socials) {
+      return res
+        .status(400)
+        .json({ error: "Tags and socials must be arrays of strings" });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: req.user.id,
+      },
+      data: {
+        display_name: displayName,
+        bio: toOptionalText(req.body.bio),
+        tags,
+        socials,
+        profile_picture_url: toOptionalText(req.body.profile_picture_url),
+        banner_picture_url: toOptionalText(req.body.banner_picture_url),
+      },
+      select: {
+        id: true,
+        banner_picture_url: true,
+        bio: true,
+        createdAt: true,
+        username: true,
+        display_name: true,
+        github_profile_url: true,
+        profile_picture_url: true,
+        socials: true,
+        tags: true,
+      },
+    });
+
+    return res.status(200).json({
+      message: "Successfully updated profile!",
+      user: updatedUser,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
 const editUserBio = async (req: Request, res: Response) => {
   try {
     const bio: string = req.body.bio;
@@ -303,6 +375,7 @@ const getUserFollowers = async (
   }
 };
 export {
+  updateProfile,
   editUserBio,
   editUserTags,
   editUserSocials,

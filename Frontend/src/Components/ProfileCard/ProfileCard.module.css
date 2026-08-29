@@ -126,6 +126,29 @@
   margin-top: 6px;
 }
 
+.tags,
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 13px;
+  color: #dee1e4;
+}
+
+.social {
+  color: #1d9bf0;
+  font-size: 14px;
+  text-decoration: none;
+  word-break: break-all;
+}
+
 .meta__info {
   display: flex;
   align-items: center;

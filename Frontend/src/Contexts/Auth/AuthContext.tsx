@@ -5,6 +5,7 @@ type AuthContextType = {
   user: User | null;
   loading: boolean;
   logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -15,27 +16,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const refreshUser = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/auth/user`, {
+        method: "GET",
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      } else if (response.status === 401) {
+        setUser(null);
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      console.error("Auth check failed", error);
+      setUser(null);
+    }
+  };
+
   useEffect(() => {
     const checkAuth = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/auth/user`, {
-          method: "GET",
-          credentials: "include",
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setUser(data.user);
-        } else if (response.status === 401) {
-          setUser(null);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.error("Auth check failed", error);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
+      await refreshUser();
+      setLoading(false);
     };
     checkAuth();
   }, []);
@@ -49,7 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, logout }}>
+    <AuthContext.Provider value={{ user, loading, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

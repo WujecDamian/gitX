@@ -6,6 +6,7 @@ import ProfileCard from "../../Components/ProfileCard/ProfileCard";
 import PostCard from "../../Components/Post/PostCard";
 import { API_URL } from "../../config";
 import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
+import { useAuth } from "../../Contexts/Auth/AuthContext";
 function Profile() {
   const [profile, setProfile] = useState<(User & { posts: Post[] }) | null>(
     null,
@@ -13,31 +14,32 @@ function Profile() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { refreshUser } = useAuth();
   let params = useParams();
-  useEffect(() => {
-    const getProfile = async () => {
-      try {
-        const response = await fetch(
-          `${API_URL}/api/user/profile/${params.userId}`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        );
-        if (!response.ok) {
-          throw new Error(`Failed to fetch posts: ${response.statusText}`);
-        }
-        const data = await response.json();
-        setProfile(data.userProfile);
-        setIsFollowing(data.isFollowing);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("An unexpected error occurred");
-        }
+  const getProfile = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/api/user/profile/${params.userId}`,
+        {
+          method: "GET",
+          credentials: "include",
+        },
+      );
+      if (!response.ok) {
+        throw new Error(`Failed to fetch posts: ${response.statusText}`);
       }
-    };
+      const data = await response.json();
+      setProfile(data.userProfile);
+      setIsFollowing(data.isFollowing);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+    }
+  };
+  useEffect(() => {
     getProfile();
   }, [params.userId]);
 
@@ -47,7 +49,14 @@ function Profile() {
 
   return (
     <>
-      <ProfileCard owner={profile} isFollowing={isFollowing}></ProfileCard>
+      <ProfileCard
+        owner={profile}
+        isFollowing={isFollowing}
+        onProfileUpdated={async () => {
+          await getProfile();
+          await refreshUser();
+        }}
+      ></ProfileCard>
       <section className={styles.posts}>
         {profile.posts.length > 0 ? (
           profile.posts.map((post: Post) => (

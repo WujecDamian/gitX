@@ -1,0 +1,27 @@
+.wakeup {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.wakeup__card {
+  max-width: 28rem;
+  text-align: center;
+}
+
+.wakeup__title {
+  margin: 0 0 0.75rem;
+  color: var(--text-h);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.wakeup__text {
+  margin: 0;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.6;
+}

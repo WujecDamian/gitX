@@ -90,3 +90,46 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.skills {
+  border: 1px solid #2f3336;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  margin: 0;
+}
+
+.skills__legend {
+  padding: 0 0.35rem;
+  color: #c5c5c5;
+  font-size: 0.85rem;
+}
+
+.skills__group {
+  margin-top: 0.75rem;
+}
+
+.skills__heading {
+  margin: 0 0 0.4rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.skills__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+  gap: 0.35rem 0.75rem;
+}
+
+.skills__item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #e7e9ea;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.skills__item input {
+  accent-color: #e7e9ea;
+}

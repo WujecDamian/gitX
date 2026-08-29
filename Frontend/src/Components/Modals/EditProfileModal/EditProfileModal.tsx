@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import styles from "./EditProfileModal.module.css";
 import { API_URL } from "../../../config";
 import { ErrorMessage } from "../../UI/ErrorMessage/ErrorMessage";
+import { catalogSkills, skillGroups } from "./skillGroups";
 
 type EditProfileModalProps = {
   isOpen: boolean;
@@ -18,6 +19,9 @@ const splitList = (value: string) =>
     .split(",")
     .map((item) => item.trim())
     .filter((item) => item.length > 0);
+
+const extraSkills = (selected: string[]) =>
+  selected.filter((skill) => !catalogSkills.includes(skill));
 
 export const EditProfileModal = ({
   isOpen,
@@ -35,7 +39,7 @@ export const EditProfileModal = ({
   const [bannerPictureUrl, setBannerPictureUrl] = useState(
     owner.banner_picture_url ?? "",
   );
-  const [tags, setTags] = useState(joinList(owner.tags));
+  const [tags, setTags] = useState<string[]>(owner.tags ?? []);
   const [socials, setSocials] = useState(joinList(owner.socials));
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -48,7 +52,7 @@ export const EditProfileModal = ({
     setBio(owner.bio ?? "");
     setProfilePictureUrl(owner.profile_picture_url ?? "");
     setBannerPictureUrl(owner.banner_picture_url ?? "");
-    setTags(joinList(owner.tags));
+    setTags(owner.tags ?? []);
     setSocials(joinList(owner.socials));
   }, [isOpen, owner]);
 
@@ -68,6 +72,14 @@ export const EditProfileModal = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, setIsOpen]);
 
+  const toggleSkill = (skill: string) => {
+    setTags((current) =>
+      current.includes(skill)
+        ? current.filter((item) => item !== skill)
+        : [...current, skill],
+    );
+  };
+
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -78,7 +90,7 @@ export const EditProfileModal = ({
       bio,
       profile_picture_url: profilePictureUrl,
       banner_picture_url: bannerPictureUrl,
-      tags: splitList(tags),
+      tags,
       socials: splitList(socials),
     };
 
@@ -114,6 +126,8 @@ export const EditProfileModal = ({
   if (!isOpen) {
     return null;
   }
+
+  const customSkills = extraSkills(tags);
 
   return (
     <div className={styles.edit__modal} ref={modalRef}>
@@ -167,14 +181,43 @@ export const EditProfileModal = ({
           />
         </label>
 
-        <label className={styles.field}>
-          Tags (comma separated)
-          <input
-            name="tags"
-            value={tags}
-            onChange={(event) => setTags(event.target.value)}
-          />
-        </label>
+        <fieldset className={styles.skills}>
+          <legend className={styles.skills__legend}>Skills</legend>
+          {customSkills.length > 0 && (
+            <div className={styles.skills__group}>
+              <h3 className={styles.skills__heading}>Already on your profile</h3>
+              <div className={styles.skills__list}>
+                {customSkills.map((skill) => (
+                  <label className={styles.skills__item} key={skill}>
+                    <input
+                      type="checkbox"
+                      checked={tags.includes(skill)}
+                      onChange={() => toggleSkill(skill)}
+                    />
+                    {skill}
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+          {skillGroups.map((group) => (
+            <div className={styles.skills__group} key={group.name}>
+              <h3 className={styles.skills__heading}>{group.name}</h3>
+              <div className={styles.skills__list}>
+                {group.skills.map((skill) => (
+                  <label className={styles.skills__item} key={skill}>
+                    <input
+                      type="checkbox"
+                      checked={tags.includes(skill)}
+                      onChange={() => toggleSkill(skill)}
+                    />
+                    {skill}
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+        </fieldset>
 
         <label className={styles.field}>
           Socials (comma separated)
@@ -186,7 +229,11 @@ export const EditProfileModal = ({
         </label>
 
         <div className={styles.modal__footer}>
-          <input type="submit" value={loading ? "Saving..." : "Save"} disabled={loading} />
+          <input
+            type="submit"
+            value={loading ? "Saving..." : "Save"}
+            disabled={loading}
+          />
         </div>
         {error && <ErrorMessage error={error}></ErrorMessage>}
       </form>

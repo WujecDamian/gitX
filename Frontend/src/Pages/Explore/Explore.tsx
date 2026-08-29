@@ -26,7 +26,7 @@ function Explore() {
     const timeoutId = setTimeout(async () => {
       try {
         const response = await fetch(
-          `${API_URL}/api/user/search?q=${encodeURIComponent(trimmed)}`,
+          `${API_URL}/api/user/search?query=${encodeURIComponent(trimmed)}`,
           {
             method: "GET",
             credentials: "include",

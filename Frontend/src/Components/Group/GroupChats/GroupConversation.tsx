@@ -78,7 +78,20 @@ export const GroupConversation = () => {
             </div>
           </div>
 
-          <GroupMessageInput chatId={chatId} />
+          <GroupMessageInput
+            chatId={chatId}
+            onMessageSent={(message) => {
+              setChat((oldChat) => {
+                if (!oldChat) {
+                  return oldChat;
+                }
+                return {
+                  ...oldChat,
+                  messages: [...(oldChat.messages ?? []), message],
+                };
+              });
+            }}
+          />
         </>
       )}
     </section>

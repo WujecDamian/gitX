@@ -4,9 +4,10 @@ import { API_URL } from "../../../../config";
 
 type MessageInputTypes = {
   chatId: string;
+  onMessageSent: (message: Message) => void;
 };
 
-export const MessageInput = ({ chatId }: MessageInputTypes) => {
+export const MessageInput = ({ chatId, onMessageSent }: MessageInputTypes) => {
   const [text, setText] = useState("");
   const [mediaUrl, setMediaUrl] = useState(""); // Track the media input value
   const [isSending, setIsSending] = useState(false);
@@ -31,8 +32,14 @@ export const MessageInput = ({ chatId }: MessageInputTypes) => {
         }),
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        throw new Error("Failed to send message");
+        throw new Error(result.error || "Failed to send message");
+      }
+
+      if (result.newMessage) {
+        onMessageSent(result.newMessage);
       }
 
       setText("");

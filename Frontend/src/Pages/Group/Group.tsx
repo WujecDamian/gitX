@@ -46,7 +46,9 @@ function Group() {
   console.log(groups);
   return (
     <>
-      <section className={styles.group__wrapper}>
+      <section
+        className={`${styles.group__wrapper} ${params.groupId ? styles["group__wrapper--open"] : ""}`}
+      >
         <GroupSidebar groups={groups}></GroupSidebar>
         <GroupPanel></GroupPanel>
       </section>

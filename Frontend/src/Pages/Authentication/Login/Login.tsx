@@ -1,9 +1,8 @@
 import styles from "./Login.module.css";
 import { API_URL } from "../../../config";
+import { Button } from "../../../Components/UI/Button/Button";
 
 const Login = () => {
-  //const API_BASE_URL = import.meta.env.VITE_API_URL || "${API_URL}";
-
   const handleLogin = () => {
     window.location.href = `${API_URL}/api/auth/login/github`;
   };
@@ -15,10 +14,13 @@ const Login = () => {
   return (
     <main className={styles.login__main}>
       <section className={styles.main__left}>
+        <p className={styles.login__brand}>GitX</p>
         <h1>Code Connects.</h1>
         <div className={styles.buttons}>
-          <button onClick={handleLogin}>Continue with GitHub</button>
-          <button onClick={handleGuestLogin}>Continue as Guest</button>
+          <Button onClick={handleLogin}>Continue with GitHub</Button>
+          <Button variant="ghost" onClick={handleGuestLogin}>
+            Continue as Guest
+          </Button>
         </div>
         <p>
           By continuing, you agree to our Terms of Service, Privacy Policy and

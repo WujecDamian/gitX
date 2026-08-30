@@ -95,7 +95,7 @@ function GridLayout() {
       ) : (
         <Navbar onPostClick={() => setIsPostOpen(true)}></Navbar>
       )}
-      <main>
+      <main className={styles.root__main}>
         <Outlet
           context={{
             setIsCommentModalOpen,

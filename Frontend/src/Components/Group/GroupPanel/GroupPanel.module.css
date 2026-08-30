@@ -12,7 +12,7 @@
   flex-grow: 1;
   width: 100%;
   gap: 0;
-  border-inline: 1px solid rgb(67, 67, 67);
+  border-inline: 1px solid var(--border);
 }
 .feed__container {
   display: flex;
@@ -25,16 +25,16 @@
   flex-direction: column;
   flex-grow: 1;
   padding: 1rem;
-  color: rgb(136, 135, 135);
+  color: var(--text-muted);
   font-weight: 300;
   margin-bottom: 0;
 
   min-height: max-content;
-  border-inline: 1px solid rgb(67, 67, 67);
+  border-inline: 1px solid var(--border);
 }
 
 .no__group__selected {
-  border-left: 1px solid rgb(67, 67, 67);
+  border-left: 1px solid var(--border);
   padding: 1rem;
   font-weight: 100;
 }

@@ -2,7 +2,7 @@
 .chat__list__item {
   display: flex;
   align-items: center;
-  background-color: #000000;
+  background-color: var(--bg);
   list-style: none;
   margin: 0;
   padding: 1rem 1rem 0 1rem;
@@ -11,7 +11,7 @@
   box-sizing: border-box;
 }
 .chat__list__item:hover {
-  background-color: #1e1e1e;
+  background-color: var(--surface-2);
 }
 
 .list__item--left {
@@ -24,7 +24,7 @@
 }
 
 .list__item--right {
-  border-bottom: 1px solid rgba(67, 67, 67, 0.7);
+  border-bottom: 1px solid var(--border);
   padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
@@ -41,7 +41,7 @@
 }
 
 .username {
-  color: #ffffff;
+  color: var(--text-h);
   font-size: 15px;
   font-weight: 700;
   margin: 0;
@@ -49,7 +49,7 @@
 }
 
 .time_wrapper {
-  color: #71717a;
+  color: var(--text-muted);
   font-size: 14px;
   font-weight: 400;
 }
@@ -73,11 +73,11 @@
 
 /* Conditional Colors */
 .sentMessage {
-  color: #71717a; /* sent by user */
+  color: var(--text-muted); /* sent by user */
 }
 
 .receivedMessage {
-  color: #e4e4e7; /* incoming messages */
+  color: var(--text-h); /* incoming messages */
 }
 
 .you__prefix {

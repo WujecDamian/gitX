@@ -28,16 +28,16 @@
 }
 
 .username {
-  color: #71717a;
+  color: var(--text-muted);
   font-size: 14px;
   margin: 2px 0 8px 0;
 }
 
 .view__btn {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: var(--accent);
+  color: var(--on-accent);
   border: none;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   padding: 8px 16px;
   font-size: 14px;
   font-weight: 700;
@@ -45,7 +45,7 @@
   transition: opacity 0.2s;
 }
 .view__btn:visited {
-  color: #000000;
+  color: var(--on-accent);
 }
 
 .view__btn:hover {

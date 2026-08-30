@@ -1,5 +1,5 @@
 .error {
   display: block;
-  color: #f4212e;
+  color: var(--danger);
   padding: 1rem;
 }

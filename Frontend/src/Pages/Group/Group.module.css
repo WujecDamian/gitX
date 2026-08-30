@@ -1,4 +1,19 @@
 .group__wrapper {
   display: flex;
   min-height: 100vh;
+  min-width: 0;
+}
+
+@media (max-width: 720px) {
+  .group__wrapper {
+    min-height: calc(100dvh - 7rem);
+  }
+
+  .group__wrapper--open > *:first-child {
+    display: none;
+  }
+
+  .group__wrapper:not(.group__wrapper--open) > *:last-child {
+    display: none;
+  }
 }

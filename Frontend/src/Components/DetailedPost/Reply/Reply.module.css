@@ -1,5 +1,5 @@
 .reply {
-  border: 1px solid rgb(67, 67, 67);
+  border: 1px solid var(--border);
   max-width: 100%;
   margin: 0;
   padding: 1.25rem;
@@ -17,7 +17,7 @@
     background: transparent;
     resize: none;
     border: none;
-    color: #e7e9ea;
+    color: var(--text-h);
     font-size: 20px;
     font-family: sans-serif;
     resize: none;
@@ -25,11 +25,11 @@
     padding: 4px 0;
   }
   textarea::placeholder {
-    color: #71767b;
+    color: var(--text-muted);
   }
   input[type="submit"] {
-    background-color: #1d9bf0;
-    color: #ffffff;
+    background-color: var(--accent);
+    color: var(--on-accent);
     border: none;
     border-radius: 9999px;
     padding: 8px 16px;

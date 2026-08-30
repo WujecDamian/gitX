@@ -7,12 +7,12 @@
   height: auto;
   min-height: 300px;
   border: none;
-  background-color: #16181c;
+  background-color: var(--surface);
   flex-direction: column;
   border-radius: 1rem;
   z-index: 10;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgb(67, 67, 67);
+  border: 1px solid var(--border);
 
   overflow: visible;
   padding: 0 0 0rem 0;
@@ -26,7 +26,7 @@
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-bottom: 10px solid rgb(67, 67, 67); /* Matches your modal border color */
+  border-bottom: 10px solid var(--border); /* Matches your modal border color */
   pointer-events: none;
   z-index: 1;
 }
@@ -39,7 +39,7 @@
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 9px solid #16181c; /* Matches your modal inner background */
+  border-bottom: 9px solid var(--surface); /* Matches your modal inner background */
   pointer-events: none;
   z-index: 2; /* Sits completely on top of Layer 1 */
 }
@@ -58,7 +58,7 @@
 .modal__button {
   background: none;
   border: none;
-  color: #ffffff;
+  color: var(--text-h);
   font-size: 1.2rem;
   cursor: pointer;
   align-self: start;

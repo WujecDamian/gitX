@@ -10,8 +10,8 @@
   padding: 1rem 1.25rem;
   z-index: 10;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid rgb(67, 67, 67);
-  border-inline: 1px solid rgb(67, 67, 67);
+  border-bottom: 1px solid var(--border);
+  border-inline: 1px solid var(--border);
 
   transition: top 0.5s ease-in-out;
 }
@@ -32,7 +32,7 @@
 .replying {
   font-size: 0.8rem;
   font-weight: 100;
-  color: #c5c5c5;
+  color: var(--text-muted);
 
   margin: 0rem 0 2rem 60px;
   a {
@@ -44,7 +44,7 @@
 .close__btn {
   background: none;
   border: none;
-  color: #ffffff;
+  color: var(--text-h);
   font-size: 1.2rem;
   cursor: pointer;
   align-self: start;
@@ -77,7 +77,7 @@
   resize: none;
   width: 100%;
   border: none;
-  color: #e7e9ea;
+  color: var(--text-h);
   font-size: 1.25rem; /* Clean, prominent font size */
   font-family: system-ui, sans-serif;
   resize: none;
@@ -86,13 +86,13 @@
 }
 
 .form textarea::placeholder {
-  color: #71767b;
+  color: var(--text-muted);
 }
 
 /* Footer layout anchoring your icons and button at the bottom */
 .form input[type="submit"] {
-  background-color: #e7e9ea; /* High contrast post button */
-  color: #0f1419;
+  background-color: var(--accent); /* High contrast post button */
+  color: var(--on-accent);
   padding: 0.5rem 1.25rem;
   width: fit-content;
   margin-left: auto;

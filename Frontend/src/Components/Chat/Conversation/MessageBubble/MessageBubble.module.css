@@ -13,7 +13,7 @@
 }
 
 .bubble {
-  background-color: #1d9bf0; /* Sent message blue fill */
+  background-color: var(--accent); /* Sent message blue fill */
   padding: 10px 16px;
   border-radius: 20px 20px 4px 20px; /* Custom curve for right side */
   max-width: 70%;
@@ -23,7 +23,7 @@
 }
 
 .bubble__row.received .bubble {
-  background-color: #202327; /* Dark charcoal tone for received bubbles */
+  background-color: var(--surface-2); /* Dark charcoal tone for received bubbles */
   border-radius: 20px 20px 20px 4px; /* Custom curve for left side */
 }
 
@@ -46,12 +46,12 @@
   width: 100%;
   max-height: 280px;
   display: block;
-  background-color: #000000;
+  background-color: var(--bg);
 }
 
 .media__fallback_link {
   display: inline-block;
-  color: #ffffff;
+  color: var(--text-h);
   text-decoration: underline;
   font-size: 14px;
   padding: 2px 0;
@@ -66,16 +66,27 @@
   width: 100%;
 }
 
+.bubble__row.sent .text {
+  color: var(--on-accent);
+}
+
+.bubble__row.sent .time {
+  color: color-mix(in srgb, var(--on-accent) 70%, transparent);
+}
+
+.bubble__row.received .text {
+  color: var(--text-h);
+}
+
 .text {
   font-size: 15px;
-  color: #ffffff;
   line-height: 1.4;
-  word-break: break-word; /* Prevents long unbroken text strings from bursting the bubble boundary */
+  word-break: break-word;
 }
 
 .time {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-muted);
   white-space: nowrap;
   user-select: none;
 }

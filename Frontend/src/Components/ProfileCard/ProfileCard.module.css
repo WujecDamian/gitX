@@ -148,7 +148,7 @@
 }
 
 .social {
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 14px;
   text-decoration: none;
   word-break: break-all;

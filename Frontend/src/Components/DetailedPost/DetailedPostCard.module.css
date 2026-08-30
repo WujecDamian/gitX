@@ -68,12 +68,12 @@
     button {
       cursor: pointer;
     }
-  }
 
-  .comments:hover,
-  .likes:hover,
-  .bookmarks:hover {
-    color: var(--accent);
+    img {
+      filter: brightness(0) invert(1);
+    }
+
+    color: #ffffff;
   }
 
   .comments:hover img,
@@ -84,4 +84,8 @@
   .bookmarks {
     margin-left: auto;
   }
+}
+
+.count {
+  color: #ffffff;
 }

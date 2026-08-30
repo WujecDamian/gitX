@@ -1,17 +1,17 @@
 .profile__wrapper {
   width: 100%;
   height: fit-content;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--bg);
+  color: var(--text-h);
 
   margin: 0 auto;
-  border: 1px solid rgb(67, 67, 67);
+  border: 1px solid var(--border);
 }
 
 .profile__visuals {
   position: relative;
   width: 100%;
-  background-color: #2f3336;
+  background-color: var(--border);
 }
 
 .banner__image {
@@ -29,10 +29,9 @@
   width: 128px;
   height: 128px;
   border-radius: 50%;
-  corner-shape: unset;
-  border: 4px solid #000000;
+  border: 4px solid var(--bg);
   overflow: hidden;
-  background-color: #15181c;
+  background-color: var(--surface);
 }
 
 .pfp__container img {
@@ -50,9 +49,9 @@
 
 .edit__button {
   background: transparent;
-  color: #ffffff;
-  border: 1px solid #536471;
-  border-radius: 9999px;
+  color: var(--text-h);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
   padding: 8px 16px;
   font-size: 14px;
   font-weight: 700;
@@ -63,42 +62,44 @@
 .follow__button,
 .following__button,
 .message__button {
-  color: #000000;
-  background-color: #ffffff;
-  border: 1px solid #536471;
-  border-radius: 9999px;
+  color: var(--on-accent);
+  background-color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill);
   padding: 8px 16px;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
 }
 .follow__button:hover {
-  background-color: rgb(255, 255, 255, 0.9);
+  opacity: 0.9;
 }
 .following__button {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--bg);
+  color: var(--text-h);
+  border-color: var(--border);
   width: 110px;
 }
 .following__button:hover {
-  background-color: rgb(255, 0, 0, 0.1);
-  color: red;
-  border: 1px solid red;
+  background-color: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+  border: 1px solid var(--danger);
 }
 .edit__button:hover {
-  background-color: rgba(239, 243, 244, 0.1);
+  background-color: var(--nav-hover);
 }
 .message__button {
   display: flex;
   align-items: center;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--bg);
+  color: var(--text-h);
+  border-color: var(--border);
   padding: 8px;
   margin-inline: 0.5rem;
 }
 .message__button:hover {
-  background-color: rgba(239, 243, 244, 0.1);
+  background-color: var(--nav-hover);
 }
 
 .profile__details {
@@ -112,17 +113,17 @@
   font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.5px;
-  color: #f7f9fa;
+  color: var(--text-h);
 }
 
 .username {
   font-size: 15px;
-  color: #71767b;
+  color: var(--text-muted);
   margin-top: 2px;
 }
 .bio {
   font-size: 15px;
-  color: #dee1e4;
+  color: var(--text);
   margin-top: 6px;
 }
 
@@ -143,11 +144,11 @@
   border-radius: 9999px;
   padding: 4px 10px;
   font-size: 13px;
-  color: #dee1e4;
+  color: var(--text);
 }
 
 .social {
-  color: #1d9bf0;
+  color: var(--accent);
   font-size: 14px;
   text-decoration: none;
   word-break: break-all;
@@ -158,7 +159,7 @@
   align-items: center;
   gap: 4px;
   font-size: 14px;
-  color: #71767b;
+  color: var(--text-muted);
   margin-top: 12px;
 }
 
@@ -166,12 +167,12 @@
   display: flex;
   gap: 20px;
   font-size: 14px;
-  color: #71767b;
+  color: var(--text-muted);
   margin-top: 12px;
 }
 
 .statsRow strong {
-  color: #f7f9fa;
+  color: var(--text-h);
   font-weight: 700;
 }
 
@@ -181,7 +182,7 @@
 }
 
 .follower__count__button:focus-visible {
-  border-radius: 2rem;
-  outline: 1px solid #aa3bff;
-  padding: 1rem;
+  border-radius: var(--radius-pill);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

@@ -46,7 +46,9 @@ function Chat() {
   console.log(chats);
   return (
     <>
-      <section className={styles.chat__wrapper}>
+      <section
+        className={`${styles.chat__wrapper} ${params.chatId ? styles["chat__wrapper--open"] : ""}`}
+      >
         <Sidebar chats={chats}></Sidebar>
         <Conversation></Conversation>
       </section>

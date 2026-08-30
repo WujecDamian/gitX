@@ -37,6 +37,7 @@ export default function MiniNavProfile(props: props) {
         <ProfileDropdown
           ref={dropdownRef}
           logout={props.logout}
+          className={styles.dropdown}
         ></ProfileDropdown>
       )}
 

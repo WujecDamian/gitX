@@ -3,16 +3,16 @@
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  background-color: #000000;
+  background-color: var(--bg);
   gap: 12px;
-  border-top: 1px solid #1f1f23;
+  border-top: 1px solid var(--border);
   position: relative;
 }
 
 .icon__btn {
   background: none;
   border: none;
-  color: #1d9bf0;
+  color: var(--accent);
   font-size: 20px;
   cursor: pointer;
 }
@@ -30,24 +30,24 @@
 
 .text__input {
   width: 100%;
-  background-color: #16181c;
-  border: 1px solid #2f3336;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 9999px;
   padding: 10px 44px 10px 18px;
-  color: #ffffff;
+  color: var(--text-h);
   font-size: 15px;
   outline: none;
 }
 
 .text__input:focus {
-  border-color: #1d9bf0;
+  border-color: var(--accent);
 }
 
 .send__button {
   position: absolute;
   right: 8px;
-  background-color: #1d9bf0;
-  color: #ffffff;
+  background-color: var(--accent);
+  color: var(--text-h);
   border: none;
   border-radius: 50%;
   width: 28px;
@@ -62,10 +62,10 @@
 /* NATIVE HTML POPOVER STYLES */
 .popover__menu {
   padding: 16px;
-  background-color: #16181c;
-  border: 1px solid #2f3336;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  color: #ffffff;
+  color: var(--text-h);
   width: 280px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 
@@ -82,27 +82,27 @@
   margin: 0 0 10px 0;
   font-size: 14px;
   font-weight: 600;
-  color: #e4e4e7;
+  color: var(--text-h);
 }
 
 .popover__input {
   width: 100%;
-  background-color: #000000;
-  border: 1px solid #2f3336;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 8px 12px;
-  color: #ffffff;
+  color: var(--text-h);
   font-size: 13px;
   outline: none;
   box-sizing: border-box;
 }
 
 .popover__input:focus {
-  border-color: #1d9bf0;
+  border-color: var(--accent);
 }
 
 .popover__preview_indicator {
   margin-top: 8px;
   font-size: 12px;
-  color: #10b981; /* Success Green */
+  color: var(--success); /* Success Green */
 }

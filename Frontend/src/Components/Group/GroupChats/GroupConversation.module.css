@@ -3,12 +3,12 @@
   flex-direction: column;
   height: 100vh;
   width: 100%;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--bg);
+  color: var(--text-h);
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
     sans-serif;
-  border-inline: 1px solid rgb(67, 67, 67);
+  border-inline: 1px solid var(--border);
 }
 
 .chat__body {
@@ -21,7 +21,7 @@
 }
 
 .date__divider {
-  color: #71717a;
+  color: var(--text-muted);
   font-size: 13px;
   margin: 32px 0 16px 0;
   text-align: center;
@@ -32,4 +32,10 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+@media (max-width: 720px) {
+  .conversation__wrapper {
+    height: calc(100dvh - 7rem);
+  }
 }

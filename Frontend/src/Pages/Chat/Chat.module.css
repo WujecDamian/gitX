@@ -1,4 +1,19 @@
 .chat__wrapper {
   display: flex;
   min-height: 100vh;
+  min-width: 0;
+}
+
+@media (max-width: 720px) {
+  .chat__wrapper {
+    min-height: calc(100dvh - 7rem);
+  }
+
+  .chat__wrapper--open > *:first-child {
+    display: none;
+  }
+
+  .chat__wrapper:not(.chat__wrapper--open) > *:last-child {
+    display: none;
+  }
 }

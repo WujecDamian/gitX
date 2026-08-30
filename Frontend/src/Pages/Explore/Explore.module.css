@@ -4,7 +4,7 @@
   gap: 1rem;
   margin: 0;
   padding: 2rem;
-  border-inline: 1px solid #434343;
+  border-inline: 1px solid var(--border);
   height: 100%;
 }
 
@@ -14,23 +14,27 @@
 }
 
 .explore__search {
-  background: transparent;
-  border: 1px solid rgb(67, 67, 67);
-  border-radius: 9999px;
-  color: #e7e9ea;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-h);
   padding: 0.5rem 1rem;
   font-size: 0.95rem;
   outline: none;
   width: 100%;
 }
 
+.explore__search:focus {
+  border-color: var(--accent);
+}
+
 .explore__search::placeholder {
-  color: #71767b;
+  color: var(--text-muted);
 }
 
 .explore__hint {
   font-weight: 100;
-  color: rgb(136, 135, 135);
+  color: var(--text-muted);
   margin: 0;
 }
 

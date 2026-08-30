@@ -1,9 +1,9 @@
 /* Container holding the navigation bar */
 .navContainer {
   width: 100%;
-  background-color: #000000;
-  border-bottom: 1px solid rgb(67, 67, 67);
-  border-inline: 1px solid rgb(67, 67, 67);
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--border);
+  border-inline: 1px solid var(--border);
 }
 
 /* Wrapper to center and align the tabs */
@@ -35,15 +35,15 @@
 }
 
 .inactive {
-  color: #71717a;
+  color: var(--text-muted);
 }
 
 .inactive:hover {
-  color: #d4d4d8;
+  color: var(--text);
 }
 
 .active {
-  color: #ffffff;
+  color: var(--text-h);
 }
 
 /* ─── THE ALIGNMENT FIX ─── */
@@ -65,7 +65,7 @@
   /* Control line length relative to text size here */
   width: 45%;
   height: 100%;
-  background-color: #0ea5e9; /* Sky blue */
+  background-color: var(--accent); /* Sky blue */
   border-top-left-radius: 9999px;
   border-top-right-radius: 9999px;
 }

@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 0;
   min-height: 100vh;
-  border-inline: 1px solid rgb(67, 67, 67);
+  border-inline: 1px solid var(--border);
 }
 
 .no__posts__message {
@@ -14,7 +14,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  border: 1px solid rgb(67, 67, 67);
+  border: 1px solid var(--border);
   p {
     margin-top: 1rem;
     font-weight: 200;

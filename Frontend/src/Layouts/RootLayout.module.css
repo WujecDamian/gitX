@@ -1,17 +1,23 @@
 .root__layout {
   display: grid;
-  grid-template-columns: 300px 700px 200px;
+  grid-template-columns: 240px minmax(0, 700px);
   min-height: 100vh;
-  width: min(1280px, 100%);
-
+  width: min(980px, 100%);
   margin: 0 auto;
   padding: 0;
   border: 0;
 }
+
 .root__layout--mini {
-  --nav__width: 110px;
-  grid-template-columns: 110px 1090px;
+  grid-template-columns: 88px minmax(0, 1fr);
+  width: min(1200px, 100%);
+  overflow: visible;
 }
+
+.root__main {
+  min-width: 0;
+}
+
 .backdrop__overlay {
   position: fixed;
   top: 0;
@@ -21,4 +27,23 @@
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 10;
   pointer-events: auto;
+}
+
+@media (max-width: 1024px) {
+  .root__layout,
+  .root__layout--mini {
+    grid-template-columns: 80px minmax(0, 1fr);
+    width: 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  .root__layout,
+  .root__layout--mini {
+    display: block;
+    width: 100%;
+    min-height: 100dvh;
+    padding-top: 3.25rem;
+    padding-bottom: 3.75rem;
+  }
 }

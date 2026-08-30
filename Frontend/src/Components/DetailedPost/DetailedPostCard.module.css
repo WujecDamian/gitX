@@ -1,9 +1,8 @@
 /* * MAIN POST CARD */
 .post__card {
-  border: 1px solid var(--border);
   margin: 0;
-  padding: 1.25rem;
   margin-top: -1px;
+  padding: 1.25rem;
 }
 
 .post__content__wrapper {
@@ -11,6 +10,7 @@
   display: flex;
   flex-direction: column;
   align-items: start;
+
   justify-content: start;
 }
 /* POST MEDIA */

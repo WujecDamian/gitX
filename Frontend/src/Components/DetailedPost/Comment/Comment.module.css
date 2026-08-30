@@ -1,6 +1,6 @@
 /* * MAIN comment CARD */
 .comment__card {
-  border: 1px solid var(--border);
+  border-block: 1px solid var(--border);
   margin: 0;
   padding: 1.25rem;
   margin-top: -1px;

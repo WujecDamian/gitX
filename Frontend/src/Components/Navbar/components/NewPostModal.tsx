@@ -5,17 +5,20 @@ import { ProfilePicture } from "../../UI/ProfilePicture/ProfilePicture";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../../config";
 import { ErrorMessage } from "../../UI/ErrorMessage/ErrorMessage";
+import type { PostCreatedPayload } from "../../../Layouts/GridLayout";
 
 type NewPostModalProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   user: User;
+  onPostCreated: (payload: PostCreatedPayload) => void;
 };
 
 export default function NewPostModal({
   isOpen,
   setIsOpen,
   user,
+  onPostCreated,
 }: NewPostModalProps) {
   const [error, setError] = useState<String | null>(null);
   const [loading, setLoading] = useState(false);
@@ -45,7 +48,12 @@ export default function NewPostModal({
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const content = formData.get("content");
+    const content = String(formData.get("content") ?? "").trim();
+
+    if (!content) {
+      setError("Post content is required");
+      return;
+    }
 
     const bodyData = {
       content,
@@ -66,6 +74,11 @@ export default function NewPostModal({
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
       }
+
+      if (result.post) {
+        onPostCreated({ post: result.post });
+      }
+
       setIsOpen(false);
     } catch (error) {
       if (error instanceof Error) {
@@ -98,6 +111,7 @@ export default function NewPostModal({
               cols={65}
               rows={10}
               placeholder="What's happening?"
+              required
             ></textarea>
           </div>
 

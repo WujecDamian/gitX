@@ -76,7 +76,12 @@ export default function NewCommentModal({
     }
 
     const formData = new FormData(e.target);
-    const content = formData.get("content");
+    const content = String(formData.get("content") ?? "").trim();
+
+    if (!content) {
+      setError("Comment content is required");
+      return;
+    }
 
     const bodyData = {
       content,
@@ -149,6 +154,7 @@ export default function NewCommentModal({
             cols={65}
             rows={6}
             placeholder="Post your reply"
+            required
           ></textarea>
           <input type="submit" value="Post" />
           {loading && <span>Loading...</span>}

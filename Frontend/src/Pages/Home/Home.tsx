@@ -12,7 +12,8 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<String | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
-  const { setOnCommentCreated } = useOutletContext<LayoutContextType>();
+  const { setOnCommentCreated, setOnPostCreated } =
+    useOutletContext<LayoutContextType>();
   type feedTypeTypes = "forYou" | "following";
   const [feedType, setFeedType] = useState<feedTypeTypes>("forYou");
 
@@ -67,6 +68,19 @@ function Home() {
       setOnCommentCreated(null);
     };
   }, [setOnCommentCreated]);
+
+  useEffect(() => {
+    setOnPostCreated((payload) => {
+      if (payload.post.groupId) {
+        return;
+      }
+      setPosts((oldPosts) => [payload.post, ...oldPosts]);
+    });
+
+    return () => {
+      setOnPostCreated(null);
+    };
+  }, [setOnPostCreated]);
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>Please log in to view this page.</div>;

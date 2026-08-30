@@ -25,17 +25,37 @@ const createPost = async (req: Request, res: Response) => {
   const { content, media_url, groupId } = req.body;
   const authorId = req.user.id;
 
+  if (typeof content !== "string" || content.trim().length === 0) {
+    return res.status(400).json({ error: "Post content is required" });
+  }
+
   try {
-    await prisma.post.create({
+    const post = await prisma.post.create({
       data: {
         author_id: authorId,
-        content,
+        content: content.trim(),
         media_url,
         groupId,
       },
+      include: {
+        author: true,
+        _count: {
+          select: {
+            postLikes: true,
+            comments: true,
+          },
+        },
+      },
     });
 
-    return res.status(201).json({ message: "Successfully created post!" });
+    return res.status(201).json({
+      message: "Successfully created post!",
+      post: {
+        ...post,
+        isLikedByUser: false,
+        isBookmarkedByUser: false,
+      },
+    });
   } catch (error) {
     return res.status(500).json({ error: "Failed to create post" });
   }

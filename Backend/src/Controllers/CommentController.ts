@@ -34,12 +34,16 @@ const createComment = async (req: Request, res: Response) => {
       .json({ error: "Invalid or missing Post/Comment ID" });
   }
 
+  if (typeof content !== "string" || content.trim().length === 0) {
+    return res.status(400).json({ error: "Comment content is required" });
+  }
+
   try {
     const comment = await prisma.comment.create({
       data: {
         author_id: authorId,
         post_id: postId,
-        content,
+        content: content.trim(),
         media_url,
       },
       include: {
@@ -76,12 +80,16 @@ const createSubComment = async (req: Request, res: Response) => {
     return res.status(400).json({ error: "Invalid or missing Post ID" });
   }
 
+  if (typeof content !== "string" || content.trim().length === 0) {
+    return res.status(400).json({ error: "Comment content is required" });
+  }
+
   try {
     const comment = await prisma.comment.create({
       data: {
         author_id: authorId,
         post_id: postId,
-        content,
+        content: content.trim(),
         media_url,
         sub_comment_id: commentId,
       },

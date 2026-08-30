@@ -15,7 +15,8 @@ function Profile() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { refreshUser } = useAuth();
-  const { setOnCommentCreated } = useOutletContext<LayoutContextType>();
+  const { setOnCommentCreated, setOnPostCreated } =
+    useOutletContext<LayoutContextType>();
   let params = useParams();
   const getProfile = async () => {
     try {
@@ -72,6 +73,27 @@ function Profile() {
       setOnCommentCreated(null);
     };
   }, [setOnCommentCreated]);
+
+  useEffect(() => {
+    setOnPostCreated((payload) => {
+      if (payload.post.groupId) {
+        return;
+      }
+      setProfile((oldProfile) => {
+        if (!oldProfile || oldProfile.id !== payload.post.author.id) {
+          return oldProfile;
+        }
+        return {
+          ...oldProfile,
+          posts: [payload.post, ...oldProfile.posts],
+        } as User & { posts: Post[] };
+      });
+    });
+
+    return () => {
+      setOnPostCreated(null);
+    };
+  }, [setOnPostCreated]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <ErrorMessage error={error}></ErrorMessage>;

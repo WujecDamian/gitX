@@ -76,7 +76,13 @@ export default function NewCommentOnCommentModal({
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const rawContent = formData.get("content");
+    const rawContent = String(formData.get("content") ?? "").trim();
+
+    if (!rawContent) {
+      setError("Comment content is required");
+      return;
+    }
+
     const content = `Replying to @${comment!.author.username}: ${rawContent}`;
 
     const bodyData = {
@@ -157,6 +163,7 @@ export default function NewCommentOnCommentModal({
             cols={65}
             rows={6}
             placeholder="Post your reply"
+            required
           ></textarea>
           <input type="submit" value="Post" />
           {loading && <span>Loading...</span>}

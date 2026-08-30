@@ -7,7 +7,11 @@ import { API_URL } from "../../../../../config";
 
 export type TabOption = "Posts" | "Chat";
 
-export const NewPostBlock = () => {
+type NewPostBlockProps = {
+  onPostCreated: (post: Post) => void;
+};
+
+export const NewPostBlock = ({ onPostCreated }: NewPostBlockProps) => {
   const { user } = useAuth();
   const { groupId } = useParams<{ groupId: string }>();
   const [error, setError] = useState<String | null>(null);
@@ -17,10 +21,15 @@ export const NewPostBlock = () => {
   const handleFormSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.target);
+    const trimmedContent = content.trim();
+
+    if (!trimmedContent) {
+      setError("Post content is required");
+      return;
+    }
 
     const bodyData = {
-      content,
+      content: trimmedContent,
       groupId,
     };
 
@@ -39,6 +48,12 @@ export const NewPostBlock = () => {
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
       }
+
+      if (result.post) {
+        onPostCreated(result.post);
+      }
+
+      setContent("");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -47,7 +62,6 @@ export const NewPostBlock = () => {
       }
     } finally {
       setLoading(false);
-      setContent("");
     }
   };
 
@@ -63,6 +77,7 @@ export const NewPostBlock = () => {
             rows={10}
             placeholder="Share something with the crew..."
             value={content}
+            required
             onChange={(e) => {
               setContent(e.target.value);
             }}

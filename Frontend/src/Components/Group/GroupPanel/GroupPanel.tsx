@@ -149,7 +149,13 @@ export const GroupPanel = () => {
           ></TabNav>
           {currentTab === "Posts" && (
             <div className={styles.feed__container}>
-              <NewPostBlock></NewPostBlock>
+              <NewPostBlock
+                onPostCreated={(post) => {
+                  setPosts((oldPosts) =>
+                    oldPosts ? [post, ...oldPosts] : [post],
+                  );
+                }}
+              ></NewPostBlock>
               <section className={styles.posts}>
                 {posts && posts.length > 0 ? (
                   posts.map((post: Post) => (

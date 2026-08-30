@@ -7,7 +7,11 @@ import { API_URL } from "../../../../../config";
 
 export type TabOption = "Posts" | "Chat";
 
-export const NewPostBlock = () => {
+type NewPostBlockProps = {
+  onPostCreated: (post: Post) => void;
+};
+
+export const NewPostBlock = ({ onPostCreated }: NewPostBlockProps) => {
   const { user } = useAuth();
   const { groupId } = useParams<{ groupId: string }>();
   const [error, setError] = useState<String | null>(null);
@@ -38,6 +42,10 @@ export const NewPostBlock = () => {
 
       if (!response.ok) {
         throw new Error(result.error || "Something went wrong");
+      }
+
+      if (result.post) {
+        onPostCreated(result.post);
       }
     } catch (error) {
       if (error instanceof Error) {

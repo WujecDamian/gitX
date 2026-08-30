@@ -13,22 +13,24 @@ type props = {
 };
 export default function Comment(props: props) {
   return (
-    <Link to={`/comment/${props.comment.id}`} className={styles.comment__card}>
-      <CommentHeader
-        author={props.author}
-        comment={props.comment}
-      ></CommentHeader>
-      <div className={styles.comment__content__wrapper}>
-        <CommentContent content={props.comment.content}></CommentContent>
-        <CommentMedia media_url={props.comment.media_url}></CommentMedia>
-        <CommentActions
-          counts={props.comment._count}
-          commentId={props.comment.id}
-          isLikedByUser={props.comment.isLikedByUser}
-          isBookmarkedByUser={props.comment.isBookmarkedByUser}
-        ></CommentActions>
-      </div>
-      <div className="comment__replies">
+    <article className={styles.comment__thread}>
+      <Link to={`/comment/${props.comment.id}`} className={styles.comment__card}>
+        <CommentHeader
+          author={props.author}
+          comment={props.comment}
+        ></CommentHeader>
+        <div className={styles.comment__content__wrapper}>
+          <CommentContent content={props.comment.content}></CommentContent>
+          <CommentMedia media_url={props.comment.media_url}></CommentMedia>
+          <CommentActions
+            counts={props.comment._count}
+            commentId={props.comment.id}
+            isLikedByUser={props.comment.isLikedByUser}
+            isBookmarkedByUser={props.comment.isBookmarkedByUser}
+          ></CommentActions>
+        </div>
+      </Link>
+      <div className={styles.comment__replies}>
         {props.comment.sub_comments?.map((comment: CommentType) => (
           <SubComment
             author={comment.author}
@@ -37,6 +39,6 @@ export default function Comment(props: props) {
           ></SubComment>
         ))}
       </div>
-    </Link>
+    </article>
   );
 }

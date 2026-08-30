@@ -8,6 +8,7 @@ import Reply from "../../Components/DetailedPost/Reply/Reply";
 import { API_URL } from "../../config";
 import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
 import type { LayoutContextType } from "../../Layouts/GridLayout";
+import { insertReplyIntoComments } from "../../Components/DetailedPost/insertReply";
 
 function Post() {
   const { user } = useAuth();
@@ -55,20 +56,10 @@ function Post() {
         if (payload.parentCommentId) {
           return {
             ...oldPost,
-            comments: oldPost.comments.map((existingComment) =>
-              existingComment.id === payload.parentCommentId
-                ? {
-                    ...existingComment,
-                    sub_comments: [
-                      payload.comment,
-                      ...(existingComment.sub_comments ?? []),
-                    ],
-                    _count: {
-                      ...existingComment._count,
-                      sub_comments: existingComment._count.sub_comments + 1,
-                    },
-                  }
-                : existingComment,
+            comments: insertReplyIntoComments(
+              oldPost.comments,
+              payload.parentCommentId,
+              payload.comment,
             ),
             _count: {
               ...oldPost._count,

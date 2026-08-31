@@ -19,7 +19,12 @@ export default function Reply(props: props) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const content = formData.get("content");
+    const content = String(formData.get("content") ?? "").trim();
+
+    if (!content) {
+      setError("Comment content is required");
+      return;
+    }
 
     const bodyData = {
       content,
@@ -47,6 +52,8 @@ export default function Reply(props: props) {
       if (result.comment) {
         props.onCommentCreated(result.comment);
       }
+
+      setContent("");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -55,7 +62,6 @@ export default function Reply(props: props) {
       }
     } finally {
       setLoading(false);
-      setContent("");
     }
   };
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -73,6 +79,7 @@ export default function Reply(props: props) {
           rows={1}
           placeholder="Post your reply"
           value={content}
+          required
           ref={textareaRef}
           onChange={handleInputChange}
         ></textarea>

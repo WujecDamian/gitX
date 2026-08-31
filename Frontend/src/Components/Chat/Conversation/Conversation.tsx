@@ -74,7 +74,20 @@ export const Conversation = () => {
             </div>
           </div>
 
-          <MessageInput chatId={chatId} />
+          <MessageInput
+            chatId={chatId}
+            onMessageSent={(message) => {
+              setChat((oldChat) => {
+                if (!oldChat) {
+                  return oldChat;
+                }
+                return {
+                  ...oldChat,
+                  messages: [...(oldChat.messages ?? []), message],
+                };
+              });
+            }}
+          />
         </>
       )}
     </section>

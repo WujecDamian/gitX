@@ -94,7 +94,7 @@
 .action__icons {
   display: flex;
   gap: 16px;
-  color: var(--accent);
+  color: var(--accent-text);
   cursor: pointer;
 }
 

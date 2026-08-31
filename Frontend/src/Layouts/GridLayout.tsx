@@ -17,6 +17,10 @@ export type CommentCreatedPayload = {
   comment: CommentType;
 };
 
+export type PostCreatedPayload = {
+  post: Post;
+};
+
 export type LayoutContextType = {
   setIsCommentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCommentOnCommentModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +33,9 @@ export type LayoutContextType = {
   commentId: string;
   setOnCommentCreated: (
     handler: ((payload: CommentCreatedPayload) => void) | null,
+  ) => void;
+  setOnPostCreated: (
+    handler: ((payload: PostCreatedPayload) => void) | null,
   ) => void;
 };
 
@@ -45,6 +52,9 @@ function GridLayout() {
   const onCommentCreatedRef = useRef<
     ((payload: CommentCreatedPayload) => void) | null
   >(null);
+  const onPostCreatedRef = useRef<
+    ((payload: PostCreatedPayload) => void) | null
+  >(null);
 
   const setOnCommentCreated = useCallback(
     (handler: ((payload: CommentCreatedPayload) => void) | null) => {
@@ -53,8 +63,19 @@ function GridLayout() {
     [],
   );
 
+  const setOnPostCreated = useCallback(
+    (handler: ((payload: PostCreatedPayload) => void) | null) => {
+      onPostCreatedRef.current = handler;
+    },
+    [],
+  );
+
   const notifyCommentCreated = (payload: CommentCreatedPayload) => {
     onCommentCreatedRef.current?.(payload);
+  };
+
+  const notifyPostCreated = (payload: PostCreatedPayload) => {
+    onPostCreatedRef.current?.(payload);
   };
 
   //checking if any modal is open (for darkening background and making inactive)
@@ -106,6 +127,7 @@ function GridLayout() {
             commentId,
             setCommentId,
             setOnCommentCreated,
+            setOnPostCreated,
           }}
         ></Outlet>
         {/* Modals */}
@@ -113,6 +135,7 @@ function GridLayout() {
           isOpen={isPostOpen}
           setIsOpen={setIsPostOpen}
           user={user}
+          onPostCreated={notifyPostCreated}
         ></NewPostModal>
         <NewCommentModal
           isOpen={isCommentModalOpen}

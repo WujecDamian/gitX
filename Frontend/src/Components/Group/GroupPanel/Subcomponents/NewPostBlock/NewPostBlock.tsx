@@ -21,10 +21,15 @@ export const NewPostBlock = ({ onPostCreated }: NewPostBlockProps) => {
   const handleFormSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.target);
+    const trimmedContent = content.trim();
+
+    if (!trimmedContent) {
+      setError("Post content is required");
+      return;
+    }
 
     const bodyData = {
-      content,
+      content: trimmedContent,
       groupId,
     };
 
@@ -55,7 +60,6 @@ export const NewPostBlock = ({ onPostCreated }: NewPostBlockProps) => {
       }
     } finally {
       setLoading(false);
-      setContent("");
     }
   };
 
@@ -71,6 +75,7 @@ export const NewPostBlock = ({ onPostCreated }: NewPostBlockProps) => {
             rows={10}
             placeholder="Share something with the crew..."
             value={content}
+            required
             onChange={(e) => {
               setContent(e.target.value);
             }}

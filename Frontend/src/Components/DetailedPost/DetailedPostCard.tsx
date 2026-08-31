@@ -1,5 +1,4 @@
 import styles from "./DetailedPostCard.module.css";
-import { Link } from "react-router-dom";
 //DetailedPostCard subcomponents
 import DetailedPostHeader from "./subcomponents/DetailedPostHeader";
 import DetailedPostContent from "./subcomponents/DetailedPostContent";
@@ -13,7 +12,7 @@ type props = {
 
 export default function DetailedPostCard(props: props) {
   return (
-    <Link to={`/post/${props.post.id}`} className={styles.post__card}>
+    <section className={styles.post__card}>
       <DetailedPostHeader
         author={props.author}
         post={props.post}
@@ -28,6 +27,6 @@ export default function DetailedPostCard(props: props) {
           isBookmarkedByUser={props.post.isBookmarkedByUser}
         ></DetailedPostActions>
       </div>
-    </Link>
+    </section>
   );
 }

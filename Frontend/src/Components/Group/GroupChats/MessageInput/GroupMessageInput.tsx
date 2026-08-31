@@ -4,9 +4,13 @@ import { API_URL } from "../../../../config";
 
 type GroupMessageInputTypes = {
   chatId: string;
+  onMessageSent: (message: Message) => void;
 };
 
-export const GroupMessageInput = ({ chatId }: GroupMessageInputTypes) => {
+export const GroupMessageInput = ({
+  chatId,
+  onMessageSent,
+}: GroupMessageInputTypes) => {
   const [text, setText] = useState("");
   const [mediaUrl, setMediaUrl] = useState(""); // Track the media input value
   const [isSending, setIsSending] = useState(false);
@@ -31,8 +35,14 @@ export const GroupMessageInput = ({ chatId }: GroupMessageInputTypes) => {
         }),
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        throw new Error("Failed to send message");
+        throw new Error(result.error || "Failed to send message");
+      }
+
+      if (result.newMessage) {
+        onMessageSent(result.newMessage);
       }
 
       setText("");

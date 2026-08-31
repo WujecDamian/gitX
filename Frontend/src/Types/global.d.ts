@@ -37,6 +37,7 @@ declare global {
     media_url?: string | null;
     author: User;
     createdAt: string;
+    groupId?: string | null;
     isLikedByUser: boolean;
     isBookmarkedByUser: boolean;
     _count: { postLikes: number; comments: number };

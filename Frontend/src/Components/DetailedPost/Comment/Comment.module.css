@@ -5,7 +5,7 @@
 }
 
 .comment__card {
-  border: 1px solid var(--border);
+  border-block: 1px solid var(--border);
   margin: 0;
   padding: 1.25rem;
   margin-top: -1px;
@@ -79,12 +79,12 @@
     button {
       cursor: pointer;
     }
-  }
 
-  .comments:hover,
-  .likes:hover,
-  .bookmarks:hover {
-    color: var(--accent);
+    img {
+      filter: brightness(0) invert(1);
+    }
+
+    color: #ffffff;
   }
 
   .comments:hover img,
@@ -95,4 +95,8 @@
   .bookmarks {
     margin-left: auto;
   }
+}
+
+.count {
+  color: #ffffff;
 }

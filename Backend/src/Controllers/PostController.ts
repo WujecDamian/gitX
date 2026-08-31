@@ -26,11 +26,15 @@ const createPost = async (req: Request, res: Response) => {
   const { content, media_url, groupId } = req.body;
   const authorId = req.user.id;
 
+  if (typeof content !== "string" || content.trim().length === 0) {
+    return res.status(400).json({ error: "Post content is required" });
+  }
+
   try {
     const post = await prisma.post.create({
       data: {
         author_id: authorId,
-        content,
+        content: content.trim(),
         media_url,
         groupId,
       },

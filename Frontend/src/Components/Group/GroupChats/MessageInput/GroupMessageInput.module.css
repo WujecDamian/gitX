@@ -12,7 +12,7 @@
 .icon__btn {
   background: none;
   border: none;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 20px;
   cursor: pointer;
 }

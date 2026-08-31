@@ -1,10 +1,20 @@
 /* * MAIN comment CARD */
+.comment__thread {
+  display: flex;
+  flex-direction: column;
+}
+
 .comment__card {
   border-block: 1px solid var(--border);
   margin: 0;
   padding: 1.25rem;
   margin-top: -1px;
   height: fit-content;
+}
+
+.comment__replies {
+  display: flex;
+  flex-direction: column;
 }
 
 .comment__content__wrapper {

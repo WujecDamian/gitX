@@ -7,6 +7,7 @@ import PostCard from "../../Components/Post/PostCard";
 import { API_URL } from "../../config";
 import { ErrorMessage } from "../../Components/UI/ErrorMessage/ErrorMessage";
 import type { LayoutContextType } from "../../Layouts/GridLayout";
+import { insertReply } from "../../Components/DetailedPost/insertReply";
 
 function CommentPage() {
   const { user } = useAuth();
@@ -91,20 +92,14 @@ function CommentPage() {
       });
 
       setComment((oldComment) => {
-        if (!oldComment) {
+        if (!oldComment || !payload.parentCommentId) {
           return oldComment;
         }
-        if (oldComment.id !== payload.parentCommentId) {
-          return oldComment;
-        }
-        return {
-          ...oldComment,
-          sub_comments: [payload.comment, ...(oldComment.sub_comments ?? [])],
-          _count: {
-            ...oldComment._count,
-            sub_comments: oldComment._count.sub_comments + 1,
-          },
-        };
+        return insertReply(
+          oldComment,
+          payload.parentCommentId,
+          payload.comment,
+        );
       });
     });
 

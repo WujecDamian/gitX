@@ -1,4 +1,9 @@
 /* * MAIN comment CARD */
+.comment__thread {
+  display: flex;
+  flex-direction: column;
+}
+
 .comment__card {
   display: flex;
   flex-direction: column;
@@ -9,6 +14,12 @@
   padding: 1.25rem;
   margin-top: -1px;
   height: fit-content;
+}
+
+.comment__replies {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1.45rem;
 }
 
 .comment__content__wrapper {

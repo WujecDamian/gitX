@@ -1,6 +1,11 @@
 import { type Request, type Response } from "express";
 import "../Authentication/passport-config";
 import { prisma } from "../lib/prisma";
+import {
+  commentEngagementInclude,
+  findCommentInTree,
+  nestComments,
+} from "../lib/commentTree";
 
 //deleting / creating Post
 const deleteComment = async (req: Request, res: Response) => {
@@ -129,99 +134,15 @@ const getPostComments = async (req: Request, res: Response) => {
     const comments = await prisma.comment.findMany({
       where: {
         post_id: postId,
-        sub_comment_id: null,
       },
-      select: {
-        author: true,
-        id: true,
-        content: true,
-        media_url: true,
-        createdAt: true,
-        _count: {
-          select: {
-            commentLikes: true,
-            sub_comments: true,
-          },
-        },
-        commentLikes: {
-          where: {
-            user_id: req.user.id,
-          },
-          select: {
-            id: true,
-          },
-        },
-        commentBookmarks: {
-          where: {
-            user_id: req.user.id,
-          },
-          select: {
-            id: true,
-          },
-        },
-        sub_comments: {
-          include: {
-            author: true,
-            commentLikes: {
-              where: {
-                user_id: req.user.id,
-              },
-              select: {
-                id: true,
-              },
-            },
-            commentBookmarks: {
-              where: {
-                user_id: req.user.id,
-              },
-              select: {
-                id: true,
-              },
-            },
-            _count: {
-              select: {
-                commentLikes: true,
-                sub_comments: true,
-              },
-            },
-          },
-          orderBy: {
-            createdAt: "desc",
-          },
-        },
+      include: commentEngagementInclude(req.user.id),
+      orderBy: {
+        createdAt: "desc",
       },
-
-      orderBy: [
-        {
-          commentLikes: {
-            _count: "desc",
-          },
-        },
-        {
-          createdAt: "desc",
-        },
-      ],
-    });
-
-    const commentsWithLiked = comments.map((comment) => {
-      const subCommentsWithLiked = comment.sub_comments.map((subComment) => {
-        return {
-          ...subComment,
-          isLikedByUser: subComment.commentLikes.length > 0,
-          isBookmarkedByUser: subComment.commentBookmarks.length > 0,
-        };
-      });
-
-      return {
-        ...comment,
-        isLikedByUser: comment.commentLikes.length > 0,
-        isBookmarkedByUser: comment.commentBookmarks.length > 0,
-        sub_comments: subCommentsWithLiked,
-      };
     });
 
     return res.status(200).json({
-      comments: commentsWithLiked,
+      comments: nestComments(comments, null),
     });
   } catch (error) {
     return res.status(500).json({ error: "Failed to create post" });
@@ -240,69 +161,9 @@ const getComment = async (req: Request, res: Response) => {
       where: {
         id: commentId,
       },
-      include: {
-        author: true,
-        commentLikes: {
-          where: {
-            user_id: req.user.id,
-          },
-          select: {
-            id: true,
-          },
-        },
-        commentBookmarks: {
-          where: {
-            user_id: req.user.id,
-          },
-          select: {
-            id: true,
-          },
-        },
-        sub_comments: {
-          include: {
-            author: true,
-            commentLikes: {
-              where: {
-                user_id: req.user.id,
-              },
-              select: {
-                id: true,
-              },
-            },
-            commentBookmarks: {
-              where: {
-                user_id: req.user.id,
-              },
-              select: {
-                id: true,
-              },
-            },
-            _count: true,
-            sub_comments: {
-              include: {
-                author: true,
-                commentLikes: {
-                  where: {
-                    user_id: req.user.id,
-                  },
-                  select: {
-                    id: true,
-                  },
-                },
-                commentBookmarks: {
-                  where: {
-                    user_id: req.user.id,
-                  },
-                  select: {
-                    id: true,
-                  },
-                },
-                _count: true,
-              },
-            },
-          },
-        },
-        _count: true,
+      select: {
+        id: true,
+        post_id: true,
       },
     });
 
@@ -310,26 +171,25 @@ const getComment = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Comment not found" });
     }
 
-    return res.status(200).json({
-      comment: {
-        ...comment,
-        isLikedByUser: comment.commentLikes.length > 0,
-        isBookmarkedByUser: comment.commentBookmarks.length > 0,
-        sub_comments: comment.sub_comments.map((subComment) => {
-          return {
-            ...subComment,
-            isLikedByUser: subComment.commentLikes.length > 0,
-          isBookmarkedByUser: subComment.commentBookmarks.length > 0,
-            sub_comments: subComment.sub_comments.map((nestedComment) => {
-              return {
-                ...nestedComment,
-                isLikedByUser: nestedComment.commentLikes.length > 0,
-                isBookmarkedByUser: nestedComment.commentBookmarks.length > 0,
-              };
-            }),
-          };
-        }),
+    const comments = await prisma.comment.findMany({
+      where: {
+        post_id: comment.post_id,
       },
+      include: commentEngagementInclude(req.user.id),
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    const commentTree = nestComments(comments, null);
+    const commentWithReplies = findCommentInTree(commentTree, commentId);
+
+    if (!commentWithReplies) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    return res.status(200).json({
+      comment: commentWithReplies,
     });
   } catch (error) {
     return res.status(500).json({ error: "Failed to create post" });

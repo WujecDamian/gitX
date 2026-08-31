@@ -1,6 +1,7 @@
 import { type Request, type Response } from "express";
 import "../Authentication/passport-config";
 import { prisma } from "../lib/prisma";
+import { commentEngagementInclude, nestComments } from "../lib/commentTree";
 
 //deleting / creating Post
 const deletePost = async (req: Request, res: Response) => {
@@ -37,12 +38,32 @@ const createPost = async (req: Request, res: Response) => {
         media_url,
         groupId,
       },
-      include: {
+      select: {
         author: true,
+        id: true,
+        content: true,
+        createdAt: true,
+        media_url: true,
         _count: {
           select: {
             postLikes: true,
             comments: true,
+          },
+        },
+        postLikes: {
+          where: {
+            user_id: authorId,
+          },
+          select: {
+            id: true,
+          },
+        },
+        bookmarks: {
+          where: {
+            user_id: authorId,
+          },
+          select: {
+            id: true,
           },
         },
       },
@@ -52,8 +73,8 @@ const createPost = async (req: Request, res: Response) => {
       message: "Successfully created post!",
       post: {
         ...post,
-        isLikedByUser: false,
-        isBookmarkedByUser: false,
+        isLikedByUser: post.postLikes.length > 0,
+        isBookmarkedByUser: post.bookmarks.length > 0,
       },
     });
   } catch (error) {
@@ -199,53 +220,6 @@ const getPostWithCommentsById = async (req: Request, res: Response) => {
         content: true,
         media_url: true,
         createdAt: true,
-        comments: {
-          where: {
-            sub_comment_id: null,
-          },
-          include: {
-            author: true,
-            commentLikes: {
-              where: {
-                user_id: userId,
-              },
-              select: {
-                id: true,
-              },
-            },
-            commentBookmarks: {
-              where: {
-                user_id: userId,
-              },
-              select: {
-                id: true,
-              },
-            },
-            sub_comments: {
-              include: {
-                author: true,
-                _count: true,
-                commentLikes: {
-                  where: {
-                    user_id: userId,
-                  },
-                  select: {
-                    id: true,
-                  },
-                },
-                commentBookmarks: {
-                  where: {
-                    user_id: userId,
-                  },
-                  select: {
-                    id: true,
-                  },
-                },
-              },
-            },
-            _count: true,
-          },
-        },
         _count: {
           select: {
             postLikes: true,
@@ -276,21 +250,14 @@ const getPostWithCommentsById = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const commentsWithLiked = post.comments.map((comment) => {
-      const subCommentsWithLiked = comment.sub_comments.map((subComment) => {
-        return {
-          ...subComment,
-          isLikedByUser: subComment.commentLikes.length > 0,
-          isBookmarkedByUser: subComment.commentBookmarks.length > 0,
-        };
-      });
-
-      return {
-        ...comment,
-        isLikedByUser: comment.commentLikes.length > 0,
-        isBookmarkedByUser: comment.commentBookmarks.length > 0,
-        sub_comments: subCommentsWithLiked,
-      };
+    const comments = await prisma.comment.findMany({
+      where: {
+        post_id: post.id,
+      },
+      include: commentEngagementInclude(userId),
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return res.status(200).json({
@@ -298,7 +265,7 @@ const getPostWithCommentsById = async (req: Request, res: Response) => {
         ...post,
         isLikedByUser: post.postLikes.length > 0,
         isBookmarkedByUser: post.bookmarks.length > 0,
-        comments: commentsWithLiked,
+        comments: nestComments(comments, null),
       },
     });
   } catch (error) {

@@ -151,7 +151,9 @@ export const GroupPanel = () => {
             <div className={styles.feed__container}>
               <NewPostBlock
                 onPostCreated={(post) => {
-                  setPosts((oldPosts) => [post, ...(oldPosts ?? [])]);
+                  setPosts((oldPosts) =>
+                    oldPosts ? [post, ...oldPosts] : [post],
+                  );
                 }}
               ></NewPostBlock>
               <section className={styles.posts}>

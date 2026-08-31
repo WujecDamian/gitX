@@ -52,8 +52,6 @@ export const NewPostBlock = ({ onPostCreated }: NewPostBlockProps) => {
       if (result.post) {
         onPostCreated(result.post);
       }
-
-      setContent("");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

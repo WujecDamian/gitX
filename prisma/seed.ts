@@ -34,7 +34,7 @@ async function main() {
     "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1398938026231-efc53fed93a4?w=500&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=500&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=500&auto=format&fit=crop&q=80",
   ];
@@ -48,6 +48,33 @@ async function main() {
     "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=1200&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=1200&auto=format&fit=crop&q=80",
   ];
+
+  const groupPics = {
+    productionSquad: {
+      avatar:
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80",
+    },
+    frontendFriday: {
+      avatar:
+        "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&auto=format&fit=crop&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1557683316-973673baf926?w=1200&auto=format&fit=crop&q=80",
+    },
+    cloudRoom: {
+      avatar:
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&auto=format&fit=crop&q=80",
+    },
+    guestGroup: {
+      avatar:
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&auto=format&fit=crop&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1200&auto=format&fit=crop&q=80",
+    },
+  };
 
   const postMedias = [
     "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80",
@@ -296,6 +323,8 @@ async function main() {
     data: {
       group_name: "The Production Breaking Squad",
       bio: "We ship, we panic, we fix it on main. All hands welcome.",
+      group_profile_picture_url: groupPics.productionSquad.avatar,
+      group_banner_picture_url: groupPics.productionSquad.banner,
       creator_id: byUsername.alex_dev.id,
       members: { connect: users.map((user) => ({ id: user.id })) },
     },
@@ -305,6 +334,8 @@ async function main() {
     data: {
       group_name: "Frontend Friday",
       bio: "React, CSS, and accessibility chats. Guest reviewers always invited.",
+      group_profile_picture_url: groupPics.frontendFriday.avatar,
+      group_banner_picture_url: groupPics.frontendFriday.banner,
       creator_id: byUsername.elena_design.id,
       members: {
         connect: [
@@ -323,6 +354,8 @@ async function main() {
     data: {
       group_name: "Cloud & Pipelines",
       bio: "Docker, Kubernetes, Terraform, and the art of not SSHing into prod.",
+      group_profile_picture_url: groupPics.cloudRoom.avatar,
+      group_banner_picture_url: groupPics.cloudRoom.banner,
       creator_id: byUsername.dan_m.id,
       members: {
         connect: [
@@ -332,6 +365,24 @@ async function main() {
           byUsername.marcus_tech,
           byUsername.alex_dev,
           byUsername.sarah_codes,
+        ].map((user) => ({ id: user.id })),
+      },
+    },
+  });
+
+  const guestGroup = await prisma.group.create({
+    data: {
+      group_name: "Guest's Group",
+      bio: "Owned by the guest interviewer. Ask anything, break nothing (please).",
+      group_profile_picture_url: groupPics.guestGroup.avatar,
+      group_banner_picture_url: groupPics.guestGroup.banner,
+      creator_id: interviewer.id,
+      members: {
+        connect: [
+          interviewer,
+          byUsername.alex_dev,
+          byUsername.elena_design,
+          byUsername.coder_cat,
         ].map((user) => ({ id: user.id })),
       },
     },
@@ -483,6 +534,212 @@ async function main() {
       content:
         "Python service is in Docker now. FastAPI + Gunicorn, health check, and a real PostgreSQL container in CI. Local SQLite was lying to us.",
     },
+    {
+      authorId: byUsername.alex_dev.id,
+      content:
+        "Hot take: everyone is chasing trillion-parameter models, but most production apps still run on small, boring models that just work. Reliability > hype.",
+    },
+    {
+      authorId: byUsername.sarah_codes.id,
+      content:
+        "90% of devs use AI at work now and somehow we still Google 'how to center a div'. Balance in the universe is restored.",
+    },
+    {
+      authorId: byUsername.dan_m.id,
+      content:
+        "The funniest thing about AI benchmarks is that the model that wins them is rarely the one your company actually deploys.",
+    },
+    {
+      authorId: byUsername.elena_design.id,
+      content:
+        "Design in 2026: 10% Figma, 40% prompting AI, 50% fixing what the AI misunderstood.",
+    },
+    {
+      authorId: byUsername.marcus_tech.id,
+      content:
+        "Reminder: X processes ~500M posts per day. Your tweet isn't flopping, it's just competing with half a billion others.",
+    },
+    {
+      authorId: byUsername.tech_nomad.id,
+      content:
+        "Threads vs X vs Bluesky debates are funny. Devs will post wherever gets them 1) jobs 2) users 3) dopamine. In that order.",
+    },
+    {
+      authorId: byUsername.lina_graphics.id,
+      content:
+        "AI image tools got so good that now the real skill is taste. The bottleneck is no longer execution, it's judgment.",
+    },
+    {
+      authorId: byUsername.nik_devops.id,
+      content:
+        "Kubernetes is still harder to understand than any AI model I've used this year.",
+    },
+    {
+      authorId: byUsername.coder_cat.id,
+      content:
+        "me: 'AI will replace coding'\nalso me: debugging AI-generated code for 3 hours because of one missing env variable",
+    },
+    {
+      authorId: byUsername.alex_dev.id,
+      content:
+        "New AI models drop every week now. Feels like frontend frameworks in 2017 all over again.",
+    },
+    {
+      authorId: byUsername.sarah_codes.id,
+      content:
+        "Long-form posts on X are replacing threads and honestly… good. I’m tired of reading 1/27 🧵",
+    },
+    {
+      authorId: byUsername.dan_m.id,
+      content:
+        "The real AI skill isn't prompting. It's knowing when NOT to trust the output.",
+    },
+    {
+      authorId: byUsername.marcus_tech.id,
+      content:
+        "557M monthly users and people still think X is 'dead'. Internet narratives are wild.",
+    },
+    {
+      authorId: byUsername.tech_nomad.id,
+      content:
+        "If your stack needs a diagram to explain it, you probably overengineered it.",
+    },
+    {
+      authorId: byUsername.nik_devops.id,
+      content:
+        "DevOps rule #1: if it works, don’t touch it.\nDevOps rule #2: someone will touch it.",
+    },
+    {
+      authorId: byUsername.lina_graphics.id,
+      content:
+        "Everyone talks about AI replacing developers, but no one talks about it replacing bad UI.",
+    },
+    {
+      authorId: byUsername.elena_design.id,
+      content:
+        "Clients: 'Can AI do it faster?'\nAlso clients: 12 rounds of feedback anyway.",
+    },
+    {
+      authorId: byUsername.coder_cat.id,
+      content:
+        "console.log is temporary\nlogging framework is forever\nbugs are eternal",
+    },
+    {
+      authorId: byUsername.marcus_tech.id,
+      content:
+        "China dropping 2.8T parameter models and most startups just need something that answers support tickets.",
+    },
+    {
+      authorId: byUsername.alex_dev.id,
+      content:
+        "Best stack in 2026:\n- boring backend\n- simple frontend\n- AI where it actually helps\n- no hype-driven decisions",
+    },
+    {
+      authorId: byUsername.alex_dev.id,
+      content:
+        "90% of devs use AI weekly now and somehow deadlines are still missed. Turns out faster coding just means more ambitious bugs.",
+    },
+    {
+      authorId: byUsername.sarah_codes.id,
+      content:
+        "AI writes ~47% of code on average now. The other 53% is debugging what it wrote.",
+    },
+    {
+      authorId: byUsername.dan_m.id,
+      content:
+        "We went from 'learn to code' to 'learn to review code written by something else' in like 3 years.",
+    },
+    {
+      authorId: byUsername.elena_design.id,
+      content:
+        "The hardest part of design used to be execution.\nNow it’s choosing between 50 AI-generated options that are all... kinda mid.",
+    },
+    {
+      authorId: byUsername.marcus_tech.id,
+      content:
+        "X has ~550M users and ~350M posts per day.\nYour post didn’t flop.\nIt just lost a knife fight.",
+    },
+    {
+      authorId: byUsername.tech_nomad.id,
+      content:
+        "Remote work, AI tools, global market...\nAnd people still argue tabs vs spaces like it matters.",
+    },
+    {
+      authorId: byUsername.lina_graphics.id,
+      content:
+        "AI didn’t kill creativity.\nIt exposed how many people never had taste to begin with.",
+    },
+    {
+      authorId: byUsername.nik_devops.id,
+      content:
+        "96% of teams use AI now.\n63% still don’t trust it fully.\nThat’s the entire industry in one sentence.",
+    },
+    {
+      authorId: byUsername.coder_cat.id,
+      content:
+        "AI: writes 200 lines instantly\nme: spends 2 hours understanding line 37",
+    },
+    {
+      authorId: byUsername.alex_dev.id,
+      content:
+        "The real skill in 2026 isn’t coding.\nIt’s knowing what NOT to delegate to AI.",
+    },
+    {
+      authorId: byUsername.sarah_codes.id,
+      content:
+        "Half of programming tokens globally are still not code.\nTurns out devs also use AI to complain, explain, and procrastinate.",
+    },
+    {
+      authorId: byUsername.dan_m.id,
+      content:
+        "Every startup pitch now:\n'It’s like X but with AI'\nNo explanation required apparently.",
+    },
+    {
+      authorId: byUsername.marcus_tech.id,
+      content:
+        "AI app usage doubled to ~36B hours in a year.\nWe didn’t adopt AI.\nWe moved in.",
+    },
+    {
+      authorId: byUsername.tech_nomad.id,
+      content:
+        "Best career advice right now:\nbe the person who can ship without AI\nAND faster with it",
+    },
+    {
+      authorId: byUsername.nik_devops.id,
+      content:
+        "Nothing scares me more than an AI confidently generating infrastructure configs.",
+    },
+    {
+      authorId: byUsername.lina_graphics.id,
+      content:
+        "Clients think AI makes things instant.\nIt just makes iteration infinite.",
+    },
+    {
+      authorId: byUsername.elena_design.id,
+      content:
+        "We replaced blank canvas anxiety with infinite options anxiety.",
+    },
+    {
+      authorId: byUsername.coder_cat.id,
+      content:
+        "console.log 🤝 AI\nboth telling me things I don’t fully trust",
+    },
+    {
+      authorId: byUsername.marcus_tech.id,
+      content:
+        "Git pushes up 78% YoY.\nWe are not coding less.\nWe are just committing more chaos faster.",
+    },
+    {
+      authorId: byUsername.alex_dev.id,
+      content:
+        "Old stack: frontend + backend\nNew stack: frontend + backend + AI + monitoring the AI + fixing the AI",
+    },
+    {
+      authorId: interviewer.id,
+      groupId: guestGroup.id,
+      content:
+        "Welcome to Guest's Group. I made this room so I can try owner tools: posts, chats, and not breaking production. Say hi if you wandered in.",
+    },
   ];
 
   const posts = [];
@@ -498,7 +755,7 @@ async function main() {
             : null,
         author_id: blueprint.authorId,
         groupId: blueprint.groupId ?? null,
-        createdAt: minutesAgo(400 - i * 12),
+        createdAt: minutesAgo((postBlueprints.length - i) * 12),
       },
     });
     posts.push(post);
@@ -548,6 +805,342 @@ async function main() {
         [
           "I start with components and props. State comes after they can render a list.",
           "That matches how I learned React too. State is easier once JSX feels normal.",
+        ],
+      ],
+    },
+    {
+      postIndex: 25,
+      threads: [
+        [
+          "This. A 7B model with good evals in our domain beats a giant one that hallucinates tickets.",
+          "Reliability is the feature. Hype does not page you at 2am.",
+        ],
+      ],
+    },
+    {
+      postIndex: 26,
+      threads: [
+        [
+          "I used AI to write a flexbox and still opened MDN. No shame.",
+          "Centering a div is the original unit test of the web.",
+        ],
+      ],
+    },
+    {
+      postIndex: 27,
+      threads: [
+        [
+          "Leaderboard model, production model, and the one legal will allow. Three different animals.",
+        ],
+      ],
+    },
+    {
+      postIndex: 28,
+      threads: [
+        [
+          "The 50% is where the craft still lives. Prompting is the new client call.",
+          "I felt this in my Figma layers.",
+        ],
+      ],
+    },
+    {
+      postIndex: 29,
+      threads: [
+        [
+          "Needed this reminder after posting into the void on a Tuesday.",
+        ],
+      ],
+    },
+    {
+      postIndex: 30,
+      threads: [
+        [
+          "Jobs first is brutally honest. The rest is branding.",
+        ],
+      ],
+    },
+    {
+      postIndex: 31,
+      threads: [
+        [
+          "Taste is the new compile error. You feel it before you can name it.",
+        ],
+      ],
+    },
+    {
+      postIndex: 32,
+      threads: [
+        [
+          "YAML is the real final boss. Models at least answer in English.",
+          "I will defend this take in Cloud & Pipelines.",
+        ],
+      ],
+    },
+    {
+      postIndex: 33,
+      threads: [
+        [
+          "The env var was in the README. The AI did not read the README. Neither did I, for three hours.",
+        ],
+      ],
+    },
+    {
+      postIndex: 34,
+      threads: [
+        [
+          "At least in 2017 the blog posts lasted a month. These drop before the tweet cools.",
+        ],
+      ],
+    },
+    {
+      postIndex: 35,
+      threads: [
+        [
+          "One post. One thought. I will not swipe through 27 screens again.",
+        ],
+      ],
+    },
+    {
+      postIndex: 36,
+      threads: [
+        [
+          "Trust but verify, except skip the trust until the tests pass.",
+        ],
+      ],
+    },
+    {
+      postIndex: 37,
+      threads: [
+        [
+          "Dead products do not keep this many people arguing. That is the tell.",
+        ],
+      ],
+    },
+    {
+      postIndex: 38,
+      threads: [
+        [
+          "If I need a legend, I already lost the intern.",
+        ],
+      ],
+    },
+    {
+      postIndex: 39,
+      threads: [
+        [
+          "Rule 2 is usually named Alex, or Friday deploys.",
+        ],
+      ],
+    },
+    {
+      postIndex: 40,
+      threads: [
+        [
+          "Bad UI is the low-hanging fruit. Please, AI, take it.",
+        ],
+      ],
+    },
+    {
+      postIndex: 41,
+      threads: [
+        [
+          "Faster drafts, same opinions. The bottleneck moved to the inbox.",
+        ],
+      ],
+    },
+    {
+      postIndex: 42,
+      threads: [
+        [
+          "I still sprinkle console.log like catnip. The framework can wait.",
+        ],
+      ],
+    },
+    {
+      postIndex: 43,
+      threads: [
+        [
+          "Support tickets do not care about parameter counts. They care about the right SKU.",
+        ],
+      ],
+    },
+    {
+      postIndex: 44,
+      threads: [
+        [
+          "This is the stack I will still want in two years. Boring ages well.",
+          "Put it on a sticker.",
+        ],
+      ],
+    },
+    {
+      postIndex: 45,
+      threads: [
+        [
+          "We estimated in story points and the AI estimated in vibes. Both were wrong.",
+        ],
+      ],
+    },
+    {
+      postIndex: 46,
+      threads: [
+        [
+          "47% write, 53% 'why is this optional chaining on a boolean'.",
+        ],
+      ],
+    },
+    {
+      postIndex: 47,
+      threads: [
+        [
+          "Review is the job now. Typing was the easy part and we did not know it.",
+        ],
+      ],
+    },
+    {
+      postIndex: 48,
+      threads: [
+        [
+          "I picked option 14 because it was slightly less beige. That is the new craft.",
+        ],
+      ],
+    },
+    {
+      postIndex: 49,
+      threads: [
+        [
+          "Knife fight is the kindest way I have heard 'the algorithm shrugged'.",
+        ],
+      ],
+    },
+    {
+      postIndex: 50,
+      threads: [
+        [
+          "Spaces. I will die on this hill and it still will not ship the feature.",
+        ],
+      ],
+    },
+    {
+      postIndex: 51,
+      threads: [
+        [
+          "Harsh and fair. Tools amplify whatever you already bring.",
+        ],
+      ],
+    },
+    {
+      postIndex: 52,
+      threads: [
+        [
+          "Use it, distrust it, ship anyway. That is the workflow.",
+        ],
+      ],
+    },
+    {
+      postIndex: 53,
+      threads: [
+        [
+          "Line 37 was a clever helper. Too clever. I miss boring code.",
+        ],
+      ],
+    },
+    {
+      postIndex: 54,
+      threads: [
+        [
+          "If I cannot explain it without the model, I should not merge it.",
+        ],
+      ],
+    },
+    {
+      postIndex: 55,
+      threads: [
+        [
+          "The complain-explain-procrastinate loop is my actual IDE.",
+        ],
+      ],
+    },
+    {
+      postIndex: 56,
+      threads: [
+        [
+          "I have heard this pitch four times this week. The X was always Slack.",
+        ],
+      ],
+    },
+    {
+      postIndex: 57,
+      threads: [
+        [
+          "36B hours is not a tool. That is a roommate.",
+        ],
+      ],
+    },
+    {
+      postIndex: 58,
+      threads: [
+        [
+          "Without it you understand the system. With it you ship before lunch. Need both.",
+        ],
+      ],
+    },
+    {
+      postIndex: 59,
+      threads: [
+        [
+          "It will `apply` with perfect confidence. That is the horror.",
+          "Terraform plus vibes is how we get surprise bills.",
+        ],
+      ],
+    },
+    {
+      postIndex: 60,
+      threads: [
+        [
+          "Infinite iteration is just 12 rounds of feedback wearing a hoodie.",
+        ],
+      ],
+    },
+    {
+      postIndex: 61,
+      threads: [
+        [
+          "Blank canvas was scary. Fifty mid options is a different kind of stuck.",
+        ],
+      ],
+    },
+    {
+      postIndex: 62,
+      threads: [
+        [
+          "Both are optimistic. I respect the energy, not the accuracy.",
+        ],
+      ],
+    },
+    {
+      postIndex: 63,
+      threads: [
+        [
+          "More commits is not more progress. Sometimes it is just more undo.",
+        ],
+      ],
+    },
+    {
+      postIndex: 64,
+      threads: [
+        [
+          "The monitoring-the-AI layer is the new on-call. Congrats to us.",
+          "Add 'explaining the AI to the client' and the stack is complete.",
+        ],
+      ],
+    },
+    {
+      postIndex: 65,
+      threads: [
+        [
+          "Nice room. Owner tools are easier to demo when you actually own the group.",
+          "That is the idea. If I break something, it is my group.",
         ],
       ],
     },
@@ -1165,6 +1758,44 @@ async function main() {
         content:
           "Deal. Guest, you are cleared to ask 'why is this YAML'. We all asked that once.",
         createdAt: minutesAgo(41),
+      },
+    ],
+  });
+
+  const guestChat = await prisma.groupChat.create({
+    data: {
+      groupId: guestGroup.id,
+      name: "Guest lounge",
+      description: "Chat for Guest's Group. The guest interviewer owns this one.",
+    },
+  });
+
+  await prisma.message.createMany({
+    data: [
+      {
+        senderId: INTERVIEWER_ID,
+        group_chat_id: guestChat.id,
+        content:
+          "This is my group. I am the owner here, so I can try settings without asking Alex first.",
+        createdAt: minutesAgo(30),
+      },
+      {
+        senderId: byUsername.alex_dev.id,
+        group_chat_id: guestChat.id,
+        content: "Good sandbox. If you can create a post here, owner tools are working.",
+        createdAt: minutesAgo(28),
+      },
+      {
+        senderId: byUsername.elena_design.id,
+        group_chat_id: guestChat.id,
+        content: "Banner and avatar look like a real group now. Welcome, boss.",
+        createdAt: minutesAgo(26),
+      },
+      {
+        senderId: byUsername.coder_cat.id,
+        group_chat_id: guestChat.id,
+        content: "I will not sit on the keyboard. Probably.",
+        createdAt: minutesAgo(24),
       },
     ],
   });

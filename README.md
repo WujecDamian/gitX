@@ -62,7 +62,7 @@ You will need Node.js, PostgreSQL, and Redis installed.
 1. Clone the project and install the dependencies:
 
 	```bash
-	git clone <your-repository-url>
+	git clone git@github.com:WujecDamian/gitX.git
 	cd gitX
 	npm install
 	```
@@ -107,9 +107,10 @@ You will need Node.js, PostgreSQL, and Redis installed.
 
 ## What I Learned / Challenges I Faced
 
-One challenge has been getting sessions and real-time chat to work together. The backend uses Redis to keep login sessions, while Socket.IO needs the correct server and CORS setup. I have not finished this part yet, so chat is still a work in progress. I am currently learning how to connect the Socket.IO server to the frontend correctly without breaking the normal API requests.
+Biggest challenge was getting sessions to work. The backend uses Redis to keep login sessions. Also of course designing database was hard to keep all relations working, thanks to Prisma ORM it was little bit easier because I haven't had to write raw SQL.
+There was a lot of routers and controllers so also trying to connect frontend to backend was problematic, even though it was very repetitive process it was hard to remember everything just because of scale.
 
-I also learned more about designing Prisma relations for likes, comments, groups, and messages. Some of the relations took a few migrations to get right.
+I am currently learning how to connect the Socket.IO server to the frontend correctly without breaking the normal API requests.
 
 ## Future Improvements
 
@@ -117,9 +118,9 @@ I also learned more about designing Prisma relations for likes, comments, groups
 - Add Recruiter page where he can see and pick from prospects
 - Make it more tailored for linkedin like site (now it's simple X copy)
 - Add image uploading instead of only image URLs
-- Finish real-time direct messages and group chats
+- Finish real-time direct messages and group chats (socket.io)
 - Add notifications for follows, likes, and messages
 - Add tests
-- Improve the mobile layout
+- Fix styling for light mode
 
 Thanks for checking out GitX. This is a learning project, and I am still improving it as I learn more.

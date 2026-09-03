@@ -109,6 +109,7 @@ You will need Node.js, PostgreSQL, and Redis installed.
 
 Biggest challenge was getting sessions to work. The backend uses Redis to keep login sessions. Also of course designing database was hard to keep all relations working, thanks to Prisma ORM it was little bit easier because I haven't had to write raw SQL.
 There was a lot of routers and controllers so also trying to connect frontend to backend was problematic, even though it was very repetitive process it was hard to remember everything just because of scale.
+Also I had to implement debounce for more optimized searching, but I used mainly AI to do this so it would be good to learn more about this, because it's very important feature for bigger scale websites.
 
 I am currently learning how to connect the Socket.IO server to the frontend correctly without breaking the normal API requests.
 

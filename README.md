@@ -8,11 +8,18 @@ GitX is a small social app for developers. Users can share posts, follow other u
 
 ## Screenshots
 
-Screenshots will be added here soon.
+![Home feed](Frontend/public/screenshots/home.jpg)
 
-![Home feed screenshot](https://placehold.co/1000x600?text=Home+feed+screenshot)
+![Explore](Frontend/public/screenshots/explore.jpg)
 
-![Group chat screenshot](https://placehold.co/1000x600?text=Group+chat+screenshot)
+![Profile](Frontend/public/screenshots/profile.jpg)
+
+![Edit profile](Frontend/public/screenshots/profile-edit.jpg)
+
+![Group post](Frontend/public/screenshots/group-post.jpg)
+
+![Group chat](Frontend/public/screenshots/group-chat.jpg)
+
 
 ## Tech Stack
 

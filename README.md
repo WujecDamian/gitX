@@ -1,6 +1,6 @@
 # GitX
 
-GitX is a small social app for developers. Users can share posts, follow other users, and join groups. Real-time chat is still being worked on.
+GitX bridges the gap for developers and job seekers moving their digital identity between platforms. Instead of forcing recruiters and engineers to hop across disconnected sites, GitX consolidates your full professional footprint into a single, unified workspace.
 
 ## Live Demo
 

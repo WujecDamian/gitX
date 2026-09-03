@@ -2,6 +2,9 @@
 
 GitX bridges the gap for developers and job seekers moving their digital identity between platforms. Instead of forcing recruiters and engineers to hop across disconnected sites, GitX consolidates your full professional footprint into a single, unified workspace.
 
+#####
+It's type of app that could be written by AI in minutes, but I wanted to actually learn so I used AI as little as possible (mainly for asking some trivial questions about prisma etc.)
+
 ## Live Demo
 
 [View the live demo](https://gitx-wujec.netlify.app)

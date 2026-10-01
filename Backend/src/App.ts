@@ -59,7 +59,7 @@ const startServer = async () => {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  initSocket(httpServer);
+  initSocket(httpServer); //for websocket but not used now
 
   app.use("/api/auth", authRouter);
   app.use("/api/user", isAuthenticated, userRouter);

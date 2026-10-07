@@ -22,7 +22,7 @@ const ProtectedRoute = () => {
               cy="25"
               r="20"
               fill="none"
-              stroke-width="4"
+              strokeWidth="4"
             ></circle>
             <circle
               className={styles.path}
@@ -30,7 +30,7 @@ const ProtectedRoute = () => {
               cy="25"
               r="20"
               fill="none"
-              stroke-width="4"
+              strokeWidth="4"
             ></circle>
           </svg>
         </div>

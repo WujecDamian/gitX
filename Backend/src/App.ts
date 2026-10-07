@@ -53,6 +53,13 @@ const startServer = async () => {
       credentials: true,
     }),
   );
+  const isProduction = !!process.env.REDIS_URL;
+
+  if (isProduction) {
+    app.set("trust proxy", 1);
+  }
+
+  app.use(sessionMiddleware);
 
   app.use(sessionMiddleware);
 

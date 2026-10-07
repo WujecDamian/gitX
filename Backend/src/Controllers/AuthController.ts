@@ -6,12 +6,8 @@ import { prisma } from "../lib/prisma";
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5172";
 
 const getUser = (req: Request, res: Response) => {
-  /* if (!req.isAuthenticated() || !req.user) {
+  if (!req.isAuthenticated() || !req.user) {
     return res.status(401).json({ message: "Unauthorized" });
-  }
-    */
-  if (!req.user) {
-    return res.status(401).json({ message: "No user" });
   }
 
   res.json({ user: req.user });

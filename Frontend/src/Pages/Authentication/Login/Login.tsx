@@ -4,11 +4,11 @@ import { Button } from "../../../Components/UI/Button/Button";
 
 const Login = () => {
   const handleLogin = () => {
-    window.location.href = `${(import.meta as any).env?.VITE_API_BASE_URL}/api/auth/login/github`;
+    window.location.href = `${API_URL}/api/auth/login/github`;
   };
 
   const handleGuestLogin = () => {
-    window.location.href = `${(import.meta as any).env?.VITE_API_BASE_URL}/api/auth/login/guest`;
+    window.location.href = `${API_URL}/api/auth/login/guest`;
   };
 
   return (

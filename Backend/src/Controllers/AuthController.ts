@@ -3,7 +3,7 @@ import passport from "passport";
 import "../Authentication/passport-config";
 import { prisma } from "../lib/prisma";
 
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5172";
 
 const getUser = (req: Request, res: Response) => {
   if (!req.isAuthenticated() || !req.user) {
@@ -14,7 +14,7 @@ const getUser = (req: Request, res: Response) => {
 };
 
 const loginError = (req: Request, res: Response) => {
-  res.json({ erroe: "Unknown Error" });
+  res.json({ error: "Unknown Error" });
 };
 
 const guestLogin = async (req: Request, res: Response, next: NextFunction) => {
@@ -32,6 +32,7 @@ const guestLogin = async (req: Request, res: Response, next: NextFunction) => {
         return next(error);
       }
       // Redirect to the frontend workspace just like a successful GitHub login
+      console.log(FRONTEND_URL);
       return res.redirect(`${FRONTEND_URL}/`);
     });
   } catch (error) {
@@ -40,10 +41,13 @@ const guestLogin = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
-  passport.authenticate("github", { scope: ["user:email"] })(req, res, next);
+  passport.authenticate("github", { scope: ["user:email"] })(req, res, next); // <- this needed to actually call the function, nothing happens when there's no (req, res, next). mogloby byc bez jesli byloby wywolane bezposrednio w definicji w routerze
+  // moglbym po prostu dac w routerze passport.authenticate("github", { scope: ["user:email"] }) i by dzialalo.
+
+  // for more info go to github strategy in passport-config.ts (this uses this strategy)
 };
 
-const handleSuccess = (req: Request, res: Response) => {
+const redirectOnSuccess = (req: Request, res: Response) => {
   //res.json({ message: "Success", user: req.user });
   res.redirect(`${FRONTEND_URL}/`);
 };
@@ -87,7 +91,7 @@ export {
   guestLogin,
   loginError,
   authenticateUser,
-  handleSuccess,
+  redirectOnSuccess,
   callbackAuthenticate,
   logOutUser,
 };

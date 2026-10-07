@@ -13,7 +13,7 @@ router.get("/login/guest", authController.guestLogin);
 router.get(
   "/github/callback",
   authController.callbackAuthenticate,
-  authController.handleSuccess,
+  authController.redirectOnSuccess,
 );
 //important! post here because site crawlers might hit logout route and logout user randomly
 router.post("/logout", isAuthenticated, authController.logOutUser);

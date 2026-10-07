@@ -8,12 +8,8 @@ import { type User as prismaUser } from "../generated/prisma/client";
 passport.serializeUser(function (user, done) {
   //for performance & security
   //store only userId
-  console.log("SERIALIZE USER !!!! ", user);
-
   const localUser = user as prismaUser;
-  console.log("SERIALIZE USER LOCALUSER !!!! ", localUser);
-
-  done(null, localUser.id);
+  done(null, localUser.id); // saves id to session cookie
 });
 
 //on every request browser sends session cookie to server
@@ -51,10 +47,6 @@ passport.use(
       profile: Profile,
       done: (error: any, user?: any) => void,
     ) {
-      console.log(
-        "THIS IS PROFILE THIS IS PROFILE CONSOLE LOG !!!!: ",
-        profile,
-      );
       //save user in database!!! (on login) (upsert = update or create)
       const user = await prisma.user.upsert({
         where: { github_id: profile.id },
@@ -75,7 +67,7 @@ passport.use(
         },
       });
       // Passes the profile metadata cleanly along to your callback router
-      return done(null, user);
+      return done(null, user); // calls passport.serializeUser
     },
   ),
 );

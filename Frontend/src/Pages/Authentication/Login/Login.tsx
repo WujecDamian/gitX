@@ -1,14 +1,13 @@
 import styles from "./Login.module.css";
-import { API_URL } from "../../../config";
 import { Button } from "../../../Components/UI/Button/Button";
 
 const Login = () => {
   const handleLogin = () => {
-    window.location.href = `${API_URL}/api/auth/login/github`;
+    window.location.href = `${process.env.FRONTEND_URL}/api/auth/login/github`;
   };
 
   const handleGuestLogin = () => {
-    window.location.href = `${API_URL}/api/auth/login/guest`;
+    window.location.href = `${process.env.FRONTEND_URL}/api/auth/login/guest`;
   };
 
   return (

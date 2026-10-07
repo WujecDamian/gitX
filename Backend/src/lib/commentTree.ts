@@ -5,23 +5,21 @@ type CommentWithEngagement = {
   commentBookmarks: { id: string }[];
 };
 
+export type NestedComment = CommentWithEngagement & {
+  isLikedByUser: boolean;
+  isBookmarkedByUser: boolean;
+  sub_comments: NestedComment[];
+};
+
 export const commentEngagementInclude = (userId: string) => ({
   author: true,
   commentLikes: {
-    where: {
-      user_id: userId,
-    },
-    select: {
-      id: true,
-    },
+    where: { user_id: userId },
+    select: { id: true },
   },
   commentBookmarks: {
-    where: {
-      user_id: userId,
-    },
-    select: {
-      id: true,
-    },
+    where: { user_id: userId },
+    select: { id: true },
   },
   _count: {
     select: {
@@ -31,16 +29,10 @@ export const commentEngagementInclude = (userId: string) => ({
   },
 });
 
-export const nestComments = <T extends CommentWithEngagement>(
-  comments: T[],
+export const nestComments = (
+  comments: CommentWithEngagement[],
   parentId: string | null,
-): Array<
-  T & {
-    isLikedByUser: boolean;
-    isBookmarkedByUser: boolean;
-    sub_comments: ReturnType<typeof nestComments<T>>;
-  }
-> => {
+): NestedComment[] => {
   return comments
     .filter((comment) => comment.sub_comment_id === parentId)
     .map((comment) => {
@@ -53,16 +45,16 @@ export const nestComments = <T extends CommentWithEngagement>(
     });
 };
 
-export const findCommentInTree = <T extends { id: string; sub_comments?: T[] }>(
-  comments: T[],
+export const findCommentInTree = (
+  comments: NestedComment[],
   commentId: string,
-): T | null => {
+): NestedComment | null => {
   for (const comment of comments) {
     if (comment.id === commentId) {
       return comment;
     }
 
-    const nested = findCommentInTree(comment.sub_comments ?? [], commentId);
+    const nested = findCommentInTree(comment.sub_comments, commentId);
     if (nested) {
       return nested;
     }

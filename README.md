@@ -6,7 +6,7 @@ _It's type of app that could be written by AI in minutes, but I wanted to actual
 
 ## Live Demo
 
-[View the live demo](https://gitx-wujec.netlify.app)
+[View the live demo](https://gitx.wujecdamian.dev/)
 
 ## Screenshots
 

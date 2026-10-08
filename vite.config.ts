@@ -6,12 +6,13 @@ export default defineConfig({
   plugins: [
     react({
       // Explicitly tell the React plugin to handle .tsx and .jsx files inside Frontend
-      include: /Frontend\/.*\.(tsx|jsx)$/,
+      include: /Frontend\/.*\.(mdx|js|jsx|ts|tsx)$/,
     }),
   ],
   root: "Frontend",
   build: {
     outDir: "dist",
     emptyOutDir: true,
+    minify: "esbuild",
   },
 });

@@ -3,7 +3,7 @@ import { RedisStore } from "connect-redis";
 import { createClient } from "redis";
 
 const isProduction = !!process.env.REDIS_URL;
-// 1. Dynamic Redis connection: Use Upstash URL in cloud, default local configuration locally
+
 const redisClient = process.env.REDIS_URL
   ? createClient({ url: process.env.REDIS_URL })
   : createClient();
@@ -27,6 +27,7 @@ export const sessionMiddleware = session({
     maxAge: 1000 * 60 * 60 * 24 * 7, // Keep sessions active for week
     httpOnly: true, // Block access to cookies from frontend scripts
     secure: isProduction,
-    sameSite: isProduction ? "none" : "lax", // Crucial: Allow cookies to be shared between different domains
+    sameSite: "lax", // Crucial: Allow cookies to be shared between different domains
+    domain: isProduction ? ".wujecdamian.dev" : undefined,
   },
 });

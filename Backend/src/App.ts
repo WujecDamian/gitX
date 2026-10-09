@@ -61,8 +61,6 @@ const startServer = async () => {
 
   app.use(sessionMiddleware);
 
-  app.use(sessionMiddleware);
-
   app.use(passport.initialize());
   app.use(passport.session());
 

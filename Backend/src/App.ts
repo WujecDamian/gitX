@@ -53,7 +53,7 @@ const startServer = async () => {
       credentials: true,
     }),
   );
-  const isProduction = !!process.env.REDIS_URL;
+  const isProduction = process.env.NODE_ENV === "production";
 
   if (isProduction) {
     app.set("trust proxy", 1);

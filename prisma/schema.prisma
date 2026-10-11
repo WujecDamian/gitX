@@ -22,28 +22,29 @@ enum InviteStatus {
 //When I use {onDelete: Cascade}? On child elements, it's saying 'If parent gets deleted, delete its children also (sad :c)'
 
 model User {
-  id                  String        @id @default(uuid())
-  github_id           String        @unique
-  email               String?       @unique
-  username            String        @unique
+  id                  String            @id @default(uuid())
+  github_id           String            @unique
+  email               String?           @unique
+  username            String            @unique
   display_name        String
   github_profile_url  String?
   profile_picture_url String?
   banner_picture_url  String?
   tags                String[]
   socials             String[]
+  status              String?
   bio                 String?
-  createdAt           DateTime      @default(now())
+  createdAt           DateTime          @default(now())
   posts               Post[]
-  followers           Follows[]     @relation("UserFollowing")
-  following           Follows[]     @relation("UserFollowers")
+  followers           Follows[]         @relation("UserFollowing")
+  following           Follows[]         @relation("UserFollowers")
   post_likes          PostLike[]
   comment_likes       CommentLike[]
   comment_bookmarks   CommentBookmark[]
   bookmarks           Bookmark[]
   groups              Group[]
-  group_inviting      GroupInvite[] @relation("SentInvites")
-  group_invited       GroupInvite[] @relation("ReceivedInvites")
+  group_inviting      GroupInvite[]     @relation("SentInvites")
+  group_invited       GroupInvite[]     @relation("ReceivedInvites")
   comments            Comment[]
   messages            Message[]
 }
@@ -74,16 +75,16 @@ model Post {
 }
 
 model Comment {
-  id           String        @id @default(uuid())
-  content      String
-  media_url    String?
-  author       User          @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  author_id    String
-  post         Post          @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  post_id      String
-  createdAt    DateTime      @default(now())
-  commentLikes      CommentLike[]
-  commentBookmarks  CommentBookmark[]
+  id               String            @id @default(uuid())
+  content          String
+  media_url        String?
+  author           User              @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author_id        String
+  post             Post              @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id          String
+  createdAt        DateTime          @default(now())
+  commentLikes     CommentLike[]
+  commentBookmarks CommentBookmark[]
 
   parent_comment Comment?  @relation("comment_children", fields: [sub_comment_id], references: [id])
   sub_comments   Comment[] @relation("comment_children")
@@ -191,3 +192,5 @@ model Message {
   group_chat    GroupChat? @relation(fields: [group_chat_id], references: [id], onDelete: Cascade)
   group_chat_id String?
 }
+
+//Hiring/Recruiter

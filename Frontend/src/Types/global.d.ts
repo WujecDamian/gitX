@@ -21,6 +21,7 @@ declare global {
     profile_picture_url: string;
     socials?: string[];
     tags?: string[];
+    status: string;
     username: string;
     posts: Post;
     follower: User;

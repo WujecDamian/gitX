@@ -195,13 +195,88 @@ model Message {
 
 //Hiring/Recruiter
 model CandidateProfile {
-  id        String   @id @default(uuid())
-  name      String
-  surname   String
-  email     String
-  phone     String
-  bio       String
-  tags      String[]
-  socials   String[]
-  photo_url String
+  id               String          @id @default(uuid())
+  name             String
+  surname          String
+  email            String
+  phone            String
+  bio              String
+  expected_salary  Int
+  wants_remote     Boolean         @default(false)
+  wants_onsite     Boolean         @default(false)
+  wants_hybrid     Boolean         @default(false)
+  wants_part_time  Boolean         @default(false)
+  wants_full_time  Boolean         @default(false)
+  wants_contract   Boolean         @default(false)
+  wants_internship Boolean         @default(false)
+  wants_freelance  Boolean         @default(false)
+  tags             String[]
+  socials          String[]
+  photo_url        String          @default("https://static.vecteezy.com/system/resources/previews/026/019/617/non_2x/group-profile-avatar-icon-default-social-media-forum-profile-photo-vector.jpg")
+  projects         Project[]
+  experience       Experience[]
+  education        Education[]
+  skills           Skill[]
+  certifications   Certification[]
+  languages        Language[]
+}
+
+//sub candidate models
+model Project {
+  id                  String            @id @default(uuid())
+  name                String
+  description         String
+  live_url            String
+  github_url          String
+  project_picture_url String            @default("https://static.vecteezy.com/system/resources/previews/026/019/617/non_2x/group-profile-avatar-icon-default-social-media-forum-profile-photo-vector.jpg")
+  tags                String[]
+  candidateProfile    CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
+  candidateProfileId  String?
+}
+
+model Experience {
+  id                 String            @id @default(uuid())
+  company            String
+  position           String
+  description        String
+  start_date         DateTime
+  end_date           DateTime
+  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
+  candidateProfileId String?
+}
+
+model Education {
+  id                 String            @id @default(uuid())
+  school             String
+  degree             String
+  field_of_study     String
+  start_date         DateTime
+  end_date           DateTime
+  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
+  candidateProfileId String?
+}
+
+model Skill {
+  id                 String            @id @default(uuid())
+  name               String
+  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
+  candidateProfileId String?
+}
+
+model Certification {
+  id                 String            @id @default(uuid())
+  name               String
+  description        String
+  start_date         DateTime
+  end_date           DateTime
+  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
+  candidateProfileId String?
+}
+
+model Language {
+  id                 String            @id @default(uuid())
+  name               String
+  level              String
+  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
+  candidateProfileId String?
 }

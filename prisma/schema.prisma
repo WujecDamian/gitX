@@ -194,3 +194,14 @@ model Message {
 }
 
 //Hiring/Recruiter
+model CandidateProfile {
+  id        String   @id @default(uuid())
+  name      String
+  surname   String
+  email     String
+  phone     String
+  bio       String
+  tags      String[]
+  socials   String[]
+  photo_url String
+}

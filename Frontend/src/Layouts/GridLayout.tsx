@@ -90,7 +90,8 @@ function GridLayout() {
   let isOnPageWithSmallNav = false;
   if (
     location.pathname.startsWith("/chat") ||
-    location.pathname.startsWith("/groups")
+    location.pathname.startsWith("/groups") ||
+    location.pathname.startsWith("/jobs")
   ) {
     isOnPageWithSmallNav = true;
   }

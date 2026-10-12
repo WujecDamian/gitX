@@ -111,6 +111,62 @@ declare global {
     };
     members?: { id: string }[];
   };
+  type Project = {
+    id: string;
+    name: string;
+    description: string;
+    url: string;
+    tags: string[];
+  };
+  type Experience = {
+    id: string;
+    company: string;
+    position: string;
+    description: string;
+    start_date: string;
+    end_date: string;
+  };
+  type Education = {
+    id: string;
+    school: string;
+    degree: string;
+    field_of_study: string;
+    start_date: string;
+    end_date: string;
+  };
+  type Skill = {
+    id: string;
+    name: string;
+    description: string;
+  };
+  type Certification = {
+    id: string;
+    name: string;
+    description: string;
+    start_date: string;
+    end_date: string;
+  };
+  type Language = {
+    id: string;
+    name: string;
+    level: string;
+  };
+  type CandidateProfile = {
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+    bio: string;
+    tags: string[];
+    socials: string[];
+    photo_url: string;
+    projects: Project[];
+    experience: Experience[];
+    education: Education[];
+    skills: Skill[];
+    certifications: Certification[];
+    languages: Language[];
+  };
 }
 
 export {};

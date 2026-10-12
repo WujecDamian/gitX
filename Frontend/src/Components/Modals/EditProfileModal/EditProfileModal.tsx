@@ -190,7 +190,7 @@ export const EditProfileModal = ({
             value={status}
             onChange={(event) => setStatus(event.target.value)}
           >
-            <option value="Not_selected"></option>
+            <option value=""></option>
             <option value="Hiring">Currently hiring!</option>
             <option value="Looking for a job">Looking for a job!</option>
           </select>

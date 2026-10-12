@@ -55,6 +55,12 @@ export default function SmallNavbar({ onPostClick }: NavbarProps) {
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
         </Link>
+        <Link to="/jobs" className={styles.nav__link} aria-label="Jobs">
+          <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            <rect x="3" y="7" width="18" height="13" rx="2" />
+          </svg>
+        </Link>
         <Link to="/chat" className={styles.nav__link} aria-label="Chat">
           <svg
             xmlns="http://www.w3.org/2000/svg"

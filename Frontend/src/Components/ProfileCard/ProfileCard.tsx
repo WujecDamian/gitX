@@ -134,7 +134,7 @@ export default function ProfileCard({
       <section className={styles.profile__details}>
         <div>
           <span className={styles.display__name}>{owner.display_name}</span>{" "}
-          <span className={styles.status}>( {owner.status} )</span>
+          {owner.status && <span className={styles.status}>( {owner.status} )</span>}
         </div>
         <span className={styles.username}>@{owner.username}</span>
         <span className={styles.bio}>{owner.bio}</span>

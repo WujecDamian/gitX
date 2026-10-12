@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import { API_URL } from "../../../config";
 import { ErrorMessage } from "../../../Components/UI/ErrorMessage/ErrorMessage";
 
-export const CandidateSidebar = (userId: string) => {
+type CandidateSidebarProps = {
+  userId: string | undefined;
+}
+
+export const CandidateSidebar = ({ userId }: CandidateSidebarProps) => {
 
   const [candidate, setCandidate] = useState<CandidateProfile | null>(null);
   const [error, setError] = useState<string | null>(null);

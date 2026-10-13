@@ -157,7 +157,16 @@ declare global {
     email: string;
     phone: string;
     bio: string;
-    tags: string[];
+    expected_salary: number;
+    wants_remote: boolean;
+    wants_onsite: boolean;
+    wants_hybrid: boolean;
+    wants_part_time: boolean;
+    wants_full_time: boolean;
+    wants_employment_contract: boolean;
+    wants_mandate_contract: boolean;
+    wants_b2b_contract: boolean;
+    role: string;
     socials: string[];
     photo_url: string;
     projects: Project[];

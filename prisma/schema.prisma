@@ -22,10 +22,10 @@ enum InviteStatus {
 //When I use {onDelete: Cascade}? On child elements, it's saying 'If parent gets deleted, delete its children also (sad :c)'
 
 model User {
-  id                  String            @id @default(uuid())
-  github_id           String            @unique
-  email               String?           @unique
-  username            String            @unique
+  id                  String             @id @default(uuid())
+  github_id           String             @unique
+  email               String?            @unique
+  username            String             @unique
   display_name        String
   github_profile_url  String?
   profile_picture_url String?
@@ -34,19 +34,20 @@ model User {
   socials             String[]
   status              String?
   bio                 String?
-  createdAt           DateTime          @default(now())
+  createdAt           DateTime           @default(now())
   posts               Post[]
-  followers           Follows[]         @relation("UserFollowing")
-  following           Follows[]         @relation("UserFollowers")
+  followers           Follows[]          @relation("UserFollowing")
+  following           Follows[]          @relation("UserFollowers")
   post_likes          PostLike[]
   comment_likes       CommentLike[]
   comment_bookmarks   CommentBookmark[]
   bookmarks           Bookmark[]
   groups              Group[]
-  group_inviting      GroupInvite[]     @relation("SentInvites")
-  group_invited       GroupInvite[]     @relation("ReceivedInvites")
+  group_inviting      GroupInvite[]      @relation("SentInvites")
+  group_invited       GroupInvite[]      @relation("ReceivedInvites")
   comments            Comment[]
   messages            Message[]
+  candidateProfiles   CandidateProfile[]
 }
 
 model Follows {
@@ -195,30 +196,32 @@ model Message {
 
 //Hiring/Recruiter
 model CandidateProfile {
-  id               String          @id @default(uuid())
-  name             String
-  surname          String
-  email            String
-  phone            String
-  bio              String
-  expected_salary  Int
-  wants_remote     Boolean         @default(false)
-  wants_onsite     Boolean         @default(false)
-  wants_hybrid     Boolean         @default(false)
-  wants_part_time  Boolean         @default(false)
-  wants_full_time  Boolean         @default(false)
-  wants_contract   Boolean         @default(false)
-  wants_internship Boolean         @default(false)
-  wants_freelance  Boolean         @default(false)
-  tags             String[]
-  socials          String[]
-  photo_url        String          @default("https://static.vecteezy.com/system/resources/previews/026/019/617/non_2x/group-profile-avatar-icon-default-social-media-forum-profile-photo-vector.jpg")
-  projects         Project[]
-  experience       Experience[]
-  education        Education[]
-  skills           Skill[]
-  certifications   Certification[]
-  languages        Language[]
+  id                        String          @id @default(uuid())
+  name                      String
+  surname                   String
+  email                     String
+  phone                     String
+  bio                       String
+  expected_salary           Int
+  wants_remote              Boolean         @default(true)
+  wants_onsite              Boolean         @default(false)
+  wants_hybrid              Boolean         @default(false)
+  wants_part_time           Boolean         @default(false)
+  wants_full_time           Boolean         @default(true)
+  wants_employment_contract Boolean         @default(true) //umowa o prace
+  wants_mandate_contract    Boolean         @default(false) //zleceniowka
+  wants_b2b_contract        Boolean         @default(false) //b2b
+  role                      String
+  socials                   String[]
+  photo_url                 String          @default("https://static.vecteezy.com/system/resources/previews/026/019/617/non_2x/group-profile-avatar-icon-default-social-media-forum-profile-photo-vector.jpg")
+  projects                  Project[]
+  experience                Experience[]
+  education                 Education[]
+  skills                    Skill[]
+  certifications            Certification[]
+  languages                 Language[]
+  user                      User?           @relation(fields: [user_id], references: [id])
+  user_id                   String?
 }
 
 //sub candidate models

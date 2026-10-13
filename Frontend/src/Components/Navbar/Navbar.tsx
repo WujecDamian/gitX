@@ -58,7 +58,7 @@ export default function Navbar({ onPostClick }: NavbarProps) {
           <span className={styles.navbar__label}>Explore</span>
         </Link>
         <Link to="/jobs" className={styles.nav__link} aria-label="Jobs">
-          <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
             <rect x="3" y="7" width="18" height="13" rx="2" />
           </svg>

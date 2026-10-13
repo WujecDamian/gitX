@@ -10,9 +10,6 @@ const onlyCatalogSkills = (skills: string[]) =>
   skills.filter((skill) => catalogSkills.includes(skill));
 
 async function main() {
-  console.log("Starting database seeding...");
-
-  console.log("Cleaning old data...");
   await prisma.message.deleteMany();
   await prisma.groupChat.deleteMany();
   await prisma.chat.deleteMany();
@@ -246,8 +243,6 @@ async function main() {
     },
   ];
 
-  console.log("Creating the guest interviewer and demo users...");
-
   const interviewer = await prisma.user.create({
     data: {
       id: INTERVIEWER_ID,
@@ -301,7 +296,6 @@ async function main() {
     communityUsers.map((user) => [user.username, user]),
   );
 
-  console.log("Creating follow graph...");
   for (const follower of users) {
     for (const following of users) {
       if (follower.id === following.id) {
@@ -318,7 +312,6 @@ async function main() {
     }
   }
 
-  console.log("Creating groups that include the guest interviewer...");
   const productionSquad = await prisma.group.create({
     data: {
       group_name: "The Production Breaking Squad",
@@ -388,7 +381,6 @@ async function main() {
     },
   });
 
-  console.log("Creating realistic posts...");
   type SeedPost = {
     content: string;
     authorId: string;
@@ -721,8 +713,7 @@ async function main() {
     },
     {
       authorId: byUsername.coder_cat.id,
-      content:
-        "console.log 🤝 AI\nboth telling me things I don’t fully trust",
+      content: "console.log 🤝 AI\nboth telling me things I don’t fully trust",
     },
     {
       authorId: byUsername.marcus_tech.id,
@@ -846,25 +837,17 @@ async function main() {
     {
       postIndex: 29,
       threads: [
-        [
-          "Needed this reminder after posting into the void on a Tuesday.",
-        ],
+        ["Needed this reminder after posting into the void on a Tuesday."],
       ],
     },
     {
       postIndex: 30,
-      threads: [
-        [
-          "Jobs first is brutally honest. The rest is branding.",
-        ],
-      ],
+      threads: [["Jobs first is brutally honest. The rest is branding."]],
     },
     {
       postIndex: 31,
       threads: [
-        [
-          "Taste is the new compile error. You feel it before you can name it.",
-        ],
+        ["Taste is the new compile error. You feel it before you can name it."],
       ],
     },
     {
@@ -895,17 +878,13 @@ async function main() {
     {
       postIndex: 35,
       threads: [
-        [
-          "One post. One thought. I will not swipe through 27 screens again.",
-        ],
+        ["One post. One thought. I will not swipe through 27 screens again."],
       ],
     },
     {
       postIndex: 36,
       threads: [
-        [
-          "Trust but verify, except skip the trust until the tests pass.",
-        ],
+        ["Trust but verify, except skip the trust until the tests pass."],
       ],
     },
     {
@@ -918,42 +897,26 @@ async function main() {
     },
     {
       postIndex: 38,
-      threads: [
-        [
-          "If I need a legend, I already lost the intern.",
-        ],
-      ],
+      threads: [["If I need a legend, I already lost the intern."]],
     },
     {
       postIndex: 39,
-      threads: [
-        [
-          "Rule 2 is usually named Alex, or Friday deploys.",
-        ],
-      ],
+      threads: [["Rule 2 is usually named Alex, or Friday deploys."]],
     },
     {
       postIndex: 40,
-      threads: [
-        [
-          "Bad UI is the low-hanging fruit. Please, AI, take it.",
-        ],
-      ],
+      threads: [["Bad UI is the low-hanging fruit. Please, AI, take it."]],
     },
     {
       postIndex: 41,
       threads: [
-        [
-          "Faster drafts, same opinions. The bottleneck moved to the inbox.",
-        ],
+        ["Faster drafts, same opinions. The bottleneck moved to the inbox."],
       ],
     },
     {
       postIndex: 42,
       threads: [
-        [
-          "I still sprinkle console.log like catnip. The framework can wait.",
-        ],
+        ["I still sprinkle console.log like catnip. The framework can wait."],
       ],
     },
     {
@@ -984,9 +947,7 @@ async function main() {
     {
       postIndex: 46,
       threads: [
-        [
-          "47% write, 53% 'why is this optional chaining on a boolean'.",
-        ],
+        ["47% write, 53% 'why is this optional chaining on a boolean'."],
       ],
     },
     {
@@ -1023,43 +984,27 @@ async function main() {
     },
     {
       postIndex: 51,
-      threads: [
-        [
-          "Harsh and fair. Tools amplify whatever you already bring.",
-        ],
-      ],
+      threads: [["Harsh and fair. Tools amplify whatever you already bring."]],
     },
     {
       postIndex: 52,
-      threads: [
-        [
-          "Use it, distrust it, ship anyway. That is the workflow.",
-        ],
-      ],
+      threads: [["Use it, distrust it, ship anyway. That is the workflow."]],
     },
     {
       postIndex: 53,
       threads: [
-        [
-          "Line 37 was a clever helper. Too clever. I miss boring code.",
-        ],
+        ["Line 37 was a clever helper. Too clever. I miss boring code."],
       ],
     },
     {
       postIndex: 54,
       threads: [
-        [
-          "If I cannot explain it without the model, I should not merge it.",
-        ],
+        ["If I cannot explain it without the model, I should not merge it."],
       ],
     },
     {
       postIndex: 55,
-      threads: [
-        [
-          "The complain-explain-procrastinate loop is my actual IDE.",
-        ],
-      ],
+      threads: [["The complain-explain-procrastinate loop is my actual IDE."]],
     },
     {
       postIndex: 56,
@@ -1071,11 +1016,7 @@ async function main() {
     },
     {
       postIndex: 57,
-      threads: [
-        [
-          "36B hours is not a tool. That is a roommate.",
-        ],
-      ],
+      threads: [["36B hours is not a tool. That is a roommate."]],
     },
     {
       postIndex: 58,
@@ -1097,9 +1038,7 @@ async function main() {
     {
       postIndex: 60,
       threads: [
-        [
-          "Infinite iteration is just 12 rounds of feedback wearing a hoodie.",
-        ],
+        ["Infinite iteration is just 12 rounds of feedback wearing a hoodie."],
       ],
     },
     {
@@ -1113,17 +1052,13 @@ async function main() {
     {
       postIndex: 62,
       threads: [
-        [
-          "Both are optimistic. I respect the energy, not the accuracy.",
-        ],
+        ["Both are optimistic. I respect the energy, not the accuracy."],
       ],
     },
     {
       postIndex: 63,
       threads: [
-        [
-          "More commits is not more progress. Sometimes it is just more undo.",
-        ],
+        ["More commits is not more progress. Sometimes it is just more undo."],
       ],
     },
     {
@@ -1146,7 +1081,6 @@ async function main() {
     },
   ];
 
-  console.log("Adding comments and likes...");
   for (const post of posts) {
     for (const user of users) {
       if (Math.random() > 0.45) {
@@ -1192,8 +1126,6 @@ async function main() {
       inviteeId: interviewer.id,
     },
   });
-
-  console.log("Creating direct conversations with the guest interviewer...");
 
   type ChatLine = { from: string; text: string; minutesAgo: number };
 
@@ -1554,8 +1486,6 @@ async function main() {
     },
   ]);
 
-  console.log("Creating group chats with full threads...");
-
   const productionChat = await prisma.groupChat.create({
     data: {
       groupId: productionSquad.id,
@@ -1766,7 +1696,8 @@ async function main() {
     data: {
       groupId: guestGroup.id,
       name: "Guest lounge",
-      description: "Chat for Guest's Group. The guest interviewer owns this one.",
+      description:
+        "Chat for Guest's Group. The guest interviewer owns this one.",
     },
   });
 
@@ -1782,7 +1713,8 @@ async function main() {
       {
         senderId: byUsername.alex_dev.id,
         group_chat_id: guestChat.id,
-        content: "Good sandbox. If you can create a post here, owner tools are working.",
+        content:
+          "Good sandbox. If you can create a post here, owner tools are working.",
         createdAt: minutesAgo(28),
       },
       {
@@ -1799,8 +1731,6 @@ async function main() {
       },
     ],
   });
-
-  console.log("Seed finished. Guest interviewer id:", INTERVIEWER_ID);
 }
 
 main()

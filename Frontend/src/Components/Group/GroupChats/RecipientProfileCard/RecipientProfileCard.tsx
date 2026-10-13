@@ -8,7 +8,7 @@ type RecipientProfileCardTypes = {
 export const RecipientProfileCard = ({
   recipient,
 }: RecipientProfileCardTypes) => {
-  console.log(recipient);
+
   return (
     <div className={styles.profile__card}>
       <img

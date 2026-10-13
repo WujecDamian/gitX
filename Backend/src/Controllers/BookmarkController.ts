@@ -19,7 +19,6 @@ const bookmarkPost = async (req: Request, res: Response) => {
         user_id: userId,
       },
     });
-    console.log(hasBookmarked);
     if (hasBookmarked.length > 0) {
       await prisma.bookmark.deleteMany({
         where: {

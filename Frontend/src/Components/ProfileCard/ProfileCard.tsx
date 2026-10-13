@@ -25,7 +25,7 @@ export default function ProfileCard({
   const navigate = useNavigate();
   const { user } = useAuth();
   const [buttonContent, setButtonContent] = useState("Following");
-  console.log(isFollowing);
+
   const onFollowClick = async () => {
     try {
       const response = await fetch(`${API_URL}/api/follow/user/${owner.id}`, {
@@ -70,7 +70,7 @@ export default function ProfileCard({
       }
     }
   };
-  console.log(owner);
+
   return (
     <section className={styles.profile__wrapper}>
       <section className={styles.profile__visuals}>

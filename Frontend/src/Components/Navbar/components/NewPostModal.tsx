@@ -26,13 +26,12 @@ export default function NewPostModal({
   const dropdownRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log(event.target);
-      console.log("DropdownRef", dropdownRef.current);
+
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        console.log("closed");
+
         setIsOpen(false);
       }
     };

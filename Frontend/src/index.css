@@ -1,19 +1,20 @@
 :root {
-  --text: #c9d2dc;
-  --text-h: #f4f6f8;
-  --text-muted: #8b9297;
-  --text-dark: #0a1218;
-  --bg: #0a0c0e;
-  --surface: #14181c;
-  --surface-2: #1c2228;
-  --border: #2a323a;
-  --code-bg: #1c2024;
-  --accent: rgb(4, 112, 174);
-  --accent-text: rgb(90, 186, 228);
-  --accent-bg: rgba(4, 112, 174, 0.15);
-  --accent-border: rgba(4, 112, 174, 0.5);
+  --text: #3a4148;
+  --text-h: #1a1d21;
+  --text-muted: #273f70;
+  --text-dark: #1a1d21;
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --surface-2: #efece6;
+  --border: #e4e0d8;
+  --border-hover: #c9c3b8;
+  --code-bg: #f0eee9;
+  --accent: #152d76;
+  --accent-text: #011962;
+  --accent-bg: rgba(18, 61, 154, 0.1);
+  --accent-border: rgba(18, 61, 154, 0.35);
   --on-accent: #ffffff;
-  --nav-hover: rgba(4, 112, 174, 0.12);
+  --nav-hover: rgba(18, 59, 154, 0.08);
   --danger: #e11d48;
   --success: #10b981;
   --radius: 12px;
@@ -27,7 +28,7 @@
 
   font: 1rem/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: dark;
+  color-scheme: light;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -119,7 +120,7 @@ a:visited {
 }
 
 .count {
-  color: #ffffff;
+  color: var(--text-h);
 }
 
 a:hover {

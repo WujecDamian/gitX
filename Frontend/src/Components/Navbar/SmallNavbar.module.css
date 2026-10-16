@@ -120,12 +120,6 @@
   border-color: var(--surface) transparent transparent transparent;
 }
 
-@media (prefers-color-scheme: light) {
-  .navbar__logo {
-    mix-blend-mode: multiply;
-  }
-}
-
 @media (max-width: 720px) {
   .navbar {
     height: 0;

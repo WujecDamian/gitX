@@ -270,7 +270,7 @@ async function main() {
       ]),
       socials: ["github.com/gitx_guest"],
       bio: "Guest interviewer account. Here to look around GitX, join groups, and talk to the team.",
-      status: "Looking for a job",
+      status: "Hiring",
     },
   });
 
@@ -299,6 +299,7 @@ async function main() {
   const roles = ["Frontend", "Backend", "Fullstack", "DevOps", "Data Science", "Cybersecurity", "AI"];
   for (let i = 0; i < users.length; i++) {
     const user = users[i];
+    if (user.id === INTERVIEWER_ID) continue;
     const [firstName, ...restName] = user.display_name.split(" ");
     await prisma.candidateProfile.create({
       data: {
@@ -335,6 +336,101 @@ async function main() {
       },
     });
   }
+
+  await prisma.candidateProfile.create({
+    data: {
+      user_id: interviewer.id,
+      name: "GitX",
+      surname: "Guest",
+      email: interviewer.email ?? "guest@gitx.dev",
+      phone: "+48 600 100 200",
+      bio: "Guest interviewer who also keeps a full candidate profile so recruiters can browse projects, jobs, and skills.",
+      expected_salary: 18000,
+      wants_remote: true,
+      wants_hybrid: true,
+      wants_full_time: true,
+      wants_b2b_contract: true,
+      role: "Fullstack",
+      socials: interviewer.socials,
+      photo_url: interviewer.profile_picture_url ?? undefined,
+      skills: {
+        create: interviewer.tags.map((name) => ({ name })),
+      },
+      languages: {
+        create: [
+          { name: "English", level: "C1" },
+          { name: "Polish", level: "Native" },
+        ],
+      },
+      projects: {
+        create: [
+          {
+            name: "GitX",
+            description: "A social app for developers with posts, groups, chat, and jobs.",
+            live_url: "https://github.com/gitx_guest",
+            github_url: "https://github.com/gitx_guest",
+            project_picture_url: postMedias[0],
+            tags: ["TypeScript", "React", "PostgreSQL"],
+          },
+          {
+            name: "Board API",
+            description: "A small Express API for tasks, comments, and assignees.",
+            live_url: "https://github.com/gitx_guest",
+            github_url: "https://github.com/gitx_guest",
+            project_picture_url: postMedias[1],
+            tags: ["Node.js", "Express", "REST APIs"],
+          },
+          {
+            name: "Query notebook",
+            description: "Saved SQL snippets with tags and a search box.",
+            github_url: "https://github.com/gitx_guest",
+            project_picture_url: postMedias[2],
+            tags: ["PostgreSQL", "TypeScript"],
+          },
+        ],
+      },
+      experience: {
+        create: [
+          {
+            company: "Northwind Studio",
+            position: "Fullstack engineer",
+            description: "Built React screens and Express APIs for a client portal.",
+            start_date: new Date("2022-03-01"),
+            end_date: new Date("2024-11-01"),
+          },
+          {
+            company: "Harbor Labs",
+            position: "Junior developer",
+            description: "Fixed bugs, wrote tests, and shipped small features.",
+            start_date: new Date("2020-06-01"),
+            end_date: new Date("2022-02-01"),
+          },
+        ],
+      },
+      education: {
+        create: [
+          {
+            school: "Warsaw University of Technology",
+            degree: "BSc",
+            field_of_study: "Computer Science",
+            start_date: new Date("2016-10-01"),
+            end_date: new Date("2020-06-30"),
+          },
+        ],
+      },
+      certifications: {
+        create: [
+          {
+            name: "AWS Cloud Practitioner",
+            description: "Intro cloud certificate.",
+            start_date: new Date("2023-01-01"),
+            end_date: new Date("2026-01-01"),
+          },
+        ],
+      },
+    },
+  });
+
   const byUsername = Object.fromEntries(
     communityUsers.map((user) => [user.username, user]),
   );

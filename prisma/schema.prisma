@@ -220,66 +220,66 @@ model CandidateProfile {
   skills                    Skill[]
   certifications            Certification[]
   languages                 Language[]
-  user                      User?           @relation(fields: [user_id], references: [id])
-  user_id                   String?
+  user                      User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id                   String          @unique
 }
 
 //sub candidate models
 model Project {
-  id                  String            @id @default(uuid())
-  name                String
-  description         String
-  live_url            String
-  github_url          String
-  project_picture_url String            @default("https://static.vecteezy.com/system/resources/previews/026/019/617/non_2x/group-profile-avatar-icon-default-social-media-forum-profile-photo-vector.jpg")
+  id                  String           @id @default(uuid())
+  name                String?
+  description         String?
+  live_url            String?
+  github_url          String?
+  project_picture_url String?          @default("https://static.vecteezy.com/system/resources/previews/026/019/617/non_2x/group-profile-avatar-icon-default-social-media-forum-profile-photo-vector.jpg")
   tags                String[]
-  candidateProfile    CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
-  candidateProfileId  String?
+  candidateProfile    CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+  candidateProfileId  String
 }
 
 model Experience {
-  id                 String            @id @default(uuid())
-  company            String
-  position           String
-  description        String
-  start_date         DateTime
-  end_date           DateTime
-  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
-  candidateProfileId String?
+  id                 String           @id @default(uuid())
+  company            String?
+  position           String?
+  description        String?
+  start_date         DateTime?
+  end_date           DateTime?
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+  candidateProfileId String
 }
 
 model Education {
-  id                 String            @id @default(uuid())
-  school             String
-  degree             String
-  field_of_study     String
-  start_date         DateTime
-  end_date           DateTime
-  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
-  candidateProfileId String?
+  id                 String           @id @default(uuid())
+  school             String?
+  degree             String?
+  field_of_study     String?
+  start_date         DateTime?
+  end_date           DateTime?
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+  candidateProfileId String
 }
 
 model Skill {
-  id                 String            @id @default(uuid())
-  name               String
-  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
-  candidateProfileId String?
+  id                 String           @id @default(uuid())
+  name               String?
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+  candidateProfileId String
 }
 
 model Certification {
-  id                 String            @id @default(uuid())
-  name               String
-  description        String
-  start_date         DateTime
-  end_date           DateTime
-  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
-  candidateProfileId String?
+  id                 String           @id @default(uuid())
+  name               String?
+  description        String?
+  start_date         DateTime?
+  end_date           DateTime?
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+  candidateProfileId String
 }
 
 model Language {
-  id                 String            @id @default(uuid())
-  name               String
-  level              String
-  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
-  candidateProfileId String?
+  id                 String           @id @default(uuid())
+  name               String?
+  level              String?
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+  candidateProfileId String
 }

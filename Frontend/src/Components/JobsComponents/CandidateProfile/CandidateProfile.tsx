@@ -4,7 +4,7 @@ import { useAuth } from "../../../Contexts/Auth/AuthContext";
 import { API_URL } from "../../../config";
 
 type CandidateProfileProps = {
-    candidateProfile: CandidateProfile | undefined;
+    candidateProfile?: CandidateProfile;
     profileVersion?: number;
     onSkip?: () => void;
     onSave?: () => void;
@@ -105,6 +105,9 @@ export const CandidateProfile = ({ candidateProfile, profileVersion = 0, onSkip,
 
     return (
         <div className={styles.profile}>
+            {!isRecruiterCard && (
+                <p className={styles.profile__preview}>This is how a recruiter will see your profile</p>
+            )}
             <article
                 className={styles.card}
                 style={{ backgroundImage: picture ? `url(${picture})` : undefined }}
@@ -114,6 +117,13 @@ export const CandidateProfile = ({ candidateProfile, profileVersion = 0, onSkip,
                         <div className={styles.card__text}>
                             <h2 className={styles.card__name}>{candidate.name} {candidate.surname}</h2>
                             <p className={styles.card__bio}>{shortBio(candidate.bio ?? "")}</p>
+                            {(candidate.skills ?? []).length > 0 && (
+                                <ul className={styles.card__tags}>
+                                    {(candidate.skills ?? []).slice(0, 3).map((skill) => (
+                                        <li key={skill.id} className={styles.card__tag}>{skill.name}</li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                     ) : (
                         <div className={styles.card__text}>

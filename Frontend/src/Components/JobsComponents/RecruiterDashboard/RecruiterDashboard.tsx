@@ -88,28 +88,31 @@ export const RecruiterDashboard = ({ selected, onClearSelected, prospectVersion,
         <div className={styles.dashboard}>
             <div className={styles.filters}>
                 <label className={styles.filters__field}>
-                    Role
+                    <span className={styles.filters__label}>Role</span>
                     <select value={role} onChange={(event) => setRole(event.target.value)}>
                         <option value="">Any</option>
                         {roles.filter(Boolean).map((item) => <option key={item} value={item}>{item}</option>)}
                     </select>
                 </label>
-                <label className={styles.filters__check}>
-                    <input type="checkbox" checked={remote} onChange={(event) => setRemote(event.target.checked)} />
-                    Remote
-                </label>
-                <label className={styles.filters__check}>
-                    <input type="checkbox" checked={onsite} onChange={(event) => setOnsite(event.target.checked)} />
-                    Onsite
-                </label>
-                <label className={styles.filters__check}>
-                    <input type="checkbox" checked={hybrid} onChange={(event) => setHybrid(event.target.checked)} />
-                    Hybrid
-                </label>
                 <label className={styles.filters__field}>
-                    Max salary {expectedSalary} PLN
+                    <span className={styles.filters__label}>Max salary <span className={styles.filters__value}>{expectedSalary} PLN</span></span>
                     <input type="range" min={4000} max={40000} step={100} value={expectedSalary} onChange={(event) => setExpectedSalary(Number(event.target.value))} />
                 </label>
+                <div className={styles.filters__modes}>
+                    <span className={styles.filters__label}>Work</span>
+                    <label className={styles.filters__check}>
+                        <input type="checkbox" checked={remote} onChange={(event) => setRemote(event.target.checked)} />
+                        Remote
+                    </label>
+                    <label className={styles.filters__check}>
+                        <input type="checkbox" checked={onsite} onChange={(event) => setOnsite(event.target.checked)} />
+                        Onsite
+                    </label>
+                    <label className={styles.filters__check}>
+                        <input type="checkbox" checked={hybrid} onChange={(event) => setHybrid(event.target.checked)} />
+                        Hybrid
+                    </label>
+                </div>
             </div>
             {error && <p>{error}</p>}
             {current ? (
@@ -119,7 +122,7 @@ export const RecruiterDashboard = ({ selected, onClearSelected, prospectVersion,
                     onSave={selected ? undefined : saveCurrent}
                 />
             ) : (
-                <p>No candidates match these filters.</p>
+                <p className={styles.empty}>No candidates match these filters.</p>
             )}
         </div>
     );

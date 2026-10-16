@@ -69,6 +69,11 @@ export const RecruiterSidebar = ({ prospectVersion, onOpen }: RecruiterSidebarPr
         {prospects.map((prospect) => (
           <li key={prospect.id} className={styles.prospect}>
             <button type="button" className={styles.prospect__open} onClick={() => onOpen(prospect.candidateProfile)}>
+              <img
+                className={styles.prospect__photo}
+                src={prospect.candidateProfile.photo_url}
+                alt=""
+              />
               {prospect.candidateProfile.name} {prospect.candidateProfile.surname}
             </button>
             <button type="button" className={styles.prospect__message} onClick={() => openChat(prospect.candidateProfile.user_id)}>

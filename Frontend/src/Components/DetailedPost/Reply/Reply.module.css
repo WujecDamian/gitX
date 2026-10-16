@@ -1,10 +1,20 @@
 .reply {
-  border-block: 1px solid var(--border);
+  border-block: 1px solid var(--border-hover);
   max-width: 100%;
   margin: 0;
   padding: 1.25rem;
-  margin-top: -1px;
+  margin: 1rem 1rem 1rem 1rem;
+  border-radius: 1.5rem;
   height: fit-content;
+  background-color: var(--bg);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.reply:hover {
+  background-color: var(--accent-bg);
+  border-color: var(--border-hover);
 }
 
 .form {

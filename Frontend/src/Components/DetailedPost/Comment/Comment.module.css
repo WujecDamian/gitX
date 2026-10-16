@@ -6,10 +6,19 @@
 
 .comment__card {
   border-block: 1px solid var(--border);
-  margin: 0;
   padding: 1.25rem;
-  margin-top: -1px;
+  margin: 1rem 1rem 1rem 1rem;
+  border-radius: 1.5rem;
   height: fit-content;
+  background-color: var(--bg);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.comment__card:hover {
+  background-color: var(--accent-bg);
+  border-color: var(--border-hover);
 }
 
 .comment__replies {
@@ -81,10 +90,10 @@
     }
 
     img {
-      filter: brightness(0) invert(1);
+      filter: brightness(0);
     }
 
-    color: #ffffff;
+    color: var(--text);
   }
 
   .comments:hover img,
@@ -98,5 +107,5 @@
 }
 
 .count {
-  color: #ffffff;
+  color: var(--text);
 }

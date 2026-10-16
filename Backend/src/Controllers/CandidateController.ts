@@ -10,7 +10,7 @@ const getCandidate = async (req: Request, res: Response) => {
 
   try {
     const candidateProfile = await prisma.candidateProfile.findUnique({
-      where: { id: userId },
+      where: { user_id: userId },
       include: {
         projects: true,
         experience: true,
@@ -107,8 +107,18 @@ const updateCandidate = async (req: Request, res: Response) => {
     level: language.level,
   }));
   try {
+    const candidateRelations = {
+      projects: true,
+      experience: true,
+      education: true,
+      skills: true,
+      certifications: true,
+      languages: true,
+    };
+
     const updatedCandidate = await prisma.candidateProfile.upsert({
       where: { user_id: userId },
+      include: candidateRelations,
       update: {
         name,
         surname,

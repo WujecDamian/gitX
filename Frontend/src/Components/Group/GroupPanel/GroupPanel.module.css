@@ -5,6 +5,10 @@
   gap: 0;
   min-height: 100vh;
   flex-grow: 1;
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  padding-top: 1rem;
+  margin: 1rem;
 }
 .posts {
   display: flex;

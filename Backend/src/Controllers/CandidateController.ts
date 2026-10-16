@@ -59,9 +59,56 @@ const updateCandidate = async (req: Request, res: Response) => {
     certifications,
     languages,
   } = req.body;
+
+  // Empty or broken date strings become null. new Date("") is an Invalid Date and Prisma rejects the save.
+  const toDateOrNull = (value: string | undefined) => {
+    if (!value) return null;
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return null;
+    return date;
+  };
+
+  //mapping what projects etc needs to own variables
+  const projectsArray = (projects ?? []).map((project: any) => ({
+    name: project.projectName,
+    description: project.description,
+    live_url: project.liveUrl,
+    github_url: project.githubUrl,
+    project_picture_url: project.projectPictureUrl,
+    tags: project.tags ?? [],
+  }));
+  const experienceArray = (experience ?? []).map((experience: any) => ({
+    company: experience.companyName,
+    description: experience.description,
+    position: experience.position,
+    start_date: toDateOrNull(experience.startDate),
+    end_date: toDateOrNull(experience.endDate),
+  }));
+  const educationArray = (education ?? []).map((education: any) => ({
+    school: education.schoolName,
+    degree: education.degree,
+    field_of_study: education.fieldOfStudy,
+    start_date: toDateOrNull(education.startDate),
+    end_date: toDateOrNull(education.endDate),
+  }));
+  const skillsArray = (skills ?? []).map((skill: any) => ({
+    name: skill.skillName,
+  }));
+  const certificationsArray = (certifications ?? []).map(
+    (certification: any) => ({
+      name: certification.certificationName,
+      description: certification.description,
+      start_date: toDateOrNull(certification.startDate),
+      end_date: toDateOrNull(certification.endDate),
+    }),
+  );
+  const languagesArray = (languages ?? []).map((language: any) => ({
+    name: language.languageName,
+    level: language.level,
+  }));
   try {
     const updatedCandidate = await prisma.candidateProfile.upsert({
-      where: { id: userId },
+      where: { user_id: userId },
       update: {
         name,
         surname,
@@ -82,27 +129,27 @@ const updateCandidate = async (req: Request, res: Response) => {
         photo_url,
         projects: {
           deleteMany: {},
-          create: projects,
+          create: projectsArray,
         },
         experience: {
           deleteMany: {},
-          create: experience,
+          create: experienceArray,
         },
         education: {
           deleteMany: {},
-          create: education,
+          create: educationArray,
         },
         skills: {
           deleteMany: {},
-          create: skills,
+          create: skillsArray,
         },
         certifications: {
           deleteMany: {},
-          create: certifications,
+          create: certificationsArray,
         },
         languages: {
           deleteMany: {},
-          create: languages,
+          create: languagesArray,
         },
       },
       create: {
@@ -125,22 +172,22 @@ const updateCandidate = async (req: Request, res: Response) => {
         socials,
         photo_url,
         projects: {
-          create: projects,
+          create: projectsArray,
         },
         experience: {
-          create: experience,
+          create: experienceArray,
         },
         education: {
-          create: education,
+          create: educationArray,
         },
         skills: {
-          create: skills,
+          create: skillsArray,
         },
         certifications: {
-          create: certifications,
+          create: certificationsArray,
         },
         languages: {
-          create: languages,
+          create: languagesArray,
         },
         user_id: userId,
       },

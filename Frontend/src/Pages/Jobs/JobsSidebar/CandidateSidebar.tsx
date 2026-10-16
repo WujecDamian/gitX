@@ -12,9 +12,10 @@ import { NewCertification } from "../../../Components/JobsComponents/SubComponen
 import { NewLanguages } from "../../../Components/JobsComponents/SubComponentsEditables/NewLanguages";
 type CandidateSidebarProps = {
   userId: string | undefined;
+  onSaved: () => void;
 }
 
-export const CandidateSidebar = ({ userId }: CandidateSidebarProps) => {
+export const CandidateSidebar = ({ userId, onSaved }: CandidateSidebarProps) => {
 
   const [candidate, setCandidate] = useState<CandidateProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -292,6 +293,7 @@ export const CandidateSidebar = ({ userId }: CandidateSidebarProps) => {
       const data = await response.json();
 
       setCandidate(data.updatedCandidate);
+      onSaved();
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

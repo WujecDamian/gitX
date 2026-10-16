@@ -14,6 +14,7 @@ function Jobs() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<string | undefined>(undefined);
+  const [profileVersion, setProfileVersion] = useState(0);
 
   useEffect(() => {
     if (user?.status === "Looking for a job") {
@@ -66,11 +67,11 @@ function Jobs() {
       <section className={styles.jobs__wrapper} >
 
         {status === "hiring" && <RecruiterSidebar />}
-        {status === "searching" && <CandidateSidebar userId={user?.id} />}
+        {status === "searching" && <CandidateSidebar userId={user?.id} onSaved={() => setProfileVersion((version) => version + 1)} />}
 
         <section className={styles.jobs__content}>
           {/* Render components based on status */}
-          {status === "searching" && <CandidateProfile candidateProfile={candidateProfile} />}
+          {status === "searching" && <CandidateProfile candidateProfile={candidateProfile} profileVersion={profileVersion} />}
           {status === "hiring" && <RecruiterDashboard />}
         </section>
       </section >

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styles from "./CandidateProfile.module.css";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../Contexts/Auth/AuthContext";
@@ -6,13 +5,40 @@ import { API_URL } from "../../../config";
 
 type CandidateProfileProps = {
     candidateProfile: CandidateProfile | undefined;
+    profileVersion: number;
 };
 
-export const CandidateProfile = ({ candidateProfile }: CandidateProfileProps) => {
-    const { user } = useAuth();
+type ProjectSlide = {
+    name?: string | null;
+    projectName?: string | null;
+    description?: string | null;
+    project_picture_url?: string | null;
+    projectPictureUrl?: string | null;
+    tags?: string[] | null;
+    live_url?: string | null;
+    github_url?: string | null;
+};
 
-    const [candidate, setCandidate] = useState<CandidateProfile | undefined>(undefined);
+const shortBio = (bio: string) => {
+    if (bio.length <= 90) return bio;
+    return `${bio.slice(0, 90).trim()}...`;
+};
+
+const yesNo = (value: boolean) => (value ? "Yes" : "No");
+
+const dateLabel = (value?: string | null) => (value ? value.slice(0, 10) : "");
+
+const asHref = (value: string) => (
+    value.startsWith("http://") || value.startsWith("https://") ? value : `https://${value}`
+);
+
+export const CandidateProfile = ({ candidateProfile, profileVersion }: CandidateProfileProps) => {
+    const { user } = useAuth();
+    const [candidate, setCandidate] = useState<CandidateProfile | undefined>(candidateProfile);
     const [error, setError] = useState<string | null>(null);
+    const [slide, setSlide] = useState(0);
+    const [isOpen, setIsOpen] = useState(false);
+
     useEffect(() => {
         const getCandidate = async () => {
             try {
@@ -28,6 +54,7 @@ export const CandidateProfile = ({ candidateProfile }: CandidateProfileProps) =>
                 }
                 const data = await response.json();
                 setCandidate(data.candidateProfile);
+                setSlide(0);
             } catch (error) {
                 if (error instanceof Error) {
                     setError(error.message);
@@ -37,19 +64,159 @@ export const CandidateProfile = ({ candidateProfile }: CandidateProfileProps) =>
             }
         };
         getCandidate();
-    }, []);
+    }, [user?.id, profileVersion]);
 
-    console.log(candidate)
+    if (error) {
+        return <p className={styles.profile__message}>{error}</p>;
+    }
+
+    if (!candidate) {
+        return <p className={styles.profile__message}>No candidate profile found</p>;
+    }
+
+    const projects = (candidate.projects ?? []) as ProjectSlide[];
+    const slideCount = 1 + projects.length;
+    const currentProject = slide === 0 ? null : projects[slide - 1];
+    const projectName = currentProject?.name || currentProject?.projectName || "Project";
+    const projectPicture = currentProject?.project_picture_url || currentProject?.projectPictureUrl || "";
+    const picture = slide === 0 ? candidate.photo_url : projectPicture;
+
+    const showPrevious = () => {
+        setSlide((current) => (current === 0 ? slideCount - 1 : current - 1));
+    };
+
+    const showNext = () => {
+        setSlide((current) => (current === slideCount - 1 ? 0 : current + 1));
+    };
 
     return (
-        <div className={styles.candidate__profile}>
-            {candidate ? (
-                <div className={styles.candidate__profile__content}>
-                    <h2 className={styles.candidate__profile__content__title}>{candidate.name}</h2>
-                    <p className={styles.candidate__profile__content__description}>{candidate.bio}</p>
+        <div className={styles.profile}>
+            <article
+                className={styles.card}
+                style={{ backgroundImage: picture ? `url(${picture})` : undefined }}
+            >
+                <div className={styles.card__shade}>
+                    {slide === 0 ? (
+                        <div className={styles.card__text}>
+                            <h2 className={styles.card__name}>{candidate.name} {candidate.surname}</h2>
+                            <p className={styles.card__bio}>{shortBio(candidate.bio ?? "")}</p>
+                        </div>
+                    ) : (
+                        <div className={styles.card__text}>
+                            <h2 className={styles.card__name}>{projectName}</h2>
+                            {currentProject?.description && (
+                                <p className={styles.card__bio}>{shortBio(currentProject.description)}</p>
+                            )}
+                            {(currentProject?.tags ?? []).length > 0 && (
+                                <ul className={styles.card__tags}>
+                                    {(currentProject?.tags ?? []).map((tag) => (
+                                        <li key={tag} className={styles.card__tag}>{tag}</li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                    )}
                 </div>
-            ) : (
-                <p>No candidate profile found</p>
+                {slideCount > 1 && (
+                    <div className={styles.card__nav}>
+                        <button type="button" className={styles.card__arrow} onClick={showPrevious} aria-label="Previous picture">‹</button>
+                        <button type="button" className={styles.card__arrow} onClick={showNext} aria-label="Next picture">›</button>
+                    </div>
+                )}
+            </article>
+            <button type="button" className={styles.profile__open} onClick={() => setIsOpen((open) => !open)}>
+                {isOpen ? "Close profile" : "Open profile"} ↑
+            </button>
+            {isOpen && (
+                <section className={styles.details}>
+                    <div className={styles.details__section}>
+                        <h3>About</h3>
+                        <p>{candidate.bio}</p>
+                        <p className={styles.details__line}><span>Role</span><span>{candidate.role}</span></p>
+                        <p className={styles.details__line}><span>Email</span><a href={`mailto:${candidate.email}`}>{candidate.email}</a></p>
+                        <p className={styles.details__line}><span>Phone</span><a href={`tel:${candidate.phone}`}>{candidate.phone}</a></p>
+                        <p className={styles.details__line}><span>Expected salary</span><span>{candidate.expected_salary} PLN</span></p>
+                        <div className={styles.details__links}>
+                            {(candidate.socials ?? []).map((social) => (
+                                <a key={social} href={asHref(social)} target="_blank" rel="noreferrer">{social}</a>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className={styles.details__section}>
+                        <h3>Work preferences</h3>
+                        <p className={styles.details__line}><span>Remote</span><span>{yesNo(candidate.wants_remote)}</span></p>
+                        <p className={styles.details__line}><span>Onsite</span><span>{yesNo(candidate.wants_onsite)}</span></p>
+                        <p className={styles.details__line}><span>Hybrid</span><span>{yesNo(candidate.wants_hybrid)}</span></p>
+                        <p className={styles.details__line}><span>Part time</span><span>{yesNo(candidate.wants_part_time)}</span></p>
+                        <p className={styles.details__line}><span>Full time</span><span>{yesNo(candidate.wants_full_time)}</span></p>
+                        <p className={styles.details__line}><span>Employment contract</span><span>{yesNo(candidate.wants_employment_contract)}</span></p>
+                        <p className={styles.details__line}><span>Mandate contract</span><span>{yesNo(candidate.wants_mandate_contract)}</span></p>
+                        <p className={styles.details__line}><span>B2B contract</span><span>{yesNo(candidate.wants_b2b_contract)}</span></p>
+                    </div>
+
+                    <div className={styles.details__section}>
+                        <h3>Projects</h3>
+                        {projects.map((project, index) => (
+                            <div key={`${project.name ?? project.projectName}-${index}`} className={styles.details__row}>
+                                <p>{project.name || project.projectName}</p>
+                                <p>{project.description}</p>
+                                <ul className={styles.details__tags}>
+                                    {(project.tags ?? []).map((tag) => <li key={tag}>{tag}</li>)}
+                                </ul>
+                                {project.live_url && <a href={asHref(project.live_url)} target="_blank" rel="noreferrer">{project.live_url}</a>}
+                                {project.github_url && <a href={asHref(project.github_url)} target="_blank" rel="noreferrer">{project.github_url}</a>}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className={styles.details__section}>
+                        <h3>Experience</h3>
+                        {(candidate.experience ?? []).map((item) => (
+                            <div key={item.id} className={styles.details__row}>
+                                <p>{item.position} at {item.company}</p>
+                                <p>{item.description}</p>
+                                <p>{dateLabel(item.start_date)} – {dateLabel(item.end_date)}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className={styles.details__section}>
+                        <h3>Education</h3>
+                        {(candidate.education ?? []).map((item) => (
+                            <div key={item.id} className={styles.details__row}>
+                                <p>{item.degree} at {item.school}</p>
+                                <p>{item.field_of_study}</p>
+                                <p>{dateLabel(item.start_date)} – {dateLabel(item.end_date)}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className={styles.details__section}>
+                        <h3>Skills</h3>
+                        <ul className={styles.details__tags}>
+                            {(candidate.skills ?? []).map((item) => <li key={item.id}>{item.name}</li>)}
+                        </ul>
+                    </div>
+
+                    <div className={styles.details__section}>
+                        <h3>Certifications</h3>
+                        {(candidate.certifications ?? []).map((item) => (
+                            <div key={item.id} className={styles.details__row}>
+                                <p>{item.name}</p>
+                                <p>{item.description}</p>
+                                <p>{dateLabel(item.start_date)} – {dateLabel(item.end_date)}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className={styles.details__section}>
+                        <h3>Languages</h3>
+                        <ul className={styles.details__tags}>
+                            {(candidate.languages ?? []).map((item) => <li key={item.id}>{item.name} — {item.level}</li>)}
+                        </ul>
+                    </div>
+                </section>
             )}
         </div>
     );

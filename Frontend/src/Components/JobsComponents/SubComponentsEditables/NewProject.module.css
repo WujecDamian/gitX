@@ -7,12 +7,6 @@
   border-radius: 8px;
 }
 
-.project__title {
-  margin: 0;
-  font-size: 16px;
-  text-transform: capitalize;
-}
-
 .project__field {
   display: flex;
   flex-direction: column;
@@ -22,6 +16,19 @@
 .project__field input {
   width: 100%;
   box-sizing: border-box;
+}
+
+.project__view p {
+  margin: 0;
+}
+
+.project__label {
+  display: inline-block;
+  min-width: 72px;
+  margin-right: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  opacity: 0.7;
 }
 
 .project__actions {

@@ -7,12 +7,6 @@
   border-radius: 8px;
 }
 
-.education__title {
-  margin: 0;
-  font-size: 16px;
-  text-transform: capitalize;
-}
-
 .education__field {
   display: flex;
   flex-direction: column;
@@ -28,6 +22,19 @@
 .education__dates {
   display: flex;
   gap: 8px;
+}
+
+.education__view p {
+  margin: 0;
+}
+
+.education__label {
+  display: inline-block;
+  min-width: 72px;
+  margin-right: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  opacity: 0.7;
 }
 
 .education__actions {

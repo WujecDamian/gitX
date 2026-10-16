@@ -7,12 +7,6 @@
   border-radius: 8px;
 }
 
-.language__title {
-  margin: 0;
-  font-size: 16px;
-  text-transform: capitalize;
-}
-
 .language__field {
   display: flex;
   flex-direction: column;
@@ -22,6 +16,19 @@
 .language__field input {
   width: 100%;
   box-sizing: border-box;
+}
+
+.language__view p {
+  margin: 0;
+}
+
+.language__label {
+  display: inline-block;
+  min-width: 72px;
+  margin-right: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  opacity: 0.7;
 }
 
 .language__actions {

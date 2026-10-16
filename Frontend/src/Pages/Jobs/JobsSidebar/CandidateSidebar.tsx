@@ -383,32 +383,32 @@ export const CandidateSidebar = ({ userId, onSaved }: CandidateSidebarProps) => 
           <input type="text" id="photoUrl" value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} />
           <div className={styles.candidate__section}>
             <label htmlFor="projects">Projects</label>
-            {componentsList.map((component) => component.name === "project" ? <NewProject key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            {componentsList.map((component) => component.name === "project" ? <NewProject key={component.id} id={component.id} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
             <button onClick={() => addComponent("project", { projectName: "", description: "", liveUrl: "", githubUrl: "", projectPictureUrl: "", tags: [] })}>Add Project</button>
           </div>
           <div className={styles.candidate__section}>
             <label htmlFor="experience">Experience</label>
-            {componentsList.map((component) => component.name === "experience" ? <NewExperience key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            {componentsList.map((component) => component.name === "experience" ? <NewExperience key={component.id} id={component.id} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
             <button onClick={() => addComponent("experience", { companyName: "", description: "", position: "", startDate: "", endDate: "" })}>Add Experience</button>
           </div>
           <div className={styles.candidate__section}>
             <label htmlFor="education">Education</label>
-            {componentsList.map((component) => component.name === "education" ? <NewEducation key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            {componentsList.map((component) => component.name === "education" ? <NewEducation key={component.id} id={component.id} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
             <button onClick={() => addComponent("education", { schoolName: "", degree: "", fieldOfStudy: "", startDate: "", endDate: "" })}>Add Education</button>
           </div>
           <div className={styles.candidate__section}>
             <label htmlFor="skills">Skills</label>
-            {componentsList.map((component) => component.name === "skills" ? <NewSkills key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            {componentsList.map((component) => component.name === "skills" ? <NewSkills key={component.id} id={component.id} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
             <button onClick={() => addComponent("skills", { skillName: "" })}>Add Skill</button>
           </div>
           <div className={styles.candidate__section}>
             <label htmlFor="certifications">Certifications</label>
-            {componentsList.map((component) => component.name === "certifications" ? <NewCertification key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            {componentsList.map((component) => component.name === "certifications" ? <NewCertification key={component.id} id={component.id} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
             <button onClick={() => addComponent("certifications", { certificationName: "", description: "", startDate: "", endDate: "" })}>Add Certification</button>
           </div>
           <div className={styles.candidate__section}>
             <label htmlFor="languages">Languages</label>
-            {componentsList.map((component) => component.name === "languages" ? <NewLanguages key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            {componentsList.map((component) => component.name === "languages" ? <NewLanguages key={component.id} id={component.id} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
             <button onClick={() => addComponent("languages", { languageName: "", level: "" })}>Add Language</button>
           </div>
 

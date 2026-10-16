@@ -1,0 +1,34 @@
+.skill {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.skill__title {
+  margin: 0;
+  font-size: 16px;
+  text-transform: capitalize;
+}
+
+.skill__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skill__field input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.skill__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.skill__actions button {
+  flex: 1;
+}

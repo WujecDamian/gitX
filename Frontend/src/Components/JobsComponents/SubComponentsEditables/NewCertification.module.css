@@ -1,0 +1,40 @@
+.certification {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.certification__title {
+  margin: 0;
+  font-size: 16px;
+  text-transform: capitalize;
+}
+
+.certification__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.certification__field input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.certification__dates {
+  display: flex;
+  gap: 8px;
+}
+
+.certification__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.certification__actions button {
+  flex: 1;
+}

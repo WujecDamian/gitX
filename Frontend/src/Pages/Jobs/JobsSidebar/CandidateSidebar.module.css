@@ -3,7 +3,8 @@
   flex-direction: column;
   width: 350px;
   min-width: 350px;
-  min-height: 100%;
+  height: 100%;
+  overflow-y: auto;
   border-inline: 1px solid var(--border);
 }
 
@@ -32,4 +33,48 @@
 .bio {
   field-sizing: content;
   resize: vertical;
+}
+
+.candidate__details input,
+.candidate__details select,
+.candidate__details textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.candidate__details__container,
+.expected_salary__container,
+.work__model__container,
+.work__availability__container,
+.work__contract__container,
+.candidate__section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox__divider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.checkbox__divider input {
+  width: auto;
+}
+
+.candidate__actions {
+  display: flex;
+  padding: 16px;
+  margin-top: auto;
+}
+
+.candidate__actions__button {
+  display: flex;
+  width: 100%;
+}
+
+.candidate__actions__button__save {
+  width: 100%;
 }

@@ -5,7 +5,11 @@ import { API_URL } from "../../../config";
 import { ErrorMessage } from "../../../Components/UI/ErrorMessage/ErrorMessage";
 //New (project/experience...) imports
 import { NewProject } from "../../../Components/JobsComponents/SubComponentsEditables/NewProject";
-
+import { NewExperience } from "../../../Components/JobsComponents/SubComponentsEditables/NewExperience";
+import { NewEducation } from "../../../Components/JobsComponents/SubComponentsEditables/NewEducation";
+import { NewSkills } from "../../../Components/JobsComponents/SubComponentsEditables/NewSkills";
+import { NewCertification } from "../../../Components/JobsComponents/SubComponentsEditables/NewCertification";
+import { NewLanguages } from "../../../Components/JobsComponents/SubComponentsEditables/NewLanguages";
 type CandidateSidebarProps = {
   userId: string | undefined;
 }
@@ -64,35 +68,173 @@ export const CandidateSidebar = ({ userId }: CandidateSidebarProps) => {
     };
     getCandidate();
   }, []);
-
   useEffect(() => {
-    console.log(componentsList);
-    componentsList.forEach((component) => {
+    setName(candidate?.name ?? "");
+    setSurname(candidate?.surname ?? "");
+    setEmail(candidate?.email ?? "");
+    setPhone(candidate?.phone ?? "");
+    setBio(candidate?.bio ?? "");
+    setExpectedSalary(candidate?.expected_salary ?? 10000);
+    setWantsRemote(candidate?.wants_remote ?? false);
+    setWantsOnsite(candidate?.wants_onsite ?? false);
+    setWantsHybrid(candidate?.wants_hybrid ?? false);
+    setWantsPartTime(candidate?.wants_part_time ?? false);
+    setWantsFullTime(candidate?.wants_full_time ?? false);
+    setWantsEmploymentContract(candidate?.wants_employment_contract ?? false);
+    setWantsMandateContract(candidate?.wants_mandate_contract ?? false);
+    setWantsB2bContract(candidate?.wants_b2b_contract ?? false);
+    setRole(candidate?.role ?? "");
+    setSocials(candidate?.socials ?? []);
+    setPhotoUrl(candidate?.photo_url ?? "");
+    setProjects(candidate?.projects ?? []);
+    setExperience(candidate?.experience ?? []);
+    setEducation(candidate?.education ?? []);
+    setSkills(candidate?.skills ?? []);
+    setCertifications(candidate?.certifications ?? []);
+    setLanguages(candidate?.languages ?? []);
+
+    // The database uses snake_case. The form cards use camelCase. This copies each saved row into a card.
+    const dateForInput = (value: string | null | undefined) => value ? value.slice(0, 10) : "";
+    const savedProjects = (candidate?.projects ?? []) as {
+      id?: string;
+      name?: string | null;
+      description?: string | null;
+      live_url?: string | null;
+      github_url?: string | null;
+      project_picture_url?: string | null;
+      tags?: string[];
+    }[];
+    const savedExperience = (candidate?.experience ?? []) as {
+      id?: string;
+      company?: string | null;
+      description?: string | null;
+      position?: string | null;
+      start_date?: string | null;
+      end_date?: string | null;
+    }[];
+    const savedEducation = (candidate?.education ?? []) as {
+      id?: string;
+      school?: string | null;
+      degree?: string | null;
+      field_of_study?: string | null;
+      start_date?: string | null;
+      end_date?: string | null;
+    }[];
+    const savedSkills = (candidate?.skills ?? []) as { id?: string; name?: string | null }[];
+    const savedCertifications = (candidate?.certifications ?? []) as {
+      id?: string;
+      name?: string | null;
+      description?: string | null;
+      start_date?: string | null;
+      end_date?: string | null;
+    }[];
+    const savedLanguages = (candidate?.languages ?? []) as { id?: string; name?: string | null; level?: string | null }[];
+
+    setComponentsList([
+      ...savedProjects.map((project) => ({
+        id: project.id ?? crypto.randomUUID(),
+        name: "project",
+        content: {
+          projectName: project.name ?? "",
+          description: project.description ?? "",
+          liveUrl: project.live_url ?? "",
+          githubUrl: project.github_url ?? "",
+          projectPictureUrl: project.project_picture_url ?? "",
+          tags: project.tags ?? [],
+        },
+      })),
+      ...savedExperience.map((item) => ({
+        id: item.id ?? crypto.randomUUID(),
+        name: "experience",
+        content: {
+          companyName: item.company ?? "",
+          description: item.description ?? "",
+          position: item.position ?? "",
+          startDate: dateForInput(item.start_date),
+          endDate: dateForInput(item.end_date),
+        },
+      })),
+      ...savedEducation.map((item) => ({
+        id: item.id ?? crypto.randomUUID(),
+        name: "education",
+        content: {
+          schoolName: item.school ?? "",
+          degree: item.degree ?? "",
+          fieldOfStudy: item.field_of_study ?? "",
+          startDate: dateForInput(item.start_date),
+          endDate: dateForInput(item.end_date),
+        },
+      })),
+      ...savedSkills.map((item) => ({
+        id: item.id ?? crypto.randomUUID(),
+        name: "skills",
+        content: { skillName: item.name ?? "" },
+      })),
+      ...savedCertifications.map((item) => ({
+        id: item.id ?? crypto.randomUUID(),
+        name: "certifications",
+        content: {
+          certificationName: item.name ?? "",
+          description: item.description ?? "",
+          startDate: dateForInput(item.start_date),
+          endDate: dateForInput(item.end_date),
+        },
+      })),
+      ...savedLanguages.map((item) => ({
+        id: item.id ?? crypto.randomUUID(),
+        name: "languages",
+        content: {
+          languageName: item.name ?? "",
+          level: item.level ?? "",
+        },
+      })),
+    ]);
+  }, [candidate]);
+
+  //updating each rows basing on componentsList, places in correct 'buckets'
+  useEffect(() => {
+    //zaczynamy z pustymi zeby dzialalo tez usuwanie ezezez
+    const nextProjects: Project[] = [];
+    const nextExperience: Experience[] = [];
+    const nextEducation: Education[] = [];
+    const nextSkills: Skill[] = [];
+    const nextCertifications: Certification[] = [];
+    const nextLanguages: Language[] = [];
+
+    //sprawdzamy kazdy komponent (jego nazwe i dodajemy do tymczasowej tablicy (nie moze byc np. setProjects bo nie dochodzi do rerenderu))
+    for (const component of componentsList) {
       if (component.name === "project") {
-        setProjects([...projects, component.content as Project]);
+        nextProjects.push(component.content as Project);
       }
       if (component.name === "experience") {
-        setExperience([...experience, component.content as Experience]);
+        nextExperience.push(component.content as Experience);
       }
       if (component.name === "education") {
-        setEducation([...education, component.content as Education]);
+        nextEducation.push(component.content as Education);
       }
       if (component.name === "skills") {
-        setSkills([...skills, component.content as Skill]);
+        nextSkills.push(component.content as Skill);
       }
       if (component.name === "certifications") {
-        setCertifications([...certifications, component.content as Certification]);
+        nextCertifications.push(component.content as Certification);
       }
       if (component.name === "languages") {
-        setLanguages([...languages, component.content as Language]);
+        nextLanguages.push(component.content as Language);
       }
-    });
+    }
+
+    setProjects(nextProjects);
+    setExperience(nextExperience);
+    setEducation(nextEducation);
+    setSkills(nextSkills);
+    setCertifications(nextCertifications);
+    setLanguages(nextLanguages);
   }, [componentsList]);
 
   type componentType = {
     id: string,
     name: string,
-    content: object
+    content: any
   }
   //adding/updating/deleting components
   const addComponent = (name: string, content: object) => {
@@ -103,8 +245,10 @@ export const CandidateSidebar = ({ userId }: CandidateSidebarProps) => {
   const deleteComponent = (id: string) => {
     setComponentsList(componentsList.filter((component) => component.id !== id));
   }
-  const updateComponent = (id: string, name: string, content: object = {}) => {
-    setComponentsList(componentsList.map((component) => component?.id === id ? { ...component, name, content } : component));
+  const updateComponent = (id: string, content: object = {}) => {
+    console.log("Updating component", id, content);
+    setComponentsList(componentsList.map((component) => component?.id === id ? { ...component, content } : component));
+    console.log("Components list after update", componentsList);
   }
 
   const handleSave = async () => {
@@ -235,31 +379,45 @@ export const CandidateSidebar = ({ userId }: CandidateSidebarProps) => {
           <input type="text" id="socials" value={socials} onChange={(e) => setSocials(e.target.value.split(','))} />
           <label htmlFor="photoUrl">Photo URL</label>
           <input type="text" id="photoUrl" value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} />
-          <label htmlFor="projects">Projects</label>
-          <p>section here for projects</p>
-          {componentsList.map((component) => component.name === "project" ? <NewProject key={component.id} id={component.id} name={component.name} content={{ projectName: "", description: "", liveUrl: "", githubUrl: "", projectPictureUrl: "", tags: [] }} onDelete={() => deleteComponent(component.id)} onUpdate={() => updateComponent(component.id, component.name, component.content)} /> : null)}
-          <button onClick={() => addComponent("project", { projectName: "", description: "", liveUrl: "", githubUrl: "", projectPictureUrl: "", tags: [] })}>Add Project</button>
-          <label htmlFor="experience">Experience</label>
-          <p>section here for experience</p>
-          <label htmlFor="education">Education</label>
-          <p>section here for education</p>
-          <label htmlFor="skills">Skills</label>
-          <p>section here for skills</p>
-          <label htmlFor="certifications">Certifications</label>
-          <p>section here for certifications</p>
+          <div className={styles.candidate__section}>
+            <label htmlFor="projects">Projects</label>
+            {componentsList.map((component) => component.name === "project" ? <NewProject key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            <button onClick={() => addComponent("project", { projectName: "", description: "", liveUrl: "", githubUrl: "", projectPictureUrl: "", tags: [] })}>Add Project</button>
+          </div>
+          <div className={styles.candidate__section}>
+            <label htmlFor="experience">Experience</label>
+            {componentsList.map((component) => component.name === "experience" ? <NewExperience key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            <button onClick={() => addComponent("experience", { companyName: "", description: "", position: "", startDate: "", endDate: "" })}>Add Experience</button>
+          </div>
+          <div className={styles.candidate__section}>
+            <label htmlFor="education">Education</label>
+            {componentsList.map((component) => component.name === "education" ? <NewEducation key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            <button onClick={() => addComponent("education", { schoolName: "", degree: "", fieldOfStudy: "", startDate: "", endDate: "" })}>Add Education</button>
+          </div>
+          <div className={styles.candidate__section}>
+            <label htmlFor="skills">Skills</label>
+            {componentsList.map((component) => component.name === "skills" ? <NewSkills key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            <button onClick={() => addComponent("skills", { skillName: "" })}>Add Skill</button>
+          </div>
+          <div className={styles.candidate__section}>
+            <label htmlFor="certifications">Certifications</label>
+            {componentsList.map((component) => component.name === "certifications" ? <NewCertification key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            <button onClick={() => addComponent("certifications", { certificationName: "", description: "", startDate: "", endDate: "" })}>Add Certification</button>
+          </div>
+          <div className={styles.candidate__section}>
+            <label htmlFor="languages">Languages</label>
+            {componentsList.map((component) => component.name === "languages" ? <NewLanguages key={component.id} id={component.id} name={component.name} content={component.content} onDelete={() => deleteComponent(component.id)} onUpdate={(content) => updateComponent(component.id, content)} /> : null)}
+            <button onClick={() => addComponent("languages", { languageName: "", level: "" })}>Add Language</button>
+          </div>
 
-          <label htmlFor="languages">Languages</label>
-          <p>section here for languages</p>
-          <label htmlFor="projects">Projects</label>
-          <p>section here for projects</p>
 
 
 
         </section>
         <section className={styles.candidate__actions}>
-          <button className={styles.candidate__actions__button}>
+          <div className={styles.candidate__actions__button}>
             <button className={styles.candidate__actions__button__save} onClick={handleSave}>Save</button>
-          </button>
+          </div>
         </section>
       </aside>
     </>

@@ -113,7 +113,7 @@ declare global {
   };
   type Project = {
     id: string;
-    name: string;
+    projectName: string;
     description: string;
     url: string;
     tags: string[];

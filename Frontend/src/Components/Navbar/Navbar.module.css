@@ -27,7 +27,6 @@
   width: 28px;
   height: 28px;
   border-radius: 0;
-  mix-blend-mode: screen;
 }
 
 .navbar__wordmark {
@@ -62,7 +61,7 @@
 .nav__link:hover,
 .nav__link:focus-visible {
   background-color: var(--nav-hover);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius);
 }
 
 .navbar__post {

@@ -19,7 +19,7 @@ const likePost = async (req: Request, res: Response) => {
         user_id: userId,
       },
     });
-    console.log(hasLiked);
+
     if (hasLiked.length > 0) {
       await prisma.postLike.deleteMany({
         where: {
@@ -68,7 +68,7 @@ const likeComment = async (req: Request, res: Response) => {
         user_id: userId,
       },
     });
-    console.log(hasLiked);
+
     if (hasLiked.length > 0) {
       await prisma.commentLike.deleteMany({
         where: {

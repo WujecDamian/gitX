@@ -70,7 +70,9 @@
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.2s ease, background-color 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
 }
 .follow__button:hover {
   opacity: 0.9;
@@ -152,6 +154,14 @@
   font-size: 14px;
   text-decoration: none;
   word-break: break-all;
+}
+
+.status {
+  font-size: 20px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  margin-inline: 0.25rem;
+  font-style: italic;
 }
 
 .meta__info {

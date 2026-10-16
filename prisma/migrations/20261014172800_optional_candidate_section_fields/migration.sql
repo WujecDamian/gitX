@@ -1,0 +1,33 @@
+-- AlterTable
+ALTER TABLE "Certification" ALTER COLUMN "name" DROP NOT NULL,
+ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "start_date" DROP NOT NULL,
+ALTER COLUMN "end_date" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Education" ALTER COLUMN "school" DROP NOT NULL,
+ALTER COLUMN "degree" DROP NOT NULL,
+ALTER COLUMN "field_of_study" DROP NOT NULL,
+ALTER COLUMN "start_date" DROP NOT NULL,
+ALTER COLUMN "end_date" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Experience" ALTER COLUMN "company" DROP NOT NULL,
+ALTER COLUMN "position" DROP NOT NULL,
+ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "start_date" DROP NOT NULL,
+ALTER COLUMN "end_date" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Language" ALTER COLUMN "name" DROP NOT NULL,
+ALTER COLUMN "level" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Project" ALTER COLUMN "name" DROP NOT NULL,
+ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "live_url" DROP NOT NULL,
+ALTER COLUMN "github_url" DROP NOT NULL,
+ALTER COLUMN "project_picture_url" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Skill" ALTER COLUMN "name" DROP NOT NULL;

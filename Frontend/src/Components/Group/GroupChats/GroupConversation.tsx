@@ -45,7 +45,7 @@ export const GroupConversation = () => {
 
     fetchChatHistory();
   }, [chatId]);
-  console.log(chat);
+
   if (!chatId) {
     return (
       <section className={styles.no__chat__selected}>

@@ -10,9 +10,6 @@ const onlyCatalogSkills = (skills: string[]) =>
   skills.filter((skill) => catalogSkills.includes(skill));
 
 async function main() {
-  console.log("Starting database seeding...");
-
-  console.log("Cleaning old data...");
   await prisma.message.deleteMany();
   await prisma.groupChat.deleteMany();
   await prisma.chat.deleteMany();
@@ -24,6 +21,8 @@ async function main() {
   await prisma.post.deleteMany();
   await prisma.follows.deleteMany();
   await prisma.group.deleteMany();
+  await prisma.prospect.deleteMany();
+  await prisma.candidateProfile.deleteMany();
   await prisma.user.deleteMany();
 
   const profilePics = [
@@ -246,8 +245,6 @@ async function main() {
     },
   ];
 
-  console.log("Creating the guest interviewer and demo users...");
-
   const interviewer = await prisma.user.create({
     data: {
       id: INTERVIEWER_ID,
@@ -273,6 +270,7 @@ async function main() {
       ]),
       socials: ["github.com/gitx_guest"],
       bio: "Guest interviewer account. Here to look around GitX, join groups, and talk to the team.",
+      status: "Hiring",
     },
   });
 
@@ -291,17 +289,152 @@ async function main() {
         tags: data.tags,
         socials: data.socials,
         bio: data.bio,
+        status: "Looking for a job",
       },
     });
     communityUsers.push(user);
   }
 
   const users = [interviewer, ...communityUsers];
+  const roles = ["Frontend", "Backend", "Fullstack", "DevOps", "Data Science", "Cybersecurity", "AI"];
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+    if (user.id === INTERVIEWER_ID) continue;
+    const [firstName, ...restName] = user.display_name.split(" ");
+    await prisma.candidateProfile.create({
+      data: {
+        user_id: user.id,
+        name: firstName,
+        surname: restName.join(" ") || "Dev",
+        email: user.email ?? `${user.username}@example.com`,
+        phone: `+48 500 000 ${String(i).padStart(3, "0")}`,
+        bio: user.bio ?? "",
+        expected_salary: 8000 + i * 1500,
+        wants_remote: i % 2 === 0,
+        wants_onsite: i % 3 === 0,
+        wants_hybrid: i % 2 === 1,
+        role: roles[i % roles.length],
+        socials: user.socials,
+        photo_url: user.profile_picture_url ?? undefined,
+        skills: {
+          create: user.tags.slice(0, 5).map((name) => ({ name })),
+        },
+        languages: {
+          create: [{ name: "English", level: "B2" }],
+        },
+        projects: {
+          create: [
+            {
+              name: `${firstName}'s project`,
+              description: "A small demo project from the seed.",
+              live_url: `https://github.com/${user.username}`,
+              github_url: `https://github.com/${user.username}`,
+              tags: user.tags.slice(0, 3),
+            },
+          ],
+        },
+      },
+    });
+  }
+
+  await prisma.candidateProfile.create({
+    data: {
+      user_id: interviewer.id,
+      name: "GitX",
+      surname: "Guest",
+      email: interviewer.email ?? "guest@gitx.dev",
+      phone: "+48 600 100 200",
+      bio: "Guest interviewer who also keeps a full candidate profile so recruiters can browse projects, jobs, and skills.",
+      expected_salary: 18000,
+      wants_remote: true,
+      wants_hybrid: true,
+      wants_full_time: true,
+      wants_b2b_contract: true,
+      role: "Fullstack",
+      socials: interviewer.socials,
+      photo_url: interviewer.profile_picture_url ?? undefined,
+      skills: {
+        create: interviewer.tags.map((name) => ({ name })),
+      },
+      languages: {
+        create: [
+          { name: "English", level: "C1" },
+          { name: "Polish", level: "Native" },
+        ],
+      },
+      projects: {
+        create: [
+          {
+            name: "GitX",
+            description: "A social app for developers with posts, groups, chat, and jobs.",
+            live_url: "https://github.com/gitx_guest",
+            github_url: "https://github.com/gitx_guest",
+            project_picture_url: postMedias[0],
+            tags: ["TypeScript", "React", "PostgreSQL"],
+          },
+          {
+            name: "Board API",
+            description: "A small Express API for tasks, comments, and assignees.",
+            live_url: "https://github.com/gitx_guest",
+            github_url: "https://github.com/gitx_guest",
+            project_picture_url: postMedias[1],
+            tags: ["Node.js", "Express", "REST APIs"],
+          },
+          {
+            name: "Query notebook",
+            description: "Saved SQL snippets with tags and a search box.",
+            github_url: "https://github.com/gitx_guest",
+            project_picture_url: postMedias[2],
+            tags: ["PostgreSQL", "TypeScript"],
+          },
+        ],
+      },
+      experience: {
+        create: [
+          {
+            company: "Northwind Studio",
+            position: "Fullstack engineer",
+            description: "Built React screens and Express APIs for a client portal.",
+            start_date: new Date("2022-03-01"),
+            end_date: new Date("2024-11-01"),
+          },
+          {
+            company: "Harbor Labs",
+            position: "Junior developer",
+            description: "Fixed bugs, wrote tests, and shipped small features.",
+            start_date: new Date("2020-06-01"),
+            end_date: new Date("2022-02-01"),
+          },
+        ],
+      },
+      education: {
+        create: [
+          {
+            school: "Warsaw University of Technology",
+            degree: "BSc",
+            field_of_study: "Computer Science",
+            start_date: new Date("2016-10-01"),
+            end_date: new Date("2020-06-30"),
+          },
+        ],
+      },
+      certifications: {
+        create: [
+          {
+            name: "AWS Cloud Practitioner",
+            description: "Intro cloud certificate.",
+            start_date: new Date("2023-01-01"),
+            end_date: new Date("2026-01-01"),
+          },
+        ],
+      },
+    },
+  });
+
   const byUsername = Object.fromEntries(
     communityUsers.map((user) => [user.username, user]),
   );
 
-  console.log("Creating follow graph...");
   for (const follower of users) {
     for (const following of users) {
       if (follower.id === following.id) {
@@ -318,7 +451,6 @@ async function main() {
     }
   }
 
-  console.log("Creating groups that include the guest interviewer...");
   const productionSquad = await prisma.group.create({
     data: {
       group_name: "The Production Breaking Squad",
@@ -388,7 +520,6 @@ async function main() {
     },
   });
 
-  console.log("Creating realistic posts...");
   type SeedPost = {
     content: string;
     authorId: string;
@@ -721,8 +852,7 @@ async function main() {
     },
     {
       authorId: byUsername.coder_cat.id,
-      content:
-        "console.log 🤝 AI\nboth telling me things I don’t fully trust",
+      content: "console.log 🤝 AI\nboth telling me things I don’t fully trust",
     },
     {
       authorId: byUsername.marcus_tech.id,
@@ -846,25 +976,17 @@ async function main() {
     {
       postIndex: 29,
       threads: [
-        [
-          "Needed this reminder after posting into the void on a Tuesday.",
-        ],
+        ["Needed this reminder after posting into the void on a Tuesday."],
       ],
     },
     {
       postIndex: 30,
-      threads: [
-        [
-          "Jobs first is brutally honest. The rest is branding.",
-        ],
-      ],
+      threads: [["Jobs first is brutally honest. The rest is branding."]],
     },
     {
       postIndex: 31,
       threads: [
-        [
-          "Taste is the new compile error. You feel it before you can name it.",
-        ],
+        ["Taste is the new compile error. You feel it before you can name it."],
       ],
     },
     {
@@ -895,17 +1017,13 @@ async function main() {
     {
       postIndex: 35,
       threads: [
-        [
-          "One post. One thought. I will not swipe through 27 screens again.",
-        ],
+        ["One post. One thought. I will not swipe through 27 screens again."],
       ],
     },
     {
       postIndex: 36,
       threads: [
-        [
-          "Trust but verify, except skip the trust until the tests pass.",
-        ],
+        ["Trust but verify, except skip the trust until the tests pass."],
       ],
     },
     {
@@ -918,42 +1036,26 @@ async function main() {
     },
     {
       postIndex: 38,
-      threads: [
-        [
-          "If I need a legend, I already lost the intern.",
-        ],
-      ],
+      threads: [["If I need a legend, I already lost the intern."]],
     },
     {
       postIndex: 39,
-      threads: [
-        [
-          "Rule 2 is usually named Alex, or Friday deploys.",
-        ],
-      ],
+      threads: [["Rule 2 is usually named Alex, or Friday deploys."]],
     },
     {
       postIndex: 40,
-      threads: [
-        [
-          "Bad UI is the low-hanging fruit. Please, AI, take it.",
-        ],
-      ],
+      threads: [["Bad UI is the low-hanging fruit. Please, AI, take it."]],
     },
     {
       postIndex: 41,
       threads: [
-        [
-          "Faster drafts, same opinions. The bottleneck moved to the inbox.",
-        ],
+        ["Faster drafts, same opinions. The bottleneck moved to the inbox."],
       ],
     },
     {
       postIndex: 42,
       threads: [
-        [
-          "I still sprinkle console.log like catnip. The framework can wait.",
-        ],
+        ["I still sprinkle console.log like catnip. The framework can wait."],
       ],
     },
     {
@@ -984,9 +1086,7 @@ async function main() {
     {
       postIndex: 46,
       threads: [
-        [
-          "47% write, 53% 'why is this optional chaining on a boolean'.",
-        ],
+        ["47% write, 53% 'why is this optional chaining on a boolean'."],
       ],
     },
     {
@@ -1023,43 +1123,27 @@ async function main() {
     },
     {
       postIndex: 51,
-      threads: [
-        [
-          "Harsh and fair. Tools amplify whatever you already bring.",
-        ],
-      ],
+      threads: [["Harsh and fair. Tools amplify whatever you already bring."]],
     },
     {
       postIndex: 52,
-      threads: [
-        [
-          "Use it, distrust it, ship anyway. That is the workflow.",
-        ],
-      ],
+      threads: [["Use it, distrust it, ship anyway. That is the workflow."]],
     },
     {
       postIndex: 53,
       threads: [
-        [
-          "Line 37 was a clever helper. Too clever. I miss boring code.",
-        ],
+        ["Line 37 was a clever helper. Too clever. I miss boring code."],
       ],
     },
     {
       postIndex: 54,
       threads: [
-        [
-          "If I cannot explain it without the model, I should not merge it.",
-        ],
+        ["If I cannot explain it without the model, I should not merge it."],
       ],
     },
     {
       postIndex: 55,
-      threads: [
-        [
-          "The complain-explain-procrastinate loop is my actual IDE.",
-        ],
-      ],
+      threads: [["The complain-explain-procrastinate loop is my actual IDE."]],
     },
     {
       postIndex: 56,
@@ -1071,11 +1155,7 @@ async function main() {
     },
     {
       postIndex: 57,
-      threads: [
-        [
-          "36B hours is not a tool. That is a roommate.",
-        ],
-      ],
+      threads: [["36B hours is not a tool. That is a roommate."]],
     },
     {
       postIndex: 58,
@@ -1097,9 +1177,7 @@ async function main() {
     {
       postIndex: 60,
       threads: [
-        [
-          "Infinite iteration is just 12 rounds of feedback wearing a hoodie.",
-        ],
+        ["Infinite iteration is just 12 rounds of feedback wearing a hoodie."],
       ],
     },
     {
@@ -1113,17 +1191,13 @@ async function main() {
     {
       postIndex: 62,
       threads: [
-        [
-          "Both are optimistic. I respect the energy, not the accuracy.",
-        ],
+        ["Both are optimistic. I respect the energy, not the accuracy."],
       ],
     },
     {
       postIndex: 63,
       threads: [
-        [
-          "More commits is not more progress. Sometimes it is just more undo.",
-        ],
+        ["More commits is not more progress. Sometimes it is just more undo."],
       ],
     },
     {
@@ -1146,7 +1220,6 @@ async function main() {
     },
   ];
 
-  console.log("Adding comments and likes...");
   for (const post of posts) {
     for (const user of users) {
       if (Math.random() > 0.45) {
@@ -1192,8 +1265,6 @@ async function main() {
       inviteeId: interviewer.id,
     },
   });
-
-  console.log("Creating direct conversations with the guest interviewer...");
 
   type ChatLine = { from: string; text: string; minutesAgo: number };
 
@@ -1554,8 +1625,6 @@ async function main() {
     },
   ]);
 
-  console.log("Creating group chats with full threads...");
-
   const productionChat = await prisma.groupChat.create({
     data: {
       groupId: productionSquad.id,
@@ -1766,7 +1835,8 @@ async function main() {
     data: {
       groupId: guestGroup.id,
       name: "Guest lounge",
-      description: "Chat for Guest's Group. The guest interviewer owns this one.",
+      description:
+        "Chat for Guest's Group. The guest interviewer owns this one.",
     },
   });
 
@@ -1782,7 +1852,8 @@ async function main() {
       {
         senderId: byUsername.alex_dev.id,
         group_chat_id: guestChat.id,
-        content: "Good sandbox. If you can create a post here, owner tools are working.",
+        content:
+          "Good sandbox. If you can create a post here, owner tools are working.",
         createdAt: minutesAgo(28),
       },
       {
@@ -1799,8 +1870,6 @@ async function main() {
       },
     ],
   });
-
-  console.log("Seed finished. Guest interviewer id:", INTERVIEWER_ID);
 }
 
 main()

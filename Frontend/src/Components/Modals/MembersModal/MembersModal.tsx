@@ -39,7 +39,7 @@ export const MembersModal = ({ id, group }: MembersTypes) => {
     };
     getGroupMembers();
   }, [group.id]);
-  console.log(groupMembers);
+
   return (
     <div id={id} popover="auto" className={styles.modal}>
       <div className={styles.modal__content}>

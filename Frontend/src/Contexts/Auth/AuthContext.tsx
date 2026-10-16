@@ -26,6 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const data = await response.json();
         setUser(data.user);
       } else if (response.status === 401) {
+
         setUser(null);
       } else {
         setUser(null);

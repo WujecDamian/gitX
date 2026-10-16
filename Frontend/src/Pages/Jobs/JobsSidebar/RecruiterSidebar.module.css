@@ -1,0 +1,120 @@
+.recruiter__sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  min-width: 350px;
+  min-height: 100%;
+  border-inline: 1px solid var(--border);
+}
+
+.recruiter__list__item__list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 2rem;
+  width: 100%;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.prospect__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0 16px 16px;
+  overflow-y: auto;
+}
+
+.prospect {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.prospect__open,
+.prospect__message {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.prospect__open {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.prospect__photo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.prospect__error {
+  margin: 0 16px;
+}
+
+.recruiter__sidebar__title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  padding: 20px 16px 8px;
+}
+
+.search__container {
+  position: relative;
+  padding: 4px 16px 14px 16px;
+  display: flex;
+  align-items: center;
+}
+
+.search__input {
+  width: 100%;
+  background-color: var(--surface);
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 16px;
+  color: var(--text-h);
+  font-size: 15px;
+  outline: none;
+  text-align: center;
+  transition:
+    text-align 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search__input::placeholder {
+  color: var(--text-muted);
+  text-align: center;
+  transition: text-align 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search__input:focus {
+  text-align: left;
+  background-color: var(--surface-2);
+}
+
+.search__input:focus::placeholder {
+  text-align: left;
+}
+
+@media (max-width: 720px) {
+  .recruiter__sidebar {
+    width: 100%;
+    min-width: 0;
+  }
+}

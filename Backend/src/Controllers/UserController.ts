@@ -30,6 +30,7 @@ const updateProfile = async (req: Request, res: Response) => {
     if (!displayName) {
       return res.status(400).json({ error: "Display name is required" });
     }
+    const status = toOptionalText(req.body.status);
 
     const tags = toStringArray(req.body.tags);
     const socials = toStringArray(req.body.socials);
@@ -48,6 +49,7 @@ const updateProfile = async (req: Request, res: Response) => {
         bio: toOptionalText(req.body.bio),
         tags,
         socials,
+        status,
         profile_picture_url: toOptionalText(req.body.profile_picture_url),
         banner_picture_url: toOptionalText(req.body.banner_picture_url),
       },
@@ -61,6 +63,7 @@ const updateProfile = async (req: Request, res: Response) => {
         github_profile_url: true,
         profile_picture_url: true,
         socials: true,
+        status: true,
         tags: true,
       },
     });
@@ -69,121 +72,6 @@ const updateProfile = async (req: Request, res: Response) => {
       message: "Successfully updated profile!",
       user: updatedUser,
     });
-  } catch (error) {
-    return res.status(500).json({ error: error });
-  }
-};
-
-const editUserBio = async (req: Request, res: Response) => {
-  try {
-    const bio: string = req.body.bio;
-    const id: string = req.user.id;
-    await prisma.user.update({
-      where: {
-        id,
-      },
-      data: {
-        bio,
-      },
-    });
-    return res.status(200).json({ message: "Successfully updated bio!" });
-  } catch (error) {
-    return res.status(500).json({ error: error });
-  }
-};
-
-const editUserTags = async (req: Request, res: Response) => {
-  try {
-    const tags: Array<string> = req.body.tags;
-    const id: string = req.user.id;
-    await prisma.user.update({
-      where: {
-        id,
-      },
-      data: {
-        tags,
-      },
-    });
-
-    return res.status(200).json({ message: "Successfully updated tags!" });
-  } catch (error) {
-    return res.status(500).json({ error: error });
-  }
-};
-const editUserSocials = async (req: Request, res: Response) => {
-  try {
-    const socials: Array<string> = req.body.socials;
-    const id: string = req.user.id;
-    await prisma.user.update({
-      where: {
-        id,
-      },
-      data: {
-        socials,
-      },
-    });
-
-    return res.status(200).json({ message: "Successfully updated socials!" });
-  } catch (error) {
-    return res.status(500).json({ error: error });
-  }
-};
-
-const editUserDisplayName = async (req: Request, res: Response) => {
-  try {
-    const DisplayName: string = req.body.DisplayName;
-    const id: string = req.user.id;
-    await prisma.user.update({
-      where: {
-        id,
-      },
-      data: {
-        display_name: DisplayName,
-      },
-    });
-    return res
-      .status(200)
-      .json({ message: "Successfully updated DisplayName!" });
-  } catch (error) {
-    return res.status(500).json({ error: error });
-  }
-};
-
-const editUserPfp = async (req: Request, res: Response) => {
-  try {
-    const ProfilePictureUrl: string = req.body.ProfilePictureUrl;
-    const id: string = req.user.id;
-    await prisma.user.update({
-      where: {
-        id,
-      },
-      data: {
-        profile_picture_url: ProfilePictureUrl,
-      },
-    });
-    return res
-      .status(200)
-      .json({ message: "Successfully updated profile picture!" });
-  } catch (error) {
-    return res.status(500).json({ error: error });
-  }
-};
-
-const editUserBanner = async (req: Request, res: Response) => {
-  try {
-    const BannerPictureUrl: string = req.body.BannerPictureUrl;
-    const id: string = req.user.id;
-    await prisma.user.update({
-      where: {
-        id,
-      },
-      data: {
-        banner_picture_url: BannerPictureUrl,
-      },
-    });
-    return res
-      .status(200)
-      .json({ message: "Successfully updated banner picture!" });
   } catch (error) {
     return res.status(500).json({ error: error });
   }
@@ -250,6 +138,7 @@ const getUserProfile = async (
         github_profile_url: true,
         profile_picture_url: true,
         socials: true,
+        status: true,
         tags: true,
         posts: {
           include: {
@@ -453,12 +342,6 @@ const searchUsers = async (req: Request, res: Response) => {
 
 export {
   updateProfile,
-  editUserBio,
-  editUserTags,
-  editUserSocials,
-  editUserDisplayName,
-  editUserPfp,
-  editUserBanner,
   deleteUser,
   getUserProfile,
   getUserFollowers,

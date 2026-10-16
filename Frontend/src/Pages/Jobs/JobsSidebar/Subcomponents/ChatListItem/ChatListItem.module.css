@@ -1,0 +1,81 @@
+/* Container reset and item layout */
+.chat__list__item {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg);
+  list-style: none;
+  margin: 0;
+  padding: 1rem 1rem 0 1rem;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.chat__list__item:hover {
+  background-color: var(--surface-2);
+}
+
+.list__item--left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding-bottom: 0.7rem;
+}
+
+.list__item--right {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  min-width: 0;
+}
+
+.item__right--top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+}
+
+.username {
+  color: var(--text-h);
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.time_wrapper {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.item__right--bottom {
+  margin-top: 3px;
+}
+
+.message_preview {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Conditional Colors */
+.sentMessage {
+  color: var(--text-muted); /* sent by user */
+}
+
+.receivedMessage {
+  color: var(--text-h); /* incoming messages */
+}
+
+.you_prefix {
+  font-weight: 400;
+}

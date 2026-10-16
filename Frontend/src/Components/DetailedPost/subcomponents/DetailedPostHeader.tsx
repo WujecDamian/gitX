@@ -9,7 +9,6 @@ type PostHeaderTypes = {
 };
 
 export default function DetailedPostHeader(props: PostHeaderTypes) {
-  console.log(props.author);
 
   return (
     <>

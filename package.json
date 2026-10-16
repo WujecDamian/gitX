@@ -13,7 +13,8 @@
     "start:server": "node Backend/dist/App.js",
     "start": "npm run start:server",
     "build:client": "vite build",
-    "build": "npm run build:server && npm run build:client"
+    "build": "npm run build:server && npm run build:client",
+    "test": "vitest run"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.0",

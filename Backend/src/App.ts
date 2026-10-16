@@ -23,6 +23,7 @@ import inviteRouter from "./Routers/InviteRouter";
 import followRouter from "./Routers/FollowRouter";
 import chatRouter from "./Routers/ChatRouter";
 import messageRouter from "./Routers/MessageRouter";
+import candidateRouter from "./Routers/CandidateRouter";
 
 const app: Express = express();
 const httpServer = createServer(app);
@@ -53,7 +54,7 @@ const startServer = async () => {
       credentials: true,
     }),
   );
-  const isProduction = !!process.env.REDIS_URL;
+  const isProduction = process.env.NODE_ENV === "production";
 
   if (isProduction) {
     app.set("trust proxy", 1);
@@ -77,6 +78,7 @@ const startServer = async () => {
   app.use("/api/follow", isAuthenticated, followRouter);
   app.use("/api/chat", isAuthenticated, chatRouter);
   app.use("/api/message", isAuthenticated, messageRouter);
+  app.use("/api/candidate", isAuthenticated, candidateRouter);
 
   // 3. FIXED: Listen via httpServer so Socket.io routes function alongside Express
   httpServer.listen(PORT, () => {

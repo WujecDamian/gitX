@@ -39,6 +39,7 @@ export const EditProfileModal = ({
   const [bannerPictureUrl, setBannerPictureUrl] = useState(
     owner.banner_picture_url ?? "",
   );
+  const [status, setStatus] = useState(owner.status ?? "");
   const [tags, setTags] = useState<string[]>(owner.tags ?? []);
   const [socials, setSocials] = useState(joinList(owner.socials));
   const modalRef = useRef<HTMLDivElement>(null);
@@ -91,6 +92,7 @@ export const EditProfileModal = ({
       profile_picture_url: profilePictureUrl,
       banner_picture_url: bannerPictureUrl,
       tags,
+      status,
       socials: splitList(socials),
     };
 
@@ -181,11 +183,26 @@ export const EditProfileModal = ({
           />
         </label>
 
+        <label className={styles.field}>
+          Status
+          <select
+            name="user_status"
+            value={status}
+            onChange={(event) => setStatus(event.target.value)}
+          >
+            <option value=""></option>
+            <option value="Hiring">Currently hiring!</option>
+            <option value="Looking for a job">Looking for a job!</option>
+          </select>
+        </label>
+
         <fieldset className={styles.skills}>
           <legend className={styles.skills__legend}>Skills</legend>
           {customSkills.length > 0 && (
             <div className={styles.skills__group}>
-              <h3 className={styles.skills__heading}>Already on your profile</h3>
+              <h3 className={styles.skills__heading}>
+                Already on your profile
+              </h3>
               <div className={styles.skills__list}>
                 {customSkills.map((skill) => (
                   <label className={styles.skills__item} key={skill}>

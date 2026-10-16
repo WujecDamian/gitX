@@ -43,7 +43,7 @@ function Chat() {
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>Please log in to view this page.</div>;
   if (error) return <ErrorMessage error={error}></ErrorMessage>;
-  console.log(chats);
+
   return (
     <>
       <section

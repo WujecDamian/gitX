@@ -1,0 +1,29 @@
+.jobs__wrapper {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.jobs__content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  gap: 0;
+}
+
+.jobs__status__message {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0;
+  padding: 2rem;
+  text-align: center;
+  font-style: italic;
+  font-weight: 100;
+  border-inline: 1px solid var(--border);
+  height: 100%;
+}

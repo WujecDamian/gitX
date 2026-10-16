@@ -9,7 +9,6 @@ type CommentHeaderTypes = {
 };
 
 export default function CommentHeader(props: CommentHeaderTypes) {
-  console.log(props.author);
 
   return (
     <>

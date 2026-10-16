@@ -25,7 +25,7 @@ export default function ProfileCard({
   const navigate = useNavigate();
   const { user } = useAuth();
   const [buttonContent, setButtonContent] = useState("Following");
-  console.log(isFollowing);
+
   const onFollowClick = async () => {
     try {
       const response = await fetch(`${API_URL}/api/follow/user/${owner.id}`, {
@@ -132,7 +132,10 @@ export default function ProfileCard({
       </div>
 
       <section className={styles.profile__details}>
-        <span className={styles.display__name}>{owner.display_name}</span>
+        <div>
+          <span className={styles.display__name}>{owner.display_name}</span>{" "}
+          {owner.status && <span className={styles.status}>( {owner.status} )</span>}
+        </div>
         <span className={styles.username}>@{owner.username}</span>
         <span className={styles.bio}>{owner.bio}</span>
 
@@ -148,17 +151,19 @@ export default function ProfileCard({
 
         {owner.socials && owner.socials.length > 0 && (
           <div className={styles.socials}>
-            {owner.socials.map((social) =>
+            {owner.socials.map((social) => (
               <a
                 className={styles.social}
-                href={social.startsWith("https") ? `${social}` : `https://${social}`}
+                href={
+                  social.startsWith("https") ? `${social}` : `https://${social}`
+                }
                 key={social}
                 target="_blank"
                 rel="noreferrer"
               >
                 {social}
               </a>
-            )}
+            ))}
           </div>
         )}
 

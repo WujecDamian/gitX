@@ -32,7 +32,6 @@ const guestLogin = async (req: Request, res: Response, next: NextFunction) => {
         return next(error);
       }
       // Redirect to the frontend workspace just like a successful GitHub login
-      console.log(FRONTEND_URL);
       return res.redirect(`${FRONTEND_URL}/`);
     });
   } catch (error) {

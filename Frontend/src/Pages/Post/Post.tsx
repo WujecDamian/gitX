@@ -91,7 +91,7 @@ function Post() {
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>Please log in to view this page.</div>;
 
-  console.log(post);
+
   return (
     <>
       <section className={styles.post}>

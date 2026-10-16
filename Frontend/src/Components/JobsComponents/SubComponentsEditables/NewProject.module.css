@@ -1,0 +1,41 @@
+.project {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.project__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.project__field input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.project__view p {
+  margin: 0;
+}
+
+.project__label {
+  display: inline-block;
+  min-width: 72px;
+  margin-right: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.project__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.project__actions button {
+  flex: 1;
+}

@@ -62,12 +62,6 @@
   filter: invert(1) drop-shadow(0 20px 40px var(--accent-bg));
 }
 
-@media (prefers-color-scheme: light) {
-  .main__right img {
-    filter: none;
-  }
-}
-
 @media (max-width: 720px) {
   .login__main {
     grid-template-columns: 1fr;

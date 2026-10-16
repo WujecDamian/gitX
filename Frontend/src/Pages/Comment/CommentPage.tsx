@@ -48,9 +48,9 @@ function CommentPage() {
 
   useEffect(() => {
     if (!comment || !comment.post_id) return;
-    console.log("called getCommentPost! UseEffect");
+
     const getCommentPost = async () => {
-      console.log("called getCommentPost! ");
+
 
       try {
         const response = await fetch(
@@ -111,8 +111,6 @@ function CommentPage() {
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>Please log in to view this page.</div>;
 
-  console.log(comment);
-  console.log(post);
   return (
     <>
       <section className={styles.comment}>

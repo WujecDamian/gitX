@@ -13,6 +13,7 @@ import CommentPage from "./Pages/Comment/CommentPage";
 import Chat from "./Pages/Chat/Chat";
 import Group from "./Pages/Group/Group";
 import Explore from "./Pages/Explore/Explore";
+import Jobs from "./Pages/Jobs/Jobs";
 
 //group children components
 import { GroupConversation } from "./Components/Group/GroupChats/GroupConversation";
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
               {
                 path: "/explore/",
                 element: <Explore></Explore>,
+              },
+              {
+                path: "/jobs/",
+                element: <Jobs></Jobs>,
               },
             ],
           },

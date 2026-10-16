@@ -21,6 +21,7 @@ declare global {
     profile_picture_url: string;
     socials?: string[];
     tags?: string[];
+    status: string;
     username: string;
     posts: Post;
     follower: User;
@@ -109,6 +110,73 @@ declare global {
       members: number;
     };
     members?: { id: string }[];
+  };
+  type Project = {
+    id: string;
+    projectName: string;
+    description: string;
+    url: string;
+    tags: string[];
+  };
+  type Experience = {
+    id: string;
+    company: string;
+    position: string;
+    description: string;
+    start_date: string;
+    end_date: string;
+  };
+  type Education = {
+    id: string;
+    school: string;
+    degree: string;
+    field_of_study: string;
+    start_date: string;
+    end_date: string;
+  };
+  type Skill = {
+    id: string;
+    name: string;
+    description: string;
+  };
+  type Certification = {
+    id: string;
+    name: string;
+    description: string;
+    start_date: string;
+    end_date: string;
+  };
+  type Language = {
+    id: string;
+    name: string;
+    level: string;
+  };
+  type CandidateProfile = {
+    id?: string;
+    user_id?: string;
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+    bio: string;
+    expected_salary: number;
+    wants_remote: boolean;
+    wants_onsite: boolean;
+    wants_hybrid: boolean;
+    wants_part_time: boolean;
+    wants_full_time: boolean;
+    wants_employment_contract: boolean;
+    wants_mandate_contract: boolean;
+    wants_b2b_contract: boolean;
+    role: string;
+    socials: string[];
+    photo_url: string;
+    projects: Project[];
+    experience: Experience[];
+    education: Education[];
+    skills: Skill[];
+    certifications: Certification[];
+    languages: Language[];
   };
 }
 

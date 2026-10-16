@@ -1,0 +1,104 @@
+.candidate__sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  min-width: 350px;
+  height: 100%;
+  overflow-y: auto;
+  border-inline: 1px solid var(--border);
+}
+
+.candidate__sidebar__title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  padding: 20px 16px 8px;
+}
+
+.candidate__details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 16px;
+  background-color: var(--background);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.bio {
+  field-sizing: content;
+  resize: vertical;
+}
+
+.candidate__details input:not([type="checkbox"]):not([type="range"]),
+.candidate__details select,
+.candidate__details textarea,
+.candidate__section input:not([type="checkbox"]):not([type="range"]),
+.candidate__section select,
+.candidate__section textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-h);
+  padding: 8px 10px;
+}
+
+.candidate__details__container,
+.expected_salary__container,
+.work__model__container,
+.work__availability__container,
+.work__contract__container,
+.candidate__section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.checkbox__divider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.checkbox__divider input {
+  width: auto;
+}
+
+.candidate__actions {
+  display: flex;
+  padding: 16px;
+  margin-top: auto;
+}
+
+.candidate__actions__button {
+  display: flex;
+  width: 100%;
+}
+
+.candidate__section button,
+.candidate__actions__button__save {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.candidate__actions__button__save {
+  width: 100%;
+  border-color: var(--text-h);
+  background: var(--text-h);
+  color: var(--background);
+  font-weight: 700;
+}

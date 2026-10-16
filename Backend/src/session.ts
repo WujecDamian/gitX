@@ -2,7 +2,7 @@ import session from "express-session";
 import { RedisStore } from "connect-redis";
 import { createClient } from "redis";
 
-const isProduction = !!process.env.REDIS_URL;
+const isProduction = process.env.NODE_ENV === "production";
 
 const redisClient = process.env.REDIS_URL
   ? createClient({ url: process.env.REDIS_URL })

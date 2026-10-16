@@ -102,12 +102,12 @@ export const GroupPanel = () => {
         return oldPosts.map((post) =>
           post.id === payload.postId
             ? {
-                ...post,
-                _count: {
-                  ...post._count,
-                  comments: post._count.comments + 1,
-                },
-              }
+              ...post,
+              _count: {
+                ...post._count,
+                comments: post._count.comments + 1,
+              },
+            }
             : post,
         );
       });
@@ -133,7 +133,6 @@ export const GroupPanel = () => {
     return <div className={styles.error__view}>{error}</div>;
   }
 
-  console.log("GroupPanel | Group: ", group);
   return (
     <section className={styles.group__wrapper}>
       {group ? (

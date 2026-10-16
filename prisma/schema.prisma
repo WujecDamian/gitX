@@ -48,6 +48,7 @@ model User {
   comments            Comment[]
   messages            Message[]
   candidateProfiles   CandidateProfile[]
+  prospects           Prospect[]
 }
 
 model Follows {
@@ -220,8 +221,19 @@ model CandidateProfile {
   skills                    Skill[]
   certifications            Certification[]
   languages                 Language[]
+  prospects                 Prospect[]
   user                      User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id                   String          @unique
+}
+
+model Prospect {
+  id                 String           @id @default(uuid())
+  recruiter          User             @relation(fields: [recruiterId], references: [id], onDelete: Cascade)
+  recruiterId        String
+  candidateProfile   CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+  candidateProfileId String
+
+  @@unique([recruiterId, candidateProfileId])
 }
 
 //sub candidate models

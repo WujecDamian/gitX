@@ -21,6 +21,8 @@ async function main() {
   await prisma.post.deleteMany();
   await prisma.follows.deleteMany();
   await prisma.group.deleteMany();
+  await prisma.prospect.deleteMany();
+  await prisma.candidateProfile.deleteMany();
   await prisma.user.deleteMany();
 
   const profilePics = [
@@ -268,6 +270,7 @@ async function main() {
       ]),
       socials: ["github.com/gitx_guest"],
       bio: "Guest interviewer account. Here to look around GitX, join groups, and talk to the team.",
+      status: "Looking for a job",
     },
   });
 
@@ -286,12 +289,52 @@ async function main() {
         tags: data.tags,
         socials: data.socials,
         bio: data.bio,
+        status: "Looking for a job",
       },
     });
     communityUsers.push(user);
   }
 
   const users = [interviewer, ...communityUsers];
+  const roles = ["Frontend", "Backend", "Fullstack", "DevOps", "Data Science", "Cybersecurity", "AI"];
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+    const [firstName, ...restName] = user.display_name.split(" ");
+    await prisma.candidateProfile.create({
+      data: {
+        user_id: user.id,
+        name: firstName,
+        surname: restName.join(" ") || "Dev",
+        email: user.email ?? `${user.username}@example.com`,
+        phone: `+48 500 000 ${String(i).padStart(3, "0")}`,
+        bio: user.bio ?? "",
+        expected_salary: 8000 + i * 1500,
+        wants_remote: i % 2 === 0,
+        wants_onsite: i % 3 === 0,
+        wants_hybrid: i % 2 === 1,
+        role: roles[i % roles.length],
+        socials: user.socials,
+        photo_url: user.profile_picture_url ?? undefined,
+        skills: {
+          create: user.tags.slice(0, 5).map((name) => ({ name })),
+        },
+        languages: {
+          create: [{ name: "English", level: "B2" }],
+        },
+        projects: {
+          create: [
+            {
+              name: `${firstName}'s project`,
+              description: "A small demo project from the seed.",
+              live_url: `https://github.com/${user.username}`,
+              github_url: `https://github.com/${user.username}`,
+              tags: user.tags.slice(0, 3),
+            },
+          ],
+        },
+      },
+    });
+  }
   const byUsername = Object.fromEntries(
     communityUsers.map((user) => [user.username, user]),
   );

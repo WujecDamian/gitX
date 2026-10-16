@@ -204,4 +204,107 @@ const updateCandidate = async (req: Request, res: Response) => {
     }
   }
 };
-export { getCandidate, updateCandidate };
+const profileInclude = {
+  projects: true,
+  experience: true,
+  education: true,
+  skills: true,
+  certifications: true,
+  languages: true,
+};
+
+const browseCandidates = async (req: Request, res: Response) => {
+  const recruiterId = req.user.id;
+  const role = typeof req.query.role === "string" ? req.query.role : "";
+  const salaryQuery = typeof req.query.expected_salary === "string" ? Number(req.query.expected_salary) : undefined;
+  const wantsRemote = req.query.remote === "true";
+  const wantsOnsite = req.query.onsite === "true";
+  const wantsHybrid = req.query.hybrid === "true";
+
+  const workModes = [
+    wantsRemote ? { wants_remote: true } : undefined,
+    wantsOnsite ? { wants_onsite: true } : undefined,
+    wantsHybrid ? { wants_hybrid: true } : undefined,
+  ].filter((mode) => mode !== undefined);
+
+  try {
+    const candidates = await prisma.candidateProfile.findMany({
+      where: {
+        user_id: { not: recruiterId },
+        prospects: { none: { recruiterId } },
+        ...(role ? { role } : {}),
+        ...(salaryQuery !== undefined && !Number.isNaN(salaryQuery)
+          ? { expected_salary: { lte: salaryQuery } }
+          : {}),
+        ...(workModes.length > 0 ? { OR: workModes } : {}),
+      },
+      include: profileInclude,
+    });
+    return res.status(200).json({ candidates });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ error: error.message });
+    }
+    return res.status(500).json({ error: "Failed to browse candidates" });
+  }
+};
+
+const saveProspect = async (req: Request, res: Response) => {
+  const recruiterId = req.user.id;
+  const { candidateProfileId } = req.body;
+  if (typeof candidateProfileId !== "string") {
+    return res.status(400).json({ error: "Invalid candidate id" });
+  }
+  try {
+    const prospect = await prisma.prospect.create({
+      data: { recruiterId, candidateProfileId },
+    });
+    return res.status(201).json({ prospect });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ error: error.message });
+    }
+    return res.status(500).json({ error: "Failed to save prospect" });
+  }
+};
+
+const deleteProspect = async (req: Request, res: Response) => {
+  const recruiterId = req.user.id;
+  const { candidateProfileId } = req.params;
+  if (typeof candidateProfileId !== "string") {
+    return res.status(400).json({ error: "Invalid candidate id" });
+  }
+  try {
+    await prisma.prospect.delete({
+      where: {
+        recruiterId_candidateProfileId: { recruiterId, candidateProfileId },
+      },
+    });
+    return res.status(200).json({ message: "Prospect removed" });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ error: error.message });
+    }
+    return res.status(500).json({ error: "Failed to remove prospect" });
+  }
+};
+
+const getProspects = async (req: Request, res: Response) => {
+  const recruiterId = req.user.id;
+  try {
+    const prospects = await prisma.prospect.findMany({
+      where: { recruiterId },
+      include: {
+        candidateProfile: { include: profileInclude },
+      },
+    });
+    return res.status(200).json({ prospects });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ error: error.message });
+    }
+    return res.status(500).json({ error: "Failed to load prospects" });
+  }
+};
+
+export { getCandidate, updateCandidate, browseCandidates, saveProspect, deleteProspect, getProspects };

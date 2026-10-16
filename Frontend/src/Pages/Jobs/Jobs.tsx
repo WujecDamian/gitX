@@ -15,6 +15,8 @@ function Jobs() {
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<string | undefined>(undefined);
   const [profileVersion, setProfileVersion] = useState(0);
+  const [prospectVersion, setProspectVersion] = useState(0);
+  const [selectedProspect, setSelectedProspect] = useState<CandidateProfile | undefined>(undefined);
 
   useEffect(() => {
     if (user?.status === "Looking for a job") {
@@ -66,13 +68,25 @@ function Jobs() {
     status === undefined ? (<> <h3 className={styles.jobs__status__message}>Pick status on your profile</h3></>) : (<>
       <section className={styles.jobs__wrapper} >
 
-        {status === "hiring" && <RecruiterSidebar />}
+        {status === "hiring" && (
+          <RecruiterSidebar
+            prospectVersion={prospectVersion}
+            onOpen={setSelectedProspect}
+          />
+        )}
         {status === "searching" && <CandidateSidebar userId={user?.id} onSaved={() => setProfileVersion((version) => version + 1)} />}
 
         <section className={styles.jobs__content}>
           {/* Render components based on status */}
           {status === "searching" && <CandidateProfile candidateProfile={candidateProfile} profileVersion={profileVersion} />}
-          {status === "hiring" && <RecruiterDashboard />}
+          {status === "hiring" && (
+            <RecruiterDashboard
+              selected={selectedProspect}
+              onClearSelected={() => setSelectedProspect(undefined)}
+              prospectVersion={prospectVersion}
+              onSaved={() => setProspectVersion((version) => version + 1)}
+            />
+          )}
         </section>
       </section >
     </>)

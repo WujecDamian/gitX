@@ -5,7 +5,9 @@ import { API_URL } from "../../../config";
 
 type CandidateProfileProps = {
     candidateProfile: CandidateProfile | undefined;
-    profileVersion: number;
+    profileVersion?: number;
+    onSkip?: () => void;
+    onSave?: () => void;
 };
 
 type ProjectSlide = {
@@ -32,14 +34,22 @@ const asHref = (value: string) => (
     value.startsWith("http://") || value.startsWith("https://") ? value : `https://${value}`
 );
 
-export const CandidateProfile = ({ candidateProfile, profileVersion }: CandidateProfileProps) => {
+export const CandidateProfile = ({ candidateProfile, profileVersion = 0, onSkip, onSave }: CandidateProfileProps) => {
     const { user } = useAuth();
     const [candidate, setCandidate] = useState<CandidateProfile | undefined>(candidateProfile);
     const [error, setError] = useState<string | null>(null);
     const [slide, setSlide] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
 
+    const isRecruiterCard = Boolean(onSkip);
+
     useEffect(() => {
+        if (isRecruiterCard) {
+            setCandidate(candidateProfile);
+            setSlide(0);
+            setIsOpen(false);
+            return;
+        }
         const getCandidate = async () => {
             try {
                 const response = await fetch(`${API_URL}/api/candidate/getCandidate/${user?.id}`, {
@@ -64,7 +74,7 @@ export const CandidateProfile = ({ candidateProfile, profileVersion }: Candidate
             }
         };
         getCandidate();
-    }, [user?.id, profileVersion]);
+    }, [isRecruiterCard, candidateProfile, user?.id, profileVersion]);
 
     if (error) {
         return <p className={styles.profile__message}>{error}</p>;
@@ -80,6 +90,10 @@ export const CandidateProfile = ({ candidateProfile, profileVersion }: Candidate
     const projectName = currentProject?.name || currentProject?.projectName || "Project";
     const projectPicture = currentProject?.project_picture_url || currentProject?.projectPictureUrl || "";
     const picture = slide === 0 ? candidate.photo_url : projectPicture;
+    const githubSocial = (candidate.socials ?? []).find((social) => social.toLowerCase().includes("github"));
+    const circleLink = slide === 0
+        ? githubSocial || (!isRecruiterCard ? user?.github_profile_url : "")
+        : currentProject?.live_url;
 
     const showPrevious = () => {
         setSlide((current) => (current === 0 ? slideCount - 1 : current - 1));
@@ -117,6 +131,17 @@ export const CandidateProfile = ({ candidateProfile, profileVersion }: Candidate
                         </div>
                     )}
                 </div>
+                {circleLink && (
+                    <a
+                        className={styles.card__link}
+                        href={asHref(circleLink)}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={slide === 0 ? "Open GitHub profile" : "Open live project"}
+                    >
+                        {slide === 0 ? "GH" : "↗"}
+                    </a>
+                )}
                 {slideCount > 1 && (
                     <div className={styles.card__nav}>
                         <button type="button" className={styles.card__arrow} onClick={showPrevious} aria-label="Previous picture">‹</button>
@@ -124,6 +149,12 @@ export const CandidateProfile = ({ candidateProfile, profileVersion }: Candidate
                     </div>
                 )}
             </article>
+            {onSkip && (
+                <div className={styles.profile__actions}>
+                    <button type="button" className={styles.profile__action} onClick={onSkip}>X</button>
+                    {onSave && <button type="button" className={styles.profile__action} onClick={onSave}>+</button>}
+                </div>
+            )}
             <button type="button" className={styles.profile__open} onClick={() => setIsOpen((open) => !open)}>
                 {isOpen ? "Close profile" : "Open profile"} ↑
             </button>
@@ -157,6 +188,7 @@ export const CandidateProfile = ({ candidateProfile, profileVersion }: Candidate
 
                     <div className={styles.details__section}>
                         <h3>Projects</h3>
+                        {projects.length === 0 && <p>{candidate.name} has no projects</p>}
                         {projects.map((project, index) => (
                             <div key={`${project.name ?? project.projectName}-${index}`} className={styles.details__row}>
                                 <p>{project.name || project.projectName}</p>
@@ -172,6 +204,7 @@ export const CandidateProfile = ({ candidateProfile, profileVersion }: Candidate
 
                     <div className={styles.details__section}>
                         <h3>Experience</h3>
+                        {(candidate.experience ?? []).length === 0 && <p>{candidate.name} has no experience</p>}
                         {(candidate.experience ?? []).map((item) => (
                             <div key={item.id} className={styles.details__row}>
                                 <p>{item.position} at {item.company}</p>
@@ -183,6 +216,7 @@ export const CandidateProfile = ({ candidateProfile, profileVersion }: Candidate
 
                     <div className={styles.details__section}>
                         <h3>Education</h3>
+                        {(candidate.education ?? []).length === 0 && <p>{candidate.name} has no education</p>}
                         {(candidate.education ?? []).map((item) => (
                             <div key={item.id} className={styles.details__row}>
                                 <p>{item.degree} at {item.school}</p>
@@ -194,6 +228,7 @@ export const CandidateProfile = ({ candidateProfile, profileVersion }: Candidate
 
                     <div className={styles.details__section}>
                         <h3>Skills</h3>
+                        {(candidate.skills ?? []).length === 0 && <p>{candidate.name} has no skills</p>}
                         <ul className={styles.details__tags}>
                             {(candidate.skills ?? []).map((item) => <li key={item.id}>{item.name}</li>)}
                         </ul>
@@ -201,6 +236,7 @@ export const CandidateProfile = ({ candidateProfile, profileVersion }: Candidate
 
                     <div className={styles.details__section}>
                         <h3>Certifications</h3>
+                        {(candidate.certifications ?? []).length === 0 && <p>{candidate.name} has no certifications</p>}
                         {(candidate.certifications ?? []).map((item) => (
                             <div key={item.id} className={styles.details__row}>
                                 <p>{item.name}</p>
@@ -212,6 +248,7 @@ export const CandidateProfile = ({ candidateProfile, profileVersion }: Candidate
 
                     <div className={styles.details__section}>
                         <h3>Languages</h3>
+                        {(candidate.languages ?? []).length === 0 && <p>{candidate.name} has no languages</p>}
                         <ul className={styles.details__tags}>
                             {(candidate.languages ?? []).map((item) => <li key={item.id}>{item.name} — {item.level}</li>)}
                         </ul>

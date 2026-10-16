@@ -152,6 +152,8 @@ declare global {
     level: string;
   };
   type CandidateProfile = {
+    id?: string;
+    user_id?: string;
     name: string;
     surname: string;
     email: string;

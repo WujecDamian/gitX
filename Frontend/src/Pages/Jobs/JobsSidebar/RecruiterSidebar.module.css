@@ -20,6 +20,41 @@
   overflow-y: auto;
 }
 
+.prospect__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0 16px 16px;
+  overflow-y: auto;
+}
+
+.prospect {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.prospect__open,
+.prospect__message {
+  border: 1px solid var(--border);
+  background: var(--background);
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.prospect__open {
+  flex: 1;
+  text-align: left;
+}
+
+.prospect__error {
+  margin: 0 16px;
+}
+
 .recruiter__sidebar__title {
   font-size: 24px;
   font-weight: 800;

@@ -9,7 +9,7 @@
   flex-direction: column;
   position: relative;
   left: 1.45rem;
-  border-block: 1px solid var(--border);
+  border: 1px solid var(--border);
   padding: 1.25rem;
   margin: -1rem 1rem 1rem 1rem;
   border-radius: 1.5rem;

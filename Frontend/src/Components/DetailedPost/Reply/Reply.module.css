@@ -1,5 +1,5 @@
 .reply {
-  border-block: 1px solid var(--border-hover);
+  border: 1px solid var(--border-hover);
   max-width: 100%;
   margin: 0;
   padding: 1.25rem;

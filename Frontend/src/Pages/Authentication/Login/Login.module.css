@@ -59,7 +59,7 @@
 
 .main__right img {
   width: min(412px, 70%);
-  filter: invert(1) drop-shadow(0 20px 40px var(--accent-bg));
+  filter: drop-shadow(0 20px 40px var(--accent-bg));
 }
 
 @media (max-width: 720px) {

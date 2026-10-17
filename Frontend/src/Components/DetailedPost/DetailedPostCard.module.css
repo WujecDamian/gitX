@@ -1,8 +1,19 @@
 /* * MAIN POST CARD */
 .post__card {
-  margin: 0;
-  margin-top: -1px;
+  border-block: 1px solid var(--border);
   padding: 1.25rem;
+  margin: -1rem 1rem 1rem 1rem;
+  border-radius: 1.5rem;
+  margin-top: -1px;
+  background-color: var(--bg);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.post__card:hover {
+  background-color: var(--accent-bg);
+  border-color: var(--border-hover);
 }
 
 .post__content__wrapper {
@@ -70,10 +81,10 @@
     }
 
     img {
-      filter: brightness(0) invert(1);
+      filter: brightness(0);
     }
 
-    color: #ffffff;
+    color: var(--text);
   }
 
   .comments:hover img,
@@ -87,5 +98,5 @@
 }
 
 .count {
-  color: #ffffff;
+  color: var(--text);
 }

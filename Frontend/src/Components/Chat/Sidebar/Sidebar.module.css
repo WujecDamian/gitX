@@ -45,6 +45,7 @@
   border-radius: 9999px;
   padding: 10px 16px;
   color: var(--text-h);
+  border: 1px solid var(--border);
   font-size: 15px;
   outline: none;
   text-align: center;

@@ -55,7 +55,36 @@ body {
   line-height: 1.5;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background-color: #e5e5f7;
+  opacity: 0.3;
+  background-image: radial-gradient(#444cf7 0.7px, #e5e5f7 0.7px);
+  background-size: 7px 7px;
+  mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0) 75%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0) 75%
+  );
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+}
+
 #root {
+  position: relative;
+  z-index: 1;
   margin: 0 auto;
   min-height: 100vh;
   text-align: left;

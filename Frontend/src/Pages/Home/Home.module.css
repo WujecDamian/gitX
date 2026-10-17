@@ -1,12 +1,46 @@
 .home {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0;
+  overflow: hidden;
 
   border: 1px solid var(--border);
   border-radius: 1.5rem;
   padding-top: 1rem;
   margin-block: 1rem;
+}
+
+.home::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background-color: #e5e5f7;
+  opacity: 0.3;
+  background-image: radial-gradient(#444cf7 0.7px, #e5e5f7 0.7px);
+  background-size: 7px 7px;
+  mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0) 75%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0) 75%
+  );
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.home > * {
+  position: relative;
+  z-index: 1;
 }
 .post__cards {
   display: flex;

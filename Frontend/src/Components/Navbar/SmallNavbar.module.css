@@ -10,7 +10,8 @@
   gap: 0.75rem;
   z-index: 5;
   overflow: visible;
-  background: var(--bg);
+  backdrop-filter: blur(0.5px);
+  border-radius: 1rem;
 }
 
 .navbar__brand {
@@ -48,7 +49,9 @@
   color: var(--text-h);
   padding: 0.85rem;
   border-radius: 1rem;
-  transition: background-color 0.2s ease, border-radius 0.4s ease;
+  transition:
+    background-color 0.2s ease,
+    border-radius 0.4s ease;
 }
 
 .nav__link:visited {

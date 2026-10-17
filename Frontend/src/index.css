@@ -3,7 +3,7 @@
   --text-h: #1a1d21;
   --text-muted: #273f70;
   --text-dark: #1a1d21;
-  --bg: #f7f6f3;
+  --bg: hsla(45, 20%, 96%, 0.8);
   --surface: #ffffff;
   --surface-2: #efece6;
   --border: #e4e0d8;
@@ -11,7 +11,7 @@
   --code-bg: #f0eee9;
   --accent: #152d76;
   --accent-text: #011962;
-  --accent-bg: rgba(18, 61, 154, 0.1);
+  --accent-bg: hsla(45, 20%, 96%, 0.9);
   --accent-border: rgba(18, 61, 154, 0.35);
   --on-accent: #ffffff;
   --nav-hover: rgba(18, 59, 154, 0.08);
@@ -62,19 +62,22 @@ body::before {
   z-index: 0;
   pointer-events: none;
 
-  background-color: #e5e5f7;
-  opacity: 0.3;
-  background-image: radial-gradient(#444cf7 0.7px, #e5e5f7 0.7px);
+  background-color: #ffffff;
+  opacity: 0.8;
+  background-image: radial-gradient(
+    #444cf7 0.7000000000000001px,
+    #ffffff 0.7000000000000001px
+  );
   background-size: 7px 7px;
   mask-image: radial-gradient(
     ellipse at center,
-    rgba(0, 0, 0, 0.7) 0%,
-    rgba(0, 0, 0, 0) 75%
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.6) 100%
   );
   -webkit-mask-image: radial-gradient(
     ellipse at center,
-    rgba(0, 0, 0, 0.7) 0%,
-    rgba(0, 0, 0, 0) 75%
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.6) 100%
   );
   mask-size: 100% 100%;
   -webkit-mask-size: 100% 100%;

@@ -4,7 +4,7 @@
   width: 350px;
   min-width: 350px;
   min-height: 100%;
-  border-inline: 1px solid var(--border);
+  border-right: 1px solid var(--border);
 }
 
 .recruiter__list__item__list {

@@ -44,7 +44,12 @@
   align-items: flex-end;
   min-height: 70%;
   padding: 16px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.45) 45%, transparent 100%);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.82) 0%,
+    rgba(0, 0, 0, 0.45) 45%,
+    transparent 100%
+  );
 }
 
 .card__text {
@@ -93,7 +98,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: white;
+  background: rgba(255, 255, 255, 0.7);
   color: black;
   text-decoration: none;
   font-size: 14px;
@@ -112,24 +117,39 @@
 
 .card__arrow {
   pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 36px;
   height: 36px;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.7);
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
 }
+.card__arrow svg {
+  transition: stroke-width 0.05s ease-in;
+}
+.card__arrow:hover {
+  svg {
+    stroke-width: 3;
+  }
+}
 
 .profile__actions {
   display: flex;
-  gap: 12px;
+  flex-direction: row;
+  gap: 2rem;
 }
 
 .profile__action {
-  width: 48px;
-  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   border: 1px solid var(--border);
   background: var(--background);
@@ -137,6 +157,45 @@
   cursor: pointer;
 }
 
+.action__save svg {
+  stroke: red;
+  fill: transparent;
+  transition:
+    fill 0.3s ease-in-out,
+    width 0.1s ease-in-out,
+    height 0.1s ease-in-out;
+  cursor: pointer;
+}
+.action__save:hover,
+.action__save:active,
+.action__save:focus,
+.action__save:focus-visible {
+  svg {
+    fill: red;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.action__skip svg {
+  stroke: var(--text-muted);
+  fill: transparent;
+  transition:
+    width 0.2s ease-in-out,
+    height 0.2s ease-in-out,
+    rotate 0.2s ease-in-out;
+  cursor: pointer;
+}
+.action__skip:hover,
+.action__skip:active,
+.action__skip:focus,
+.action__skip:focus-visible {
+  svg {
+    width: 32px;
+    height: 32px;
+    rotate: 90deg;
+  }
+}
 .profile__open {
   border: 1px solid var(--border);
   background: var(--background);

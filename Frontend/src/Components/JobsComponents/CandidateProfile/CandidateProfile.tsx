@@ -149,20 +149,106 @@ export const CandidateProfile = ({ candidateProfile, profileVersion = 0, onSkip,
                         rel="noreferrer"
                         aria-label={slide === 0 ? "Open GitHub profile" : "Open live project"}
                     >
-                        {slide === 0 ? "GH" : "↗"}
+                        {slide === 0 ? (
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.48 2.865 8.28 6.839 9.63.5.092.682-.218.682-.483 0-.237-.009-.868-.013-1.703-2.782.615-3.369-1.343-3.369-1.343-.454-1.17-1.11-1.482-1.11-1.482-.908-.637.069-.624.069-.624 1.003.072 1.531 1.045 1.531 1.045.892 1.557 2.341 1.107 2.91.846.091-.658.349-1.107.636-1.362-2.22-.258-4.555-1.134-4.555-5.045 0-1.115.372-2.028.983-2.743-.099-.259-.426-1.3.093-2.708 0 0 .837-.278 2.75 1.048A9.146 9.146 0 0 1 12 6.844c.849.004 1.706.115 2.506.337 1.911-1.326 2.748-1.048 2.748-1.048.52 1.408.193 2.449.095 2.708.613.715.982 1.628.982 2.743 0 3.92-2.338 4.783-4.566 5.038.359.318.678.944.678 1.905 0 1.375-.012 2.484-.012 2.824 0 .268.18.58.688.482C19.138 20.534 22 16.7 22 12.26 22 6.58 17.522 2 12 2Z" />
+                            </svg>
+                        ) : (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="M7 17L17 7" />
+                                <path d="M7 7h10v10" />
+                            </svg>
+                        )
+
+                        }
                     </a>
                 )}
                 {slideCount > 1 && (
                     <div className={styles.card__nav}>
-                        <button type="button" className={styles.card__arrow} onClick={showPrevious} aria-label="Previous picture">‹</button>
-                        <button type="button" className={styles.card__arrow} onClick={showNext} aria-label="Next picture">›</button>
+                        <button type="button" className={styles.card__arrow} onClick={showPrevious} aria-label="Previous picture"><svg
+                            xmlns="http://w3.org"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                        </button>
+                        <button type="button" className={styles.card__arrow} onClick={showNext} aria-label="Next picture"><svg
+                            xmlns="http://w3.org"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="m9 18 6-6-6-6" />
+                        </svg>
+                        </button>
                     </div>
                 )}
             </article>
             {onSkip && (
                 <div className={styles.profile__actions}>
-                    <button type="button" className={styles.profile__action} onClick={onSkip}>X</button>
-                    {onSave && <button type="button" className={styles.profile__action} onClick={onSave}>+</button>}
+                    {/* X button */}
+                    <button type="button" className={`${styles.profile__action} ${styles.action__skip}`} onClick={onSkip}><svg
+                        xmlns="http://w3.org"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                    </button>
+                    {/* Heart button */}
+                    {onSave && <button type="button" className={`${styles.profile__action} ${styles.action__save}`} onClick={onSave}><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                    </svg>
+                    </button>}
                 </div>
             )}
             <button type="button" className={styles.profile__open} onClick={() => setIsOpen((open) => !open)}>

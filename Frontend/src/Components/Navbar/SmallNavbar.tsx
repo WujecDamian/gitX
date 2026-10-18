@@ -1,5 +1,5 @@
 import { useAuth } from "../../Contexts/Auth/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { API_URL } from "../../config";
 import styles from "./SmallNavbar.module.css";
 import MiniNavProfile from "./components/MiniNavProfile";
@@ -11,6 +11,9 @@ type NavbarProps = {
 
 export default function SmallNavbar({ onPostClick }: NavbarProps) {
   const { user, logout } = useAuth();
+
+  const location = useLocation();
+  const currentTab = location.pathname.split("/")[1];
 
   return (
     <nav className={styles.navbar}>
@@ -56,7 +59,7 @@ export default function SmallNavbar({ onPostClick }: NavbarProps) {
           </svg>
         </Link>
         <Link to="/jobs" className={styles.nav__link} aria-label="Jobs">
-          <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="24" height="24" fill={currentTab === "jobs" ? "var(--accent)" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
             <rect x="3" y="7" width="18" height="13" rx="2" />
           </svg>
@@ -67,7 +70,7 @@ export default function SmallNavbar({ onPostClick }: NavbarProps) {
             viewBox="0 0 24 24"
             width="24"
             height="24"
-            fill="none"
+            fill={currentTab === "chat" ? "var(--accent)" : "none"}
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
@@ -82,7 +85,7 @@ export default function SmallNavbar({ onPostClick }: NavbarProps) {
             viewBox="0 0 24 24"
             width="24"
             height="24"
-            fill="none"
+            fill={currentTab === "groups" ? "var(--accent)" : "none"}
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"

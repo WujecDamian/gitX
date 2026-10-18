@@ -1,5 +1,5 @@
 import { useAuth } from "../../Contexts/Auth/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { API_URL } from "../../config";
 import styles from "./Navbar.module.css";
 import NavProfile from "./components/NavProfile";
@@ -11,6 +11,9 @@ type NavbarProps = {
 
 export default function Navbar({ onPostClick }: NavbarProps) {
   const { user, logout } = useAuth();
+
+  const location = useLocation();
+  const currentTab = location.pathname.split("/")[1];
 
   return (
     <nav className={styles.navbar}>
@@ -30,7 +33,8 @@ export default function Navbar({ onPostClick }: NavbarProps) {
             viewBox="0 0 24 24"
             width="24"
             height="24"
-            fill="none"
+            fill={currentTab === "" ? "var(--accent)" : "none"}
+
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
@@ -46,7 +50,7 @@ export default function Navbar({ onPostClick }: NavbarProps) {
             viewBox="0 0 24 24"
             width="24"
             height="24"
-            fill="none"
+            fill={currentTab === "explore" ? "var(--accent)" : "none"}
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
@@ -109,7 +113,7 @@ export default function Navbar({ onPostClick }: NavbarProps) {
             viewBox="0 0 24 24"
             width="24"
             height="24"
-            fill="none"
+            fill={currentTab === "profile" ? "var(--accent)" : "none"}
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
@@ -130,7 +134,6 @@ export default function Navbar({ onPostClick }: NavbarProps) {
           viewBox="0 0 24 24"
           width="22"
           height="22"
-          fill="none"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"

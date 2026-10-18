@@ -144,7 +144,8 @@
 }
 
 .tag {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
   border-radius: 9999px;
   padding: 4px 10px;
   font-size: 13px;

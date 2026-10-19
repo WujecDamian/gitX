@@ -8,20 +8,25 @@ _It's type of app that could be written by AI in minutes, but I wanted to actual
 
 [View the live demo](https://gitx.wujecdamian.dev/)
 
+## GIF Demo
+
+![GitX demo](Frontend/public/screenshots/gitX.gif)
+
 ## Screenshots
 
-![Home feed](Frontend/public/screenshots/home.jpg)
+![Home](Frontend/public/screenshots/HomeScreen.jpg)
 
-![Explore](Frontend/public/screenshots/explore.jpg)
+![Explore](Frontend/public/screenshots/ExploreScreen.jpg)
 
-![Profile](Frontend/public/screenshots/profile.jpg)
+![Recruiter jobs](Frontend/public/screenshots/RecruiterScreen.jpg)
 
-![Edit profile](Frontend/public/screenshots/profile-edit.jpg)
+![Candidate jobs](Frontend/public/screenshots/CandidateScreen.jpg)
 
-![Group post](Frontend/public/screenshots/group-post.jpg)
+![Group](Frontend/public/screenshots/GroupScreen.jpg)
 
-![Group chat](Frontend/public/screenshots/group-chat.jpg)
+![Profile](Frontend/public/screenshots/ProfileScreen.jpg)
 
+![Edit profile](Frontend/public/screenshots/EditScreen.jpg)
 
 ## Tech Stack
 
@@ -56,6 +61,8 @@ _It's type of app that could be written by AI in minutes, but I wanted to actual
 - Create and join groups
 - Chat pages (real-time messaging is still in progress)
 - User and group profiles
+- Creating Candidate profile
+- Searching for prospects as recruiter
 
 ## How to Run It Locally
 
@@ -63,48 +70,22 @@ You will need Node.js, PostgreSQL, and Redis installed.
 
 1. Clone the project and install the dependencies:
 
-	```bash
-	git clone git@github.com:WujecDamian/gitX.git
-	cd gitX
-	npm install
-	```
-
+   `bash it clone git@github.com:WujecDamian/gitX.git d gitX pm install` 
 2. Create a `.env` file in the project root. Add your PostgreSQL connection and GitHub OAuth values:
 
-	```env
-	DIRECT_URL="your-postgresql-connection-string"
-	GITHUB_CLIENT_ID="your-github-client-id"
-	GITHUB_CLIENT_SECRET="your-github-client-secret"
-	GITHUB_CALLBACK_URL="http://localhost:3000/api/auth/github/callback"
-	SESSION_SECRET="a-local-session-secret"
-	FRONTEND_URL="http://localhost:5173"
-	```
-
+   `env IRECT_URL="your-postgresql-connection-string" ITHUB_CLIENT_ID="your-github-client-id" ITHUB_CLIENT_SECRET="your-github-client-secret" ITHUB_CALLBACK_URL="http://localhost:3000/api/auth/github/callback" ESSION_SECRET="a-local-session-secret" RONTEND_URL="http://localhost:5173"` 
 3. Start Redis in another terminal:
 
-	```bash
-	redis-server
-	```
-
+   `bash edis-server` 
 4. Create the database tables and generate the Prisma client:
 
-	```bash
-	npx prisma migrate dev
-	npx prisma generate
-	```
-
+   `bash px prisma migrate dev px prisma generate` 
 5. Add some test data to the database:
 
-	```bash
-	npx tsx prisma/seed.ts
-	```
-
+   `bash px tsx prisma/seed.ts` 
 6. Start the frontend and backend together:
 
-	```bash
-	npm run dev
-	```
-
+   `bash pm run dev` 
 7. Open `http://localhost:5173` in your browser.
 
 ## What I Learned / Challenges I Faced
@@ -115,15 +96,6 @@ Also I had to implement debounce for more optimized searching, but I used mainly
 
 I am currently learning how to connect the Socket.IO server to the frontend correctly without breaking the normal API requests.
 
-## Future Improvements
 
-- Add better error messages and loading states
-- Add Recruiter page where he can see and pick from prospects
-- Make it more tailored for linkedin like site (now it's simple X copy)
-- Add image uploading instead of only image URLs
-- Finish real-time direct messages and group chats (socket.io)
-- Add notifications for follows, likes, and messages
-- Add tests
-- Fix styling for light mode
 
 Thanks for checking out GitX. This is a learning project, and I am still improving it as I learn more.
